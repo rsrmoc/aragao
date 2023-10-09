@@ -1,0 +1,42 @@
+{
+  "resources/js/app.js": {
+    "file": "assets/app-c631b2d6.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  },
+  "resources/js/pages/dashboard/obras.js": {
+    "file": "assets/obras-eade79a0.js",
+    "isEntry": true,
+    "src": "resources/js/pages/dashboard/obras.js"
+  },
+  "resources/js/pages/dashboard/reunioes.js": {
+    "file": "assets/reunioes-e982d2a8.js",
+    "isEntry": true,
+    "src": "resources/js/pages/dashboard/reunioes.js"
+  },
+  "resources/js/views/obras/etapas-tabs-funcionarios.js": {
+    "file": "assets/etapas-tabs-funcionarios-3d7304da.js",
+    "isEntry": true,
+    "src": "resources/js/views/obras/etapas-tabs-funcionarios.js"
+  },
+  "resources/js/views/obras/etapas-tabs-usuarios.js": {
+    "file": "assets/etapas-tabs-usuarios-711f4150.js",
+    "isEntry": true,
+    "src": "resources/js/views/obras/etapas-tabs-usuarios.js"
+  },
+  "resources/js/views/tables-users.js": {
+    "file": "assets/tables-users-46edbadb.js",
+    "isEntry": true,
+    "src": "resources/js/views/tables-users.js"
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-c1099086.css",
+    "isEntry": true,
+    "src": "resources/sass/app.scss"
+  },
+  "resources/sass/dashboard.scss": {
+    "file": "assets/dashboard-09731cda.css",
+    "isEntry": true,
+    "src": "resources/sass/dashboard.scss"
+  }
+}

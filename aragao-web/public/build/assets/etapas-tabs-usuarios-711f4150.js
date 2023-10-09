@@ -1,0 +1,1 @@
+Alpine.data("etapasTabUsuarios",()=>({delUser(e,i){this.$store.dialog.show("Desatribuir",`Quer mesmo excluir o "${e.usuario.name}"?`,{cancel:{},confirm:{text:"Sim, excluir!",action:()=>i().delUser(e.id)}})}}));
