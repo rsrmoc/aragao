@@ -1,0 +1,7 @@
+{
+  "name": "app-aragao-web",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
