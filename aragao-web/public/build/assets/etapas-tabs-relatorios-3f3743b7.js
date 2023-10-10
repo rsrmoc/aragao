@@ -1,0 +1,1 @@
+Alpine.data("etapasTabRelatorios",()=>({excluir(e,i){this.$store.dialog.show("Excluir relatório","Realmente deseja excluir o relatório?",{cancel:{},confirm:{text:"Sim, excluir!",action:()=>i().excluirRelatorio(e)}})}}));

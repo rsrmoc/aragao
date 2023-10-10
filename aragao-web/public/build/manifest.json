@@ -4,6 +4,11 @@
     "isEntry": true,
     "src": "resources/js/app.js"
   },
+  "resources/js/pages/dashboard/etapas-obras.js": {
+    "file": "assets/etapas-obras-115f5154.js",
+    "isEntry": true,
+    "src": "resources/js/pages/dashboard/etapas-obras.js"
+  },
   "resources/js/pages/dashboard/obras.js": {
     "file": "assets/obras-eade79a0.js",
     "isEntry": true,
@@ -18,6 +23,11 @@
     "file": "assets/etapas-tabs-funcionarios-3d7304da.js",
     "isEntry": true,
     "src": "resources/js/views/obras/etapas-tabs-funcionarios.js"
+  },
+  "resources/js/views/obras/etapas-tabs-relatorios.js": {
+    "file": "assets/etapas-tabs-relatorios-3f3743b7.js",
+    "isEntry": true,
+    "src": "resources/js/views/obras/etapas-tabs-relatorios.js"
   },
   "resources/js/views/obras/etapas-tabs-usuarios.js": {
     "file": "assets/etapas-tabs-usuarios-711f4150.js",
