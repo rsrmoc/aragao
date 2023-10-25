@@ -28,6 +28,11 @@
     "isEntry": true,
     "src": "resources/js/pages/dashboard/reunioes.js"
   },
+  "resources/js/views/obras/etapas-tabs-evolucoes.js": {
+    "file": "assets/etapas-tabs-evolucoes-2db17c6f.js",
+    "isEntry": true,
+    "src": "resources/js/views/obras/etapas-tabs-evolucoes.js"
+  },
   "resources/js/views/obras/etapas-tabs-funcionarios.js": {
     "file": "assets/etapas-tabs-funcionarios-3d7304da.js",
     "isEntry": true,
