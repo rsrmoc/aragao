@@ -73,6 +73,10 @@ class EtapasObra extends Component
             $data = $this->inputsEtapa;
             $data['valor'] = MoneyService::formatToDB($data['valor']);
 
+            if ($data['concluida']) {
+                $data['porc_etapa'] = 100;
+            }
+
             $etapa = ObrasEtapas::find($this->etapaIdEdit);
             $etapa->update($data);
 

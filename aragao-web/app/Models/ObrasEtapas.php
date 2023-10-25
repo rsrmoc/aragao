@@ -32,10 +32,15 @@ class ObrasEtapas extends Model
     ];
 
     protected $appends = [
-        'insidencia'
+        'incidencia',
+        'valor_gasto'
     ];
 
-    public function getInsidenciaAttribute() {
+    public function getIncidenciaAttribute() {
         return ($this->porc_etapa * $this->porc_geral) / 100;
+    }
+
+    public function getValorGastoAttribute() {
+        return $this->valor * $this->porc_etapa / 100;
     }
 }

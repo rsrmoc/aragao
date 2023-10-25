@@ -63,9 +63,10 @@ class TablesUsers extends Component
                     'email' => $this->userEmail,
                     'phone_number' => $this->userPhoneNumber,
                     'password' => Hash::make(Str::random()),
-                    'type' => $this->type,
-                    'deleted_at' => null
+                    'type' => $this->type
                 ]);
+
+                $userTrashed->restore();
             }
             else {
                 User::create([

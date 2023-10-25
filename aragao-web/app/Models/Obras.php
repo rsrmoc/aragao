@@ -17,8 +17,6 @@ class Obras extends Model
         'dt_inicio',
         'dt_termino',
         'dt_previsao_termino',
-        'valor',
-        'valor_saldo',
         'endereco_rua',
         'endereco_bairro',
         'endereco_numero',

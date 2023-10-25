@@ -11,12 +11,12 @@
     "src": "resources/js/app.js"
   },
   "resources/js/pages/dashboard/etapas-obras.js": {
-    "file": "assets/etapas-obras-9b273102.js",
+    "file": "assets/etapas-obras-b7c2ddf7.js",
     "isEntry": true,
     "src": "resources/js/pages/dashboard/etapas-obras.js"
   },
   "resources/js/pages/dashboard/obras.js": {
-    "file": "assets/obras-3edd3498.js",
+    "file": "assets/obras-95dff3d9.js",
     "isEntry": true,
     "src": "resources/js/pages/dashboard/obras.js"
   },
@@ -54,7 +54,7 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-29da7575.css",
+    "file": "assets/app-5ac74e0f.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },

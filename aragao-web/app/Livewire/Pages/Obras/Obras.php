@@ -18,8 +18,6 @@ class Obras extends Component
         'dt_inicio' => null,
         'dt_termino' => null,
         'dt_previsao_termino' => null,
-        'valor' => null,
-        'valor_saldo' => null,
         'endereco_rua' => null,
         'endereco_bairro' => null,
         'endereco_numero' => null,
@@ -40,8 +38,6 @@ class Obras extends Component
             'inputsAdd.dt_inicio' => 'required|date_format:Y-m-d',
             'inputsAdd.dt_termino' => 'nullable|date_format:Y-m-d',
             'inputsAdd.dt_previsao_termino' => 'required|date_format:Y-m-d',
-            'inputsAdd.valor' => 'required|currency',
-            'inputsAdd.valor_saldo' => 'required|currency',
             'inputsAdd.endereco_rua' => 'required|string',
             'inputsAdd.endereco_bairro' => 'required|string',
             'inputsAdd.endereco_numero' => 'required|integer',
@@ -58,8 +54,6 @@ class Obras extends Component
         'inputsAdd.dt_inicio' => 'data de inicio',
         'inputsAdd.dt_termino' => 'data de termino',
         'inputsAdd.dt_previsao_termino' => 'data previsão de termino',
-        'inputsAdd.valor' => 'valor',
-        'inputsAdd.valor_saldo' => 'saldo',
         'inputsAdd.endereco_rua' => 'rua',
         'inputsAdd.endereco_bairro' => 'bairro',
         'inputsAdd.endereco_numero' => 'numero',
@@ -86,8 +80,6 @@ class Obras extends Component
         try {
             $data = $this->inputsAdd;
             $data['id_usuario'] = Auth::user()->id;
-            $data['valor'] = MoneyService::formatToDB($data['valor']);
-            $data['valor_saldo'] = MoneyService::formatToDB($data['valor_saldo']);
 
             ModelsObras::create($data);
 
@@ -104,8 +96,6 @@ class Obras extends Component
 
         try {
             $data = $this->inputsAdd;
-            $data['valor'] = MoneyService::formatToDB($data['valor']);
-            $data['valor_saldo'] = MoneyService::formatToDB($data['valor_saldo']);
 
             $obra = ModelsObras::find($this->obraIdEdit);
             $obra->update($data);

@@ -52,6 +52,10 @@
                 @endforeach
             </tbody>
         </table>
+
+        @if (count($evolucoes) == 0)
+            <p class="text-center text-xs p-8 text-gray-600">Nenhuma evolução</p>
+        @endif
     </div>
 
     <div class="modal" x-bind:class="{'modal-open': $wire.modal}">

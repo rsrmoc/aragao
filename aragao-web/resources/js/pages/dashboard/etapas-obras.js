@@ -1,5 +1,5 @@
 Alpine.data('etapasObra', () => ({
-    tab: 2,
+    tab: 1,
     closeModal($wire) {
         $wire().inputsEtapa.nome = null;
         $wire().inputsEtapa.porc_etapa = 0;

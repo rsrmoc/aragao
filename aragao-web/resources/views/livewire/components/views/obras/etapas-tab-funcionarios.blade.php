@@ -46,6 +46,10 @@
                 @endforeach
             </tbody>
         </table>
+
+        @if (count($obrasFuncionarios) == 0)
+            <p class="text-center text-xs text-gray-600 p-8">Nenhum funcionário</p>
+        @endif
     </div>
 
     <div class="modal" x-bind:class="{ 'modal-open': $wire.modal }"> 

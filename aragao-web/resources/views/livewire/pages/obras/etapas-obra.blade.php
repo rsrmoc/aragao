@@ -79,12 +79,16 @@
             </x-components.dashboard.navbar.navbar>
 
             <div>
-                <table class="table table-sm">
+                <table class="table table-xs">
                     <thead>
                         <tr class="active">
                             <th>Nome</th>
                             <th>Execução da etapa</th>
                             <th>Execução da obra</th>
+                            <th>Incidência</th>
+                            <th>Valor gasto</th>
+                            <th>Valor da etapa</th>
+                            <th>Situação</th>
                             <th>Status</th>
                             @if (auth()->user()->type !== 'client')
                                 <th>Ações</th>
@@ -107,6 +111,20 @@
                                     <div class="radial-progress text-primary" style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
                                         <span class="text-xs">{{ $item->porc_geral }}%</span>
                                     </div>
+                                </td>
+                                <td>
+                                    <div class="radial-progress text-success" style="--value: {{ $item->incidencia }}; --size: 2.6rem">
+                                        <span class="text-xs">{{ $item->incidencia }}%</span>
+                                    </div>
+                                </td>
+                                <td>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
+                                <td>R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
+                                <td>
+                                    @if ($item->quitada)
+                                        <span class="badge badge-sm badge-success font-bold text-white">Quitado</span>
+                                    @else
+                                        <span class="badge badge-sm badge-error font-bold text-white">Em aberto</span>
+                                    @endif
                                 </td>
                                 <td>
                                     @if ($item->concluida)

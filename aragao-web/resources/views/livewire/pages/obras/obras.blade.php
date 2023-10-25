@@ -33,8 +33,8 @@
                         <td>{{ $item->nome }}</td>
                         <td>{{ date_format(date_create($item->dt_inicio), 'd/m/Y') }}</td>
                         <td>{{ date_format(date_create($item->dt_previsao_termino), 'd/m/Y') }}</td>
-                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor) }}</td>
-                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_saldo) }}</td>
+                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</td>
+                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</td>
                         <td>
                             <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($item->status, 'badge') }} badge-sm text-white font-bold">{{ $item->status }}</span>
                         </td>
@@ -85,16 +85,16 @@
                                     wire:model="inputsAdd.nome" name="inputsAdd.nome" />
                             </div>
 
-                            <div class="w-1/4">
-                                <x-components.input label="Valor" placeholder="Valor" class="input-sm" required
-                                    x-mask:dynamic="$money($input, ',', '.', 2)" wire:model="inputsAdd.valor"
-                                    name="inputsAdd.valor" />
-                            </div>
-
-                            <div class="w-1/4">
-                                <x-components.input label="Saldo" placeholder="Saldo" class="input-sm" required
-                                    x-mask:dynamic="$money($input, ',', '.', 2)" wire:model="inputsAdd.valor_saldo"
-                                    name="inputsAdd.valor_saldo" />
+                            <div>
+                                <label class="label">
+                                    <span class="label-text">Tipo de recurso</span>
+                                </label>
+    
+                                <select class="select select-sm select-bordered" wire:model="inputsAdd.tipo_recurso">
+                                    <option value="">NENHUM</option>
+                                    <option value="proprio">Proprio</option>
+                                    <option value="financiamento_caixa">Financiamento caixa</option>
+                                </select>
                             </div>
                         </div>
 
@@ -108,18 +108,6 @@
 
                             <x-components.input type="date" label="Data de término" placeholder="Data de término"
                                 class="input-sm" wire:model="inputsAdd.dt_termino" name="inputsAdd.dt_termino" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="label">
-                                <span class="label-text">Tipo de recurso</span>
-                            </label>
-
-                            <select class="select select-sm select-bordered" wire:model="inputsAdd.tipo_recurso">
-                                <option value="">NENHUM</option>
-                                <option value="proprio">Proprio</option>
-                                <option value="financiamento_caixa">Financiamento caixa</option>
-                            </select>
                         </div>
 
                         <div class="form-control mb-5">
