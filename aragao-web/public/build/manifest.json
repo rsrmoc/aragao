@@ -1,21 +1,30 @@
 {
+  "_moment-fbc5633a.js": {
+    "file": "assets/moment-fbc5633a.js"
+  },
   "resources/js/app.js": {
-    "file": "assets/app-c631b2d6.js",
+    "file": "assets/app-34a960e8.js",
+    "imports": [
+      "_moment-fbc5633a.js"
+    ],
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "resources/js/pages/dashboard/etapas-obras.js": {
-    "file": "assets/etapas-obras-fc330016.js",
+    "file": "assets/etapas-obras-9b273102.js",
     "isEntry": true,
     "src": "resources/js/pages/dashboard/etapas-obras.js"
   },
   "resources/js/pages/dashboard/obras.js": {
-    "file": "assets/obras-eade79a0.js",
+    "file": "assets/obras-3edd3498.js",
     "isEntry": true,
     "src": "resources/js/pages/dashboard/obras.js"
   },
   "resources/js/pages/dashboard/reunioes.js": {
-    "file": "assets/reunioes-e982d2a8.js",
+    "file": "assets/reunioes-a128f227.js",
+    "imports": [
+      "_moment-fbc5633a.js"
+    ],
     "isEntry": true,
     "src": "resources/js/pages/dashboard/reunioes.js"
   },
@@ -40,7 +49,7 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-c1099086.css",
+    "file": "assets/app-29da7575.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },
