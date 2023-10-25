@@ -12,12 +12,63 @@
                 <div class="navbar-center">
                     <img src="{{ asset('/images/logo_square.webp') }}" class="w-10" />
                 </div>
+
+                <div class="navbar-end">
+                    <div class="dropdown dropdown-end sm:hidden">
+                        <button class="btn btn-ghost">
+                            <i class="fa-regular fa-circle-user text-xl"></i>
+                        </button>
+
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li>
+                                <a href="{{ route('dashboard.minha-conta') }}">
+                                    <i class="fa-solid fa-circle-user"></i>
+                                    <span>Minha conta</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('dashboard.logout') }}">
+                                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                    <span>Sair</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <div class="p-3">
                 <div class="bg-white p-5 shadow-sm">
                     {{ $slot }}
                 </div>
+            </div>
+
+            <div class="btm-nav sm:hidden">
+                <a href="{{ route('dashboard.home') }}"
+                    class="{{ request()->route()->getName() == 'dashboard.home'? 'active text-primary': '' }}"
+                    wire:navigate>
+                    <i class="fa-solid fa-house"></i>
+                    <span class="text-xs">Inicio</span>
+                </a>
+
+                <a href="{{ route('dashboard.obras') }}"
+                    class="{{ request()->route()->getName() == 'dashboard.obras'? 'active text-primary': '' }}"
+                    wire:navigate>
+                    <i class="fa-solid fa-person-digging"></i>
+                    <span class="text-xs">Obras</span>
+                </a>
+
+                <a href="{{ route('dashboard.reunioes') }}"
+                    class="{{ request()->route()->getName() == 'dashboard.reunioes'? 'active text-primary': '' }}"
+                    wire:navigate>
+                    <i class="fa-solid fa-video"></i>
+                    <span class="text-xs">Reuniões</span>
+                </a>
+
+                <button class="{{ request()->route()->getName() == 'login'? 'active': '' }}">
+                    <i class="fa-solid fa-message"></i>
+                    <span class="text-xs">Chat</span>
+                </button>
             </div>
         </div>
 
@@ -26,7 +77,8 @@
 
             <ul class="menu p-4 w-72 min-h-full bg-zinc-900 text-base-100">
                 <div class="mb-5">
-                    <img src="{{ asset('/images/big_logo.webp') }}" alt="Aragão Construtora" class="w-28 mx-auto" />
+                    <img src="{{ asset('/images/big_logo_white.webp') }}" alt="Aragão Construtora"
+                        class="w-28 mx-auto" />
                 </div>
 
                 <li>
@@ -35,24 +87,29 @@
 
                 @if (auth()->user()->type == 'admin')
                     <li>
-                        <x-components.dashboard.menu.link route="dashboard.usuarios" icon="fa-solid fa-users" text="Usuários" />
+                        <x-components.dashboard.menu.link route="dashboard.usuarios" icon="fa-solid fa-users"
+                            text="Usuários" />
                     </li>
 
                     <li>
-                        <x-components.dashboard.menu.link route="dashboard.engenheiros" icon="fa-solid fa-house-user" text="Engenheiros" />
+                        <x-components.dashboard.menu.link route="dashboard.engenheiros" icon="fa-solid fa-house-user"
+                            text="Profissionais" />
                     </li>
-                    
+
                     <li>
-                        <x-components.dashboard.menu.link route="dashboard.clientes" icon="fa-solid fa-user-tie" text="Clientes" />
+                        <x-components.dashboard.menu.link route="dashboard.clientes" icon="fa-solid fa-user-tie"
+                            text="Clientes" />
                     </li>
                 @endif
 
                 <li>
-                    <x-components.dashboard.menu.link route="dashboard.obras" icon="fa-solid fa-person-digging" text="Obras" />
+                    <x-components.dashboard.menu.link route="dashboard.obras" icon="fa-solid fa-person-digging"
+                        text="Obras" />
                 </li>
 
                 <li>
-                    <x-components.dashboard.menu.link route="dashboard.reunioes" icon="fa-solid fa-video" text="Reuniões" />
+                    <x-components.dashboard.menu.link route="dashboard.reunioes" icon="fa-solid fa-video"
+                        text="Reuniões" />
                 </li>
 
                 <li>
@@ -70,11 +127,13 @@
                     </div>
 
                     <li>
-                        <x-components.dashboard.menu.link route="dashboard.minha-conta" icon="fa-solid fa-circle-user" text="Minha conta" />
+                        <x-components.dashboard.menu.link route="dashboard.minha-conta" icon="fa-solid fa-circle-user"
+                            text="Minha conta" />
                     </li>
 
                     <li>
-                        <x-components.dashboard.menu.link route="dashboard.logout" icon="fa-solid fa-arrow-right-from-bracket" text="Sair" />
+                        <x-components.dashboard.menu.link route="dashboard.logout"
+                            icon="fa-solid fa-arrow-right-from-bracket" text="Sair" no-navigate />
                     </li>
                 </div>
             </ul>
@@ -82,6 +141,6 @@
     </div>
 
     @push('scripts')
-        @vite('resources/sass/dashboard.scss')        
+        @vite('resources/sass/dashboard.scss')
     @endpush
 </x-layouts.app>

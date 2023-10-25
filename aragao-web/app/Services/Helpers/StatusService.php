@@ -18,7 +18,8 @@ class StatusService {
             'adiada' => "{$prefix}-warning",
             'cancelada' => "{$prefix}-error",
             'concluida' => "{$prefix}-success",
-            'negada' => "{$prefix}-error"
+            'negada' => "{$prefix}-error",
+            'conteudo_pendente' => "{$prefix}-warning"
         };
     }
 }

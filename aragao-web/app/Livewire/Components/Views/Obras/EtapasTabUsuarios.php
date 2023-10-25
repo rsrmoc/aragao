@@ -15,7 +15,8 @@ class EtapasTabUsuarios extends Component
 
     public $funcoes = [
         'responsavel' => 'Responsável',
-        'responsavel_tecnico' => 'Responsável técnico'
+        'responsavel_tecnico' => 'Responsável técnico',
+        'arquiteto' => 'Arquiteto'
     ];
 
     public $modal = false;
@@ -49,7 +50,7 @@ class EtapasTabUsuarios extends Component
     {
         $usuariosAtribuidos = ObrasUsuarios::whereHas('usuario', fn(Builder $query) => $query->where('type', $this->type))
             ->where('id_obra', $this->obra)->get();
-        $usuarios = User::where('type', $this->type)->get();
+        $usuarios = User::where('type', $this->type)->whereNotIn('id', array_column($usuariosAtribuidos->toArray(), 'id_usuario'))->get();
 
         return view('livewire.components.views.obras.etapas-tab-usuarios', compact('usuarios', 'usuariosAtribuidos'));
     }

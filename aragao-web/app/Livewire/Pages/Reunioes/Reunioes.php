@@ -26,6 +26,9 @@ class Reunioes extends Component
     public $modal = false;
     public $modalInfo = false;
 
+    public $modalConteudo = false;
+    public $inputConteudoReuniao = null;
+
     public function rules() {
         return [
             'inputs.id_obra' => 'required|integer|exists:obras,id',
@@ -64,6 +67,7 @@ class Reunioes extends Component
             DB::commit();
             
             $this->resetExcept('obrasUsuario');
+            $this->dispatch('reset-all');
             $this->dispatch('toast-event', 'Reunião agendada!', 'success');
         }
         catch(Exception $e) {
@@ -91,6 +95,7 @@ class Reunioes extends Component
             }
 
             $this->resetExcept('obrasUsuario');
+            $this->dispatch('reset-all');
             $this->dispatch('toast-event', 'Reunião atualizada!', 'success');
         }
         catch(Exception $e) {
@@ -120,6 +125,7 @@ class Reunioes extends Component
         ]);
 
         $this->resetExcept('obrasUsuario');
+        $this->dispatch('reset-all');
     }
 
     public function confirmarReuniao($idReuniao) {
@@ -136,6 +142,7 @@ class Reunioes extends Component
         ]);
 
         $this->resetExcept('obrasUsuario');
+        $this->dispatch('reset-all');
     }
 
     public function negarReuniao($idReuniao) {
@@ -149,6 +156,38 @@ class Reunioes extends Component
         ]);
 
         $this->resetExcept('obrasUsuario');
+        $this->dispatch('reset-all');
+    }
+
+    public function salvarConteudoReuniao() {
+        $reuniao = ModelsReunioes::find($this->reuniaoIdEdit);
+        $reuniao->update([
+            'situacao' => 'conteudo_pendente',
+            'conteudo' => $this->inputConteudoReuniao
+        ]);
+
+        ReuniaoHistorico::create([
+            'id_reuniao' => $reuniao->id,
+            'id_usuario' => Auth::user()->id,
+            'situacao' => 'conteudo_pendente'
+        ]);
+
+        $this->resetExcept('obrasUsuario');
+        $this->dispatch('reset-all');
+    }
+
+    public function confirmarConteudo($idReuniao) {
+        $reuniao = ModelsReunioes::find($idReuniao);
+        $reuniao->update(['situacao' => 'concluida']);
+
+        ReuniaoHistorico::create([
+            'id_reuniao' => $reuniao->id,
+            'id_usuario' => Auth::user()->id,
+            'situacao' => 'conteudo_confirmado'
+        ]);
+
+        $this->resetExcept('obrasUsuario');
+        $this->dispatch('reset-all');
     }
 
     #[Layout('components.layouts.dashboard')]

@@ -10,7 +10,8 @@ Alpine.data('pageReunioes', () => ({
         adiada: 'badge-warning',
         cancelada: 'badge-error',
         concluida: 'badge-success',
-        negada: 'badge-error'
+        negada: 'badge-error',
+        conteudo_pendente: 'badge-warning',
     },
 
     closeModal() {
@@ -21,9 +22,36 @@ Alpine.data('pageReunioes', () => ({
         component.inputs.dt_reuniao = null;
         component.inputs.descricao = null;
 
+        this.infoReuniao = null;
+
         component.reuniaoIdEdit = null;
         component.modal = false;
     },
+
+    closeConteudo() {
+        let component = Livewire.first();
+
+        component.modalConteudo = false;
+        component.inputConteudoReuniao = null;
+    },
+
+    closeInfo() {
+        let component = Livewire.first();
+
+        component.modalInfo = false;
+        component.reuniaoIdEdit = null;
+
+        this.infoReuniao = null;
+    },
+
+    setEditConteudoReuniao() {
+        let component = Livewire.first();
+
+        component.reuniaoIdEdit = this.infoReuniao.id;
+        component.inputConteudoReuniao = this.infoReuniao.conteudo;
+        component.modalConteudo = true;
+    },
+
     excluir(reuniao) {
         let component = Livewire.first();
 
@@ -47,16 +75,30 @@ Alpine.data('pageReunioes', () => ({
         component.inputs.dt_reuniao = reuniao.dt_reuniao;
         component.inputs.descricao = reuniao.descricao;
 
+        this.infoReuniao = reuniao;
+
         component.reuniaoIdEdit = reuniao.id;
         component.modal = true;
     },
     reuniaoConcluida() {
         let component = Livewire.first();
-        component.reuniaoSituacao('concluida');
+
+        component.confirmarConteudo(this.infoReuniao.id);
     },
     reuniaoCancelada() {
         let component = Livewire.first();
-        component.reuniaoSituacao('cancelada');
+
+        this.$store.dialog.show(
+            'Cancelar reunião',
+            'Você realmente deseja cancelar essa reunião?\nEssa ação não pode ser desfeita.',
+            {
+                cancel: {},
+                confirm: {
+                    text: 'Sim, cancelar!',
+                    action: () => component.reuniaoSituacao('cancelada')
+                }
+            }
+        );
     },
     setInfo(reuniao) {
         let component = Livewire.first();
@@ -71,7 +113,7 @@ Alpine.data('pageReunioes', () => ({
         let typesUsers = {
             admin: 'Administrador',
             client: 'Cliente',
-            engineer: 'Engenheiro'
+            engineer: 'Profissional'
         }
 
         let status = {
@@ -80,7 +122,9 @@ Alpine.data('pageReunioes', () => ({
             adiada: 'adiou a reunião.',
             cancelada: 'cancelou a reunião.',
             concluida: 'marcou a reunião como concluída.',
-            negada: 'não participará da reunião.'
+            negada: 'não participará da reunião.',
+            conteudo_pendente: 'informou o conteúdo da reunião.',
+            conteudo_confirmado: 'confirmou o conteúdo da reunião.'
         };
 
         return `<strong>${ historico.usuario.name } (${ typesUsers[historico.usuario.type] })</strong> ${ status[historico.situacao] }`;

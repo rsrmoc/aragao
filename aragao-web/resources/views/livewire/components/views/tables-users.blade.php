@@ -7,7 +7,7 @@
         <i class="fa-solid fa-circle-info"></i>&ensp;{{ $descriptionPage }}
     </p>
 
-    <table class="table table-sm table-zebra">
+    <table class="table table-sm table-zebra hidden sm:table w-full">
         <thead>
             <tr class="active">
                 <th>#</th>
@@ -47,6 +47,47 @@
             @endforeach
         </tbody>
     </table>
+
+    <div class="sm:hidden">
+        @foreach ($users as $user)
+            <div class="py-2 border-b last:border-0" wire:loading.class="bg-zinc-200" wire:target="delUser({{ $user->id }})">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div wire:loading wire:target="delUser({{ $user->id }})">
+                            <x-components.loading class="loading-xs" />
+                        </div>
+                        <h3 class="font-bold text-lg">#{{ $user->id }} - {{ $user->name }}</h3>
+                    </div>
+    
+                    <div>
+                        @if ($user->id !== auth()->user()->id)
+                            <x-components.dashboard.dropdown.dropdown-table>
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square" text="Editar"
+                                    x-on:click="setFormEdit({{ $user }}, () => $wire)" />
+    
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-trash" text="Excluir"
+                                    x-on:click="deleteUser({{ $user->id }}, '{{ substr(strtolower($this->title), 0, strlen($this->title) - 1) }}', '{{ $user->name }}', () => $wire)"
+                                    wire:loading.attr="disabled" wire:target="delUser({{ $user->id }})" />
+                            </x-components.dashboard.dropdown.dropdown-table>
+                        @endif
+                    </div>
+                </div>
+    
+                <div class="text-sm">
+                    <div>
+                        <strong>Email:</strong>
+                        <span>{{ $user->email }}</span>
+                    </div>
+                    @if ($user->phone_number)
+                        <div>
+                            <strong>Telefone:</strong>
+                            <span>{{ $user->phone_number }}</span>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endforeach
+    </div>
 
     {{ $users?->links() }}
 
@@ -103,8 +144,9 @@
             </div>
         </form>
     </div>
+
+    @push('scripts')
+        @vite('resources/js/views/tables-users.js')
+    @endpush
 </div>
 
-@push('scripts')
-    @vite('resources/js/views/tables-users.js')
-@endpush

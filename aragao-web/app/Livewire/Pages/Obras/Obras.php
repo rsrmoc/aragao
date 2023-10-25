@@ -25,7 +25,9 @@ class Obras extends Component
         'endereco_numero' => null,
         'endereco_cidade' => null,
         'endereco_uf' => null,
-        'endereco_cep' => null
+        'endereco_cep' => null,
+        'tipo_recurso' => null,
+        'descricao_completa' => null
     ];
     public $obraIdEdit;
 
@@ -46,6 +48,8 @@ class Obras extends Component
             'inputsAdd.endereco_cidade' => 'required|string',
             'inputsAdd.endereco_uf' => 'required|string|uf',
             'inputsAdd.endereco_cep' => 'required|string|formato_cep',
+            'inputsAdd.tipo_recurso' => 'nullable|string|in:proprio,financiamento_caixa',
+            'inputsAdd.descricao_completa' => 'nullable|string',
         ];
     }
 
@@ -62,6 +66,8 @@ class Obras extends Component
         'inputsAdd.endereco_cidade' => 'cidade',
         'inputsAdd.endereco_uf' => 'estado',
         'inputsAdd.endereco_cep' => 'cep',
+        'inputsAdd.tipo_recurso' => 'tipo de recurso',
+        'inputsAdd.descricao_completa' => 'descrição completa da obra',
     ];
 
     public function __construct() {

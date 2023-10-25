@@ -27,7 +27,7 @@ class TablesUsers extends Component
     public function mount() {
         $this->title = match ($this->type) {
             'admin' => 'Usuários',
-            'engineer' => 'Engenheiros',
+            'engineer' => 'Profissionais',
             'client' => 'Clientes'
         };
 

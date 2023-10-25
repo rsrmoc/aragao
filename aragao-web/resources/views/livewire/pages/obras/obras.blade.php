@@ -66,7 +66,7 @@
 
     @if (auth()->user()->type == 'admin')
         <div class="modal" x-bind:class="{ 'modal-open': $wire.modal }">
-            <form wire:submit.prevent="salvarObra" class="modal-box max-w-3xl max-h-none">
+            <form wire:submit.prevent="salvarObra" class="modal-box max-w-3xl">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="font-bold text-lg">
                         <span x-text="`${$wire.obraIdEdit ? 'Editar': 'Adicionar'} obra`"></span>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
 
-                        <div class="flex gap-4 mb-5">
+                        <div class="flex gap-4 mb-3">
                             <x-components.input type="date" label="Data de início" placeholder="Data de início"
                                 class="input-sm" required wire:model="inputsAdd.dt_inicio" name="inputsAdd.dt_inicio" />
 
@@ -108,6 +108,27 @@
 
                             <x-components.input type="date" label="Data de término" placeholder="Data de término"
                                 class="input-sm" wire:model="inputsAdd.dt_termino" name="inputsAdd.dt_termino" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="label">
+                                <span class="label-text">Tipo de recurso</span>
+                            </label>
+
+                            <select class="select select-sm select-bordered" wire:model="inputsAdd.tipo_recurso">
+                                <option value="">NENHUM</option>
+                                <option value="proprio">Proprio</option>
+                                <option value="financiamento_caixa">Financiamento caixa</option>
+                            </select>
+                        </div>
+
+                        <div class="form-control mb-5">
+                            <label class="label">
+                                <span class="label-text">Descrição Completa da Obra</span>
+                            </label>
+
+                            <textarea class="textarea textarea-sm textarea-bordered" rows="6"
+                                wire:model="inputsAdd.descricao_completa"></textarea>
                         </div>
 
                         <h4 class="font-bold border-b pb-1 mb-3">Endereço</h4>

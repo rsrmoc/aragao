@@ -1,4 +1,4 @@
-<div x-data="pageReunioes">
+<div x-data="pageReunioes" x-on:reset-all="infoReuniao = null">
     <x-components.dashboard.navbar.navbar title="Reuniões">
         <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Agendar reunião</button>
     </x-components.dashboard.navbar.navbar>
@@ -22,13 +22,15 @@
                         <td>{{ $item->assunto }}</td>
                         <td>{{ date_format(date_create($item->dt_reuniao), 'd/m/Y \à\s H:i\h') }}</td>
                         <td>
-                            <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusReuniao($item->situacao, 'badge') }} badge-sm font-bold text-white">{{ $item->situacao }}</span>
+                            <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusReuniao($item->situacao, 'badge') }} badge-sm font-bold text-white">
+                                {{ ucfirst(str_replace('_', ' ', $item->situacao)) }}
+                            </span>
                         </td>
                         <td>
                             <div wire:loading.remove wire:target="excluirReuniao({{ $item->id }})">
                                 <x-components.dashboard.dropdown.dropdown-table>
                                     @if ($item->id_usuario_solicitante === auth()->user()->id)
-                                        @if ($item->situacao == 'cancelada' || $item->situacao == 'concluida')
+                                        @if (in_array($item->situacao, ['cancelada', 'concluida', 'conteudo_pendente']))
                                             <x-components.dashboard.dropdown.dropdown-item text="Informações" icon="fa-solid fa-circle-info"
                                                 x-on:click="setInfo({{ $item }})" />
                                         @else
@@ -105,38 +107,31 @@
                         wire:model="inputs.descricao" name="inputs.descricao" />
                 </div>
 
-                <ul class="text-gray-500">
-                    <li>
-                        <span class="text-xs">
-                            <strong>Gean Lima (Cliente)</strong> agendou essa reunião para 12/11/2022 às 12:30h.
-                        </span>
-                    </li>
-
-                    <li>
-                        <span class="text-xs">
-                            <strong>Gean Lima (Engenheiro)</strong> confirmou presença.
-                        </span>
-                    </li>
-                </ul>
+                <div>
+                    <ul>
+                        <template x-for="historico in infoReuniao?.historico">
+                            <li>
+                                <span class="text-xs" x-html="formatHistorico(historico)"></span>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
             </div>
 
             <div class="modal-action">
                 <template x-if="$wire.reuniaoIdEdit">
-                    <div class="mr-auto">
-                        <button type="button" class="btn btn-sm btn-error" x-on:click="reuniaoCancelada">
+                    <div class="mr-auto flex items-center gap-3">
+                        <button type="button" class="btn btn-xs btn-error" x-on:click="reuniaoCancelada">
                             <div wire:loading wire:target="reuniaoSituacao('cancelada')">
                                 <x-components.loading class="loading-sm" />
                             </div>
-                            <i wire:loading.remove wire:target="reuniaoSituacao('cancelada')" class="fa-solid fa-ban"></i> 
-                            <span>Cancelada</span>
+                            <span>Cancerlar</span>
                         </button>
-                        <button type="button" class="btn btn-sm btn-success" x-on:click="reuniaoConcluida">
-                            <div wire:loading wire:target="reuniaoSituacao('concluida')">
-                                <x-components.loading class="loading-sm" />
-                            </div>
-                            <i wire:loading.remove wire:target="reuniaoSituacao('concluida')" class="fa-solid fa-circle-check"></i> 
-                            <span>Concluida</span>
-                        </button>
+                        <template x-if="infoReuniao?.situacao === 'confirmada'">
+                            <button type="button" class="btn btn-xs btn-success" x-on:click="$wire.modalConteudo = true">
+                                <span>Concluida</span>
+                            </button>
+                        </template>
                     </div>
                 </template>
 
@@ -161,9 +156,9 @@
                 <div class="flex gap-3 items-center">
                     <span class="badge text-sm text-white font-bold"
                         x-bind:class="classStylesStatus[infoReuniao?.situacao]"
-                        x-text="infoReuniao?.situacao"></span>
+                        x-text="infoReuniao?.situacao?.replace('_', ' ')"></span>
 
-                    <button type="button" class="btn btn-sm btn-circle" x-on:click="$wire.modalInfo = false">
+                    <button type="button" class="btn btn-sm btn-circle" x-on:click="closeInfo">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -180,6 +175,13 @@
                     <span class="text-sm" x-text="formatDate(infoReuniao?.dt_reuniao)"></span>
                 </div>
 
+                <template x-if="['concluida', 'conteudo_pendente'].includes(infoReuniao?.situacao)">
+                    <div class="mb-3">
+                        <h4 class="font-bold mb-1">Conteúdo da reunião</h4>
+                        <span class="text-sm" x-text="infoReuniao?.conteudo"></span>
+                    </div>
+                </template>
+
                 <div>
                     <h4 class="font-bold mb-2">Histórico</h4>
 
@@ -193,7 +195,7 @@
                 </div>
             </div>
 
-            <template x-if="infoReuniao?.id_usuario_solicitante !== {{ auth()->user()->id }} && !['cancelada', 'concluida'].includes(infoReuniao?.situacao)">
+            <template x-if="infoReuniao?.id_usuario_solicitante !== {{ auth()->user()->id }} && !['cancelada', 'concluida', 'conteudo_pendente'].includes(infoReuniao?.situacao)">
                 <div class="modal-action">
                     <button type="button" class="btn btn-sm btn-error" x-on:click="$wire.negarReuniao(infoReuniao?.id)"
                         wire:loading.attr="disabled">
@@ -213,7 +215,58 @@
                     </template>
                 </div>
             </template>
+
+            <template x-if="infoReuniao?.id_usuario_solicitante !== {{ auth()->user()->id }} && infoReuniao?.situacao === 'conteudo_pendente'">
+                <div class="modal-action">
+                    <button class="btn btn-sm btn-success" x-on:click="reuniaoConcluida" wire:loading.attr="disabled" wire:target="confirmarConteudo">
+                        <div wire:loading wire:target="confirmarConteudo">
+                            <x-components.loading class="loading-sm" />
+                        </div>
+                        <span>Confirmar conteúdo</span>
+                    </button>
+                </div>
+            </template>
+
+            <template x-if="infoReuniao?.id_usuario_solicitante === {{ auth()->user()->id }} && ['conteudo_pendente'].includes(infoReuniao?.situacao)">
+                <div class="modal-action">
+                    <button class="btn btn-sm btn-primary" x-on:click="setEditConteudoReuniao">
+                        <span>Editar conteudo</span>
+                    </button>
+                </div>
+            </template>
         </div>
+    </div>
+
+    <div class="modal" x-bind:class="{ 'modal-open': $wire.modalConteudo }">
+        <form wire:submit.prevent="salvarConteudoReuniao" class="modal-box">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg">
+                    <span>Conteúdo da reunião</span>
+                </h3>
+
+                <button type="button" class="btn btn-sm btn-circle" x-on:click="closeConteudo">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div>
+                <p class="text-xs mb-3">Informe o que foi discutido na reunião</p>
+
+                <div>
+                    <x-components.input type="textarea" placeholder="Conteúdo" label="Conteúdo" required rows="10"
+                        wire:model="inputConteudoReuniao" name="inputConteudoReuniao" />
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <button type="submit" class="btn btn-sm btn-primary">
+                    <div wire:loading wire:target="salvarConteudoReuniao">
+                        <x-components.loading class="loading-xs" />
+                    </div>
+                    <span>Salvar</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 

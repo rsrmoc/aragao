@@ -18,7 +18,8 @@ class Reunioes extends Model
         'descricao',
         'dt_reuniao',
         'dt_confirmacao',
-        'situacao'
+        'situacao',
+        'conteudo'
     ];
 
     public function historico() {

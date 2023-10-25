@@ -16,10 +16,26 @@ class ObrasEtapas extends Model
         'nome',
         'porc_etapa',
         'porc_geral',
-        'concluida'
+        'concluida',
+        'dt_inicio',
+        'dt_previsao',
+        'dt_termino',
+        'dt_vencimento',
+        'valor',
+        'quitada',
+        'descricao_completa'
     ];
     
     protected $casts = [
-        'concluida' => 'boolean'
+        'concluida' => 'boolean',
+        'quitada' => 'boolean'
     ];
+
+    protected $appends = [
+        'insidencia'
+    ];
+
+    public function getInsidenciaAttribute() {
+        return ($this->porc_etapa * $this->porc_geral) / 100;
+    }
 }

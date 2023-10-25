@@ -1,5 +1,5 @@
 <div x-data="etapasTabUsuarios">
-    <x-components.dashboard.navbar.navbar title="{{ $type == 'engineer' ? 'Engenheiros' : 'Clientes' }}">
+    <x-components.dashboard.navbar.navbar title="{{ $type == 'engineer' ? 'Profissionais' : 'Clientes' }}">
         <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar</button>
     </x-components.dashboard.navbar.navbar>
 
@@ -63,7 +63,7 @@
             <div class="mb-10">
                 <div class="form-control mb-2">
                     <label class="label">
-                        <span class="label-text">{{ $type == 'engineer' ? 'Engenheiros' : 'Clientes' }}:</span>
+                        <span class="label-text">{{ $type == 'engineer' ? 'Profissionais' : 'Clientes' }}:</span>
                     </label>
                     <select class="select select-bordered select-sm" required
                         wire:model="user">
@@ -80,25 +80,13 @@
                             <span class="label-text">Função</span>
                         </label>
 
-                        <div class="flex justify-between">
-                            <label class="label cursor-pointer">
-                                <span class="label-text mr-3">Nenhuma:</span>
-                                <input type="radio" name="radio-funcao" class="radio radio-sm checked:bg-red-500"
-                                    value="" wire:model="funcao" />
-                            </label>
-        
-                            <label class="label cursor-pointer">
-                                <span class="label-text mr-3">Responsável:</span>
-                                <input type="radio" name="radio-funcao" class="radio radio-sm checked:bg-red-500"
-                                    value="responsavel" wire:model="funcao" />
-                            </label>
-        
-                            <label class="label cursor-pointer">
-                                <span class="label-text mr-3">Responsável técnico:</span>
-                                <input type="radio" name="radio-funcao" class="radio radio-sm checked:bg-red-500"
-                                    value="responsavel_tecnico" wire:model="funcao" />
-                            </label>
-                        </div>
+                        <select class="select select-sm select-bordered w-48" wire:model="funcao">
+                            <option value="">Nenhum</option>
+
+                            @foreach ($funcoes as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 @endif
             </div>

@@ -1,4 +1,4 @@
-<div class="dropdown dropdown-left dropdown-end">
+<div class="dropdown dropdown-left dropdown-top">
     <label tabindex="0" class="btn btn-sm btn-ghost">
         <i class="fa-solid fa-ellipsis-vertical"></i>
     </label>
