@@ -103,7 +103,7 @@
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-bold text-lg">
                     <span x-text="$wire.userIdEdit ? 'Editar': 'Adicionar'"></span>
-                    <span>{{ substr(strtolower($this->title), 0, strlen($this->title) - 1) }}</span>
+                    <span>{{ strtolower($title) }}</span>
                 </h3>
 
                 <button type="button" class="btn btn-sm btn-circle" x-on:click="closeModal(() => $wire)">
