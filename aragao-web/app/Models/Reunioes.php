@@ -25,4 +25,8 @@ class Reunioes extends Model
     public function historico() {
         return $this->hasMany(ReuniaoHistorico::class, 'id_reuniao')->with('usuario');
     }
+
+    public function participantes() {
+        return $this->hasMany(ReunioesUsuarios::class, 'id_reuniao');
+    }
 }

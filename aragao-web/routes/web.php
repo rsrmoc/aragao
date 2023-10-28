@@ -8,6 +8,7 @@ use App\Http\Controllers\Web\ResetPasswordController;
 use App\Http\Controllers\Web\UsuariosController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Auth\Login;
+use App\Livewire\Pages\Chat\Chat;
 use App\Livewire\Pages\Obras\EtapasObra;
 use App\Livewire\Pages\Obras\Obras;
 use App\Livewire\Pages\Reunioes\Reunioes;
@@ -47,6 +48,7 @@ Route::group([
 
     Route::get('/reunioes', Reunioes::class)->name('reunioes');
 
+    Route::get('/chat', Chat::class)->name('chat');
     
 });
 

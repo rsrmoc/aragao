@@ -1,4 +1,4 @@
-<div x-data="etapasTabEvolucoes" x-on:clear-file-input="$refs.inputImagens.value = null">
+<div x-data="etapasTabEvolucoes" x-on:clear-file-input="$refs.inputImagens.value = null, infoEvolucao = null">
     <x-components.dashboard.navbar.navbar title="Evoluções da obra">
         @if (auth()->user()->type == 'engineer')
             <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar evolução</button>
@@ -11,6 +11,7 @@
                 <tr class="active">
                     <th>Etapa</th>
                     <th>Data</th>
+                    <th>Responsável</th>
                     <th>Descrição</th>
                     <th>Ações</th>
                 </tr>
@@ -23,6 +24,7 @@
                             <strong>{{ "#{$evolucao->etapa->id} - {$evolucao->etapa->nome}" }}</strong>
                         </td>
                         <td>{{ date_format(date_create($evolucao->dt_evolucao), 'd/m/Y') }}</td>
+                        <td>{{ $evolucao->usuario?->name }}</td>
                         <td>
                             <div class="tooltip" data-tip="{{ $evolucao->descricao }}">
                                 <span class="block max-w-xs text-ellipsis overflow-hidden whitespace-nowrap">{{ $evolucao->descricao }}</span>
@@ -99,25 +101,26 @@
                         class="file-input-sm" accept=".jpg,.png,.webp,.jpeg"
                         multiple wire:model="inputsImages" name="inputsImages" x-ref="inputImagens" />
                 </div>
-
-                <template x-if="$wire.editId">
+                
+                <template x-if="infoEvolucao">
                     <div class="mt-3">
                         <strong class="text-sm">Imagens salvas anteriormente:</strong>
-                        <div class="flex overflow-x-auto p-2 gap-3">
-                            <template x-for="imagem, i in infoEvolucao?.imagens" x-key="i">
-                                <div class="w-28 h-28 relative">
-                                    <button type="button" class="btn btn-sm btn-ghost btn-circle absolute"
-                                        x-on:click="exclurImagem(imagem.id, () => $wire)">
-                                        <i class="fa-solid fa-trash text-red-600"></i>
-                                    </button>
-
-                                    <img x-bind:src="imagem.url" class="w-full h-full object-cover rounded-md cursor-pointer"
-                                        x-on:click="setModalImage(imagem.url)" />
-                                </div>
-                            </template>
-                        </div>
                     </div>
                 </template>
+
+                <div class="flex overflow-x-auto p-2 gap-3">
+                    <template x-for="(imagem, i) in infoEvolucao?.imagens" :key="i">
+                        <div class="w-28 h-28 relative">
+                            <button type="button" class="btn btn-sm btn-ghost btn-circle absolute"
+                                x-on:click="exclurImagem(imagem.id, () => $wire)">
+                                <i class="fa-solid fa-trash text-red-600"></i>
+                            </button>
+
+                            <img x-bind:src="imagem.url" class="w-full h-full object-cover rounded-md cursor-pointer"
+                                x-on:click="setModalImage(imagem.url)" />
+                        </div>
+                    </template>
+                </div>
             </div>
 
             <div class="modal-action">
@@ -176,7 +179,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <img x-bind:src="modalImageSrc" />
+            <img x-bind:src="modalImageSrc" class="w-full" />
         </div>
     </div>
 </div>

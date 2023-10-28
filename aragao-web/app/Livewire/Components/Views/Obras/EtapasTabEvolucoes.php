@@ -6,6 +6,7 @@ use App\Models\Imagens;
 use App\Models\ObrasEtapas;
 use App\Models\ObrasEvolucoes;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -55,6 +56,7 @@ class EtapasTabEvolucoes extends Component
             
             $data = $this->inputs;
             $data['id_obra'] = $this->obra;
+            $data['id_usuario'] = Auth::user()->id;
 
             $evolucao = ObrasEvolucoes::create($data);
 
@@ -145,7 +147,7 @@ class EtapasTabEvolucoes extends Component
     public function render()
     {
         $etapas = ObrasEtapas::where('id_obra', $this->obra)->orderBy('created_at', 'desc')->get();
-        $evolucoes = ObrasEvolucoes::with(['imagens', 'etapa'])->where('id_obra', $this->obra)->orderBy('created_at', 'desc')->paginate(12);
+        $evolucoes = ObrasEvolucoes::with(['imagens', 'etapa', 'usuario'])->where('id_obra', $this->obra)->orderBy('created_at', 'desc')->paginate(12);
 
         return view('livewire.components.views.obras.etapas-tab-evolucoes', compact('etapas', 'evolucoes'));
     }

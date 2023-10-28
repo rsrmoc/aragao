@@ -81,7 +81,7 @@
                     <label class="label">
                         <span class="label-text">Obra <span class="text-red-600">*</span></span>
                     </label>
-                    <select class="select select-bordered select-sm" required wire:model="inputs.id_obra"
+                    <select class="select select-bordered select-sm" required wire:model.live="inputs.id_obra"
                         x-bind:disabled="$wire.reuniaoIdEdit">
                         <option value="">SELECIONE</option>
                         @foreach ($obrasUsuario as $item)
@@ -107,7 +107,40 @@
                         wire:model="inputs.descricao" name="inputs.descricao" />
                 </div>
 
-                <div>
+                <h3 class="mb-2 text-sm font-bold">Quem vai participar da reunião?</h3>
+                <table class="table table-xs table-zebra">
+                    <thead>
+                        <tr class="active">
+                            <th></th>
+                            <th>Usuário</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+
+                    <tbody wire:loading.remove wire:target="inputs.id_obra">
+                        @foreach ($usuariosPorObra as $item)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="checkbox" wire:model="participantes" value="{{ $item->usuario->id }}" />
+                                </td>
+                                <td>{{ $item->usuario->name }}</td>
+                                <td>{{ $item->usuario->type == 'engineer' ? 'Profissional': 'Cliente' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <div class="flex justify-center">
+                    <div class="p-5" wire:loading wire:target="inputs.id_obra">
+                        <x-components.loading class="loading-xs" />
+                    </div>
+                </div>
+
+                @if (count($usuariosPorObra) == 0)
+                    <p wire:loading.remove wire:target="inputs.id_obra" class="text-xs text-center p-5">Nenhum usuário</p>
+                @endif
+
+                <div class="mt-5">
                     <ul>
                         <template x-for="historico in infoReuniao?.historico">
                             <li>

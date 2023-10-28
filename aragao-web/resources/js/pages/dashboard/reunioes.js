@@ -26,6 +26,7 @@ Alpine.data('pageReunioes', () => ({
 
         component.reuniaoIdEdit = null;
         component.modal = false;
+        component.set('participantes', []);
     },
 
     closeConteudo() {
@@ -79,6 +80,7 @@ Alpine.data('pageReunioes', () => ({
 
         component.reuniaoIdEdit = reuniao.id;
         component.modal = true;
+        component.set('participantes', reuniao.participantes.map(e => e.id_usuario));
     },
     reuniaoConcluida() {
         let component = Livewire.first();

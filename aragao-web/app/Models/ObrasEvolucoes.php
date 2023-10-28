@@ -14,6 +14,7 @@ class ObrasEvolucoes extends Model
     protected $fillable = [
         'id_obra',
         'id_etapa',
+        'id_usuario',
         'dt_evolucao',
         'descricao'
     ];
@@ -33,5 +34,9 @@ class ObrasEvolucoes extends Model
     public function imagens(): MorphMany
     {
         return $this->morphMany(Imagens::class, 'tabela');
+    }
+
+    public function usuario() {
+        return $this->hasOne(User::class, 'id', 'id_usuario');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Obras;
 use App\Models\ObrasUsuarios;
 use App\Models\ReuniaoHistorico;
 use App\Models\Reunioes as ModelsReunioes;
+use App\Models\ReunioesUsuarios;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,7 @@ class Reunioes extends Component
         'dt_reuniao' => null,
         'descricao' => null
     ];
+    public $participantes = [];
 
     public $reuniaoIdEdit = null;
     public $obrasUsuario = [];
@@ -52,6 +54,8 @@ class Reunioes extends Component
     public function addReuniao() {
         $this->validate();
 
+        if (count($this->participantes) == 0) return $this->dispatch('toast-event', 'Selecione no mínimo um participante.', 'error');
+
         try {
             DB::beginTransaction();
 
@@ -63,6 +67,20 @@ class Reunioes extends Component
                 'id_reuniao' => $reuniao->id,
                 'id_usuario' => Auth::user()->id,
             ]);
+
+            ReunioesUsuarios::create([
+                'id_obra' => $data['id_obra'],
+                'id_reuniao' => $reuniao->id,
+                'id_usuario' => Auth::user()->id
+            ]);
+
+            foreach ($this->participantes as $value) {
+                ReunioesUsuarios::create([
+                    'id_obra' => $data['id_obra'],
+                    'id_reuniao' => $reuniao->id,
+                    'id_usuario' => $value
+                ]);
+            }
 
             DB::commit();
             
@@ -81,6 +99,8 @@ class Reunioes extends Component
         $this->validate();
 
         try {
+            DB::beginTransaction();
+
             $reuniao = ModelsReunioes::find($this->reuniaoIdEdit);
             $reuniao->update($this->inputs);
 
@@ -94,11 +114,34 @@ class Reunioes extends Component
                 ]);
             }
 
+            $adicionados = array_diff($this->participantes, array_column($reuniao->participantes->toArray(), 'id_usuario'));
+            foreach ($adicionados as $idUsuario) {
+                ReunioesUsuarios::create([
+                    'id_obra' => $reuniao->id_obra,
+                    'id_reuniao' => $reuniao->id,
+                    'id_usuario' => $idUsuario
+                ]);
+            }
+
+            $excluidos = array_diff(array_column($reuniao->participantes->toArray(), 'id_usuario'), $this->participantes);
+            foreach ($excluidos as $idUsuario) {
+                ReunioesUsuarios::firstWhere([
+                    'id_obra' => $reuniao->id_obra,
+                    'id_reuniao' => $reuniao->id,
+                    'id_usuario' => $idUsuario
+                ])->delete();
+            }
+
+
+            DB::commit();
+
             $this->resetExcept('obrasUsuario');
             $this->dispatch('reset-all');
             $this->dispatch('toast-event', 'Reunião atualizada!', 'success');
         }
         catch(Exception $e) {
+            DB::rollBack();
+
             $this->dispatch('toast-event', 'Não foi possivel atualizar a reunião. '.$e->getMessage(), 'error');
         }
     }
@@ -195,9 +238,15 @@ class Reunioes extends Component
     {
         $reunioes = Auth::user()->type == 'admin'
             ? ModelsReunioes::with('historico')->orderBy('created_at', 'desc')->paginate(12)
-            : ModelsReunioes::with('historico')->whereIn('id_obra', ObrasUsuarios::where('id_usuario', Auth::user()->id)->get('id_obra'))
-                ->orderBy('created_at', 'desc')->paginate(12);
+            : ModelsReunioes::with(['historico', 'participantes'])
+                ->whereIn('id_obra', ReunioesUsuarios::where('id_usuario', Auth::user()->id)->get('id_obra'))
+                ->orderBy('created_at', 'desc')
+                ->paginate(12);
 
-        return view('livewire.pages.reunioes.reunioes', compact('reunioes'));
+        $usuariosPorObra = ObrasUsuarios::with('usuario')->where('id_obra', $this->inputs['id_obra'])
+            ->where('id_usuario', '<>', Auth::user()->id)
+            ->get();
+
+        return view('livewire.pages.reunioes.reunioes', compact('reunioes', 'usuariosPorObra'));
     }
 }

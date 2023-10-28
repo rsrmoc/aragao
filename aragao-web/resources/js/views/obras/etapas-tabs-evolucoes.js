@@ -8,8 +8,6 @@ Alpine.data('etapasTabEvolucoes', () => ({
     setInfoEvolucao(evolucao) {
         this.infoEvolucao = evolucao;
         this.modalInfoEvolucao = true;
-
-        console.log(evolucao);
     },
 
     setModalImage(src) {
@@ -22,6 +20,8 @@ Alpine.data('etapasTabEvolucoes', () => ({
         wire().inputs.dt_evolucao = null;
         wire().inputs.descricao = null;
         wire().inputsImages = [];
+
+        this.infoEvolucao = null;
 
         wire().editId = null;
         wire().modal = false;
