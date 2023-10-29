@@ -54,9 +54,14 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-8c7985d5.css",
+    "file": "assets/app-74d4475e.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
+  },
+  "resources/sass/chat.scss": {
+    "file": "assets/chat-59a5d5db.css",
+    "isEntry": true,
+    "src": "resources/sass/chat.scss"
   },
   "resources/sass/dashboard.scss": {
     "file": "assets/dashboard-09731cda.css",

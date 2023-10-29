@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/sass/app.scss',
                 'resources/sass/dashboard.scss',
+                'resources/sass/chat.scss',
 
                 'resources/js/app.js',
 

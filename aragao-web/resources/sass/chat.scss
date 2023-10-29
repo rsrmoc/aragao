@@ -1,0 +1,19 @@
+#app-main-content {
+    padding: 0 !important;
+}
+
+#container-messages {
+    background-size: cover;
+    background-position: center;
+    background-color: white;
+
+    .chat.chat-start .chat-bubble {
+        background-color: white;
+        color: black;
+    }
+
+    .chat.chat-end .chat-bubble {
+        background-color: #E2FFE7;
+        color: black;
+    }
+}

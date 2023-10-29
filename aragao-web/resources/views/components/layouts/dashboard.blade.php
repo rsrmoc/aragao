@@ -37,8 +37,8 @@
                 </div>
             </div>
 
-            <div class="p-3">
-                <div class="bg-white p-5 shadow-sm">
+            <div class="p-3 h-full">
+                <div id="app-main-content" class="bg-white p-5 shadow-sm h-full">
                     {{ $slot }}
                 </div>
             </div>
