@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Pages\Obras;
 
+use App\Models\Chat;
 use App\Models\Obras as ModelsObras;
 use App\Models\ObrasUsuarios;
 use App\Services\Helpers\MoneyService;
 use App\Services\Helpers\StatesService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -78,15 +80,27 @@ class Obras extends Component
         $this->validate();
 
         try {
+            DB::beginTransaction();
+
             $data = $this->inputsAdd;
             $data['id_usuario'] = Auth::user()->id;
 
-            ModelsObras::create($data);
+            $obra = ModelsObras::create($data);
+
+            Chat::create([
+                'id_obra' => $obra->id,
+                'nome' => $obra->nome,
+                'tipo' => 'group'
+            ]);
+
+            DB::commit();
 
             $this->reset();
             $this->dispatch('toast-event', 'Obra cadastrada!', 'success');
         }
         catch (Exception $e) {
+            DB::rollBack();
+
             $this->dispatch('toast-event', 'Não foi possivel cadastrar a obra. '.$e->getMessage(), 'error');
         }
     }

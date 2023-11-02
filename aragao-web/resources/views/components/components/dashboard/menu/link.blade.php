@@ -3,6 +3,9 @@
     <div>
         <i class="{{ $icon }}"></i>
         <span>{{ $text }}</span>
+        @isset($badge)
+            <span class="badge badge-success badge-sm font-bold">{{ $badge }}</span>
+        @endisset
     </div>
 
     <i class="fa-solid fa-arrow-right"></i>

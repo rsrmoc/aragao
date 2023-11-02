@@ -34,6 +34,14 @@ class Obras extends Model
         'valor_vencido'
     ];
 
+    protected static function boot() {
+        parent::boot();
+
+        static::deleting(function($obra) {
+            ObrasUsuarios::firstWhere('id_obra', $obra->id)->delete();
+        });
+    }
+
     public function getStatusAttribute() {
         $status = 'Concluida';
         $dtPrevisao = Carbon::parse($this->dt_previsao_termino);

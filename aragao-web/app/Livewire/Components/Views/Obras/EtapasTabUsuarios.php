@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Components\Views\Obras;
 
+use App\Models\Chat;
+use App\Models\ChatUsuario;
 use App\Models\ObrasUsuarios;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class EtapasTabUsuarios extends Component
@@ -25,19 +28,42 @@ class EtapasTabUsuarios extends Component
     public $funcao = "";
 
     public function storeUser() {
-        ObrasUsuarios::create([
-            'id_obra' => $this->obra,
-            'id_usuario' => $this->user,
-            'tipo' => $this->funcao
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $this->reset('modal', 'user', 'funcao');
-        $this->dispatch('toast-event', 'Adicionado com sucesso!', 'success');
+            ObrasUsuarios::create([
+                'id_obra' => $this->obra,
+                'id_usuario' => $this->user,
+                'tipo' => $this->funcao
+            ]);
+
+            ChatUsuario::create([
+                'id_chat' => Chat::firstWhere('id_obra', $this->obra)->id,
+                'id_usuario' => $this->user,
+            ]);
+
+            DB::commit();
+    
+            $this->reset('modal', 'user', 'funcao');
+            $this->dispatch('toast-event', 'Adicionado com sucesso!', 'success');
+        }
+        catch (Exception $e) {
+            DB::rollBack();
+
+            $this->dispatch('toast-event', 'Não foi possivl adicionar. '.$e->getMessage(), 'error');
+        }
     }
 
     public function delUser($obraUsuarioId) {
         try {
-            ObrasUsuarios::find($obraUsuarioId)->delete();
+            $obraUsuario = ObrasUsuarios::find($obraUsuarioId);
+
+            ChatUsuario::firstWhere([
+                'id_chat' => Chat::firstWhere('id_obra', $this->obra)->id,
+                'id_usuario' => $obraUsuario->id_usuario,
+            ])->delete();
+
+            $obraUsuario->delete();
 
             $this->dispatch('toast-event', 'Excluido!', 'success');
         }

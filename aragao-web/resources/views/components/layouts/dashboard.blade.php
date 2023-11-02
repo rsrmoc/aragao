@@ -111,7 +111,12 @@
                 </li>
 
                 <li>
-                    <x-components.dashboard.menu.link route="dashboard.chat" icon="fa-solid fa-message" text="Chat" />
+                    @if (auth()->user()->unviewed_messages > 0)
+                        <x-components.dashboard.menu.link route="dashboard.chat" icon="fa-solid fa-message" text="Chat"
+                            badge="{{ auth()->user()->unviewed_messages }}" />
+                    @else
+                        <x-components.dashboard.menu.link route="dashboard.chat" icon="fa-solid fa-message" text="Chat" />
+                    @endif
                 </li>
 
                 <div class="mt-auto">

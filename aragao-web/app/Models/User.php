@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -47,11 +48,23 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'name_sigla'
+        'name_sigla',
+        'unviewed_messages'
     ];
 
     public function getNameSiglaAttribute() {
         $name = explode(' ', $this->name);
         return strtoupper(substr($name[0] ?? '', 0, 1).substr($name[1] ?? '', 0, 1));
+    }
+
+    public function getUnviewedMessagesAttribute() {
+        $authUserId = Auth::user()->id;
+        $idsChats = ChatUsuario::where('id_usuario', $authUserId)->get('id_chat');
+
+        $chats = Auth::user()->type !== 'admin'
+            ? Chat::withCount('unviewedMessages')->whereIn('id', $idsChats)->get()
+            : Chat::withCount('unviewedMessages')->whereIn('id', $idsChats)->orWhere('tipo', 'group')->get();
+        
+        return $chats->sum('unviewed_messages_count');
     }
 }
