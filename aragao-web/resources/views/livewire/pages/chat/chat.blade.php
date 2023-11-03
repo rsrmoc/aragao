@@ -36,10 +36,11 @@
                                 </div>
                             </div>
 
-                            <template x-if="chat.last_message">
-                                <div class="flex flex-col justify-center">
-                                    <h4 class="font-semibold text-base mb-1"
-                                        x-text="chat?.usuario ? `${chat?.usuario?.name} (${typeUsuarios[chat?.usuario?.type]})` : `${chat.nome} (Obra)`"></h4>
+                            <div class="flex flex-col justify-center">
+                                <h4 class="font-semibold text-base mb-1"
+                                    x-text="chat?.usuario ? `${chat?.usuario?.name} (${typeUsuarios[chat?.usuario?.type]})` : `${chat.nome} (Obra)`"></h4>
+
+                                <template x-if="chat.last_message">
                                     <span class="text-xs">
                                         <template x-if="chat.last_message.id_usuario == {{ auth()->user()->id }}">
                                             <strong>Eu:</strong>
@@ -55,8 +56,8 @@
                                             <span x-text="chat.last_message.mensagem"></span>
                                         </span>
                                     </span>
-                                </div>
-                            </template>
+                                </template>
+                            </div>
 
                             <div class="absolute right-0 top-0 p-1" style="font-size: 0.6rem">
                                 <span
