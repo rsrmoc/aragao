@@ -6,10 +6,8 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
-use Illuminate\Support\Str;
 
 class TablesUsers extends Component
 {
@@ -23,6 +21,8 @@ class TablesUsers extends Component
     public $userName = null;
     public $userEmail = null;
     public $userPhoneNumber = null;
+    public $userPassword = null;
+    public $userEngineerAdmin = false;
 
     public function mount() {
         $this->title = match ($this->type) {
@@ -43,11 +43,13 @@ class TablesUsers extends Component
             rules: [
                 'userName' => 'required|string',
                 'userEmail' => ['required', 'string', 'email', Rule::unique('users', 'email')->whereNull('deleted_at')],
+                'userPassword' => 'required|string|min:8',
                 'userPhoneNumber' => 'nullable|string|celular_com_ddd'
             ],
             attributes: [
                 'userName' => 'nome',
                 'userEmail' => 'email',
+                'userPassword' => 'senha',
                 'userPhoneNumber' => 'número'
             ]
         );
@@ -62,8 +64,9 @@ class TablesUsers extends Component
                     'name' => $this->userName,
                     'email' => $this->userEmail,
                     'phone_number' => $this->userPhoneNumber,
-                    'password' => Hash::make(Str::random()),
-                    'type' => $this->type
+                    'password' => Hash::make($this->userPassword),
+                    'type' => $this->type,
+                    'engineer_admin' => $this->userEngineerAdmin
                 ]);
 
                 $userTrashed->restore();
@@ -73,16 +76,15 @@ class TablesUsers extends Component
                     'name' => $this->userName,
                     'email' => $this->userEmail,
                     'phone_number' => $this->userPhoneNumber,
-                    'password' => Hash::make(Str::random()),
-                    'type' => $this->type
+                    'password' => Hash::make($this->userPassword),
+                    'type' => $this->type,
+                    'engineer_admin' => $this->userEngineerAdmin
                 ]);
             }
 
-            Password::sendResetLink(['email' => $this->userEmail]);
-
             DB::commit();
 
-            $this->reset('modalAdd', 'userName', 'userEmail', 'userPhoneNumber', 'userIdEdit');
+            $this->resetExcept('type', 'title', 'descriptionPage');
             $this->dispatch('toast-event', 'Criado com sucesso!', 'success');
         }
         catch(Exception $e) {
@@ -119,11 +121,13 @@ class TablesUsers extends Component
                     'required', 'string', 'email',
                     Rule::unique('users', 'email')->ignore($this->userIdEdit)->whereNull('deleted_at')
                 ],
+                'userPassword' => 'nullable|string|min:8',
                 'userPhoneNumber' => 'nullable|string|celular_com_ddd'
             ],
             attributes: [
                 'userName' => 'nome',
                 'userEmail' => 'email',
+                'userPassword' => 'senha',
                 'userPhoneNumber' => 'número'
             ]
         );
@@ -135,18 +139,21 @@ class TablesUsers extends Component
 
             if ($userTrashed) $userTrashed->forceDelete();
 
-            $user = User::find($this->userIdEdit);
-            $user->update([
+            $data = [
                 'name' => $this->userName,
                 'email' => $this->userEmail,
-                'phone_number' => $this->userPhoneNumber
-            ]);
+                'phone_number' => $this->userPhoneNumber,
+                'engineer_admin' => $this->userEngineerAdmin
+            ];
+            
+            if ($this->userPassword) $data['password'] = Hash::make($this->userPassword);
 
-            // if (array_key_exists('email', $user->getChanges())) Password::sendResetLink(['email' => $this->userEmail]);
+            $user = User::find($this->userIdEdit);
+            $user->update($data);
 
             DB::commit();
 
-            $this->reset('modalAdd', 'userName', 'userEmail', 'userPhoneNumber', 'userIdEdit');
+            $this->resetExcept('type', 'title', 'descriptionPage');
             $this->dispatch('toast-event', 'Atualizado com sucesso!', 'success');
         }
         catch(Exception $e) {

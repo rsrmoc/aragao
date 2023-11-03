@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\EngenheirosController;
 use App\Http\Controllers\Web\MinhaContaController;
 use App\Http\Controllers\Web\ResetPasswordController;
 use App\Http\Controllers\Web\UsuariosController;
+use App\Http\Middleware\UserSetPasswordMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Pages\Auth\Login;
 use App\Livewire\Pages\Chat\Chat;
@@ -28,7 +29,7 @@ Route::post('/alterar-senha', [ResetPasswordController::class, 'update'])
 Route::group([
     'prefix' => 'home',
     'as' => 'dashboard.',
-    'middleware' => 'auth'
+    'middleware' => ['auth', UserSetPasswordMiddleware::class]
 ], function() {
 
     Route::get('/', [DashboardController::class, 'index'])->name('home');

@@ -3,8 +3,10 @@ Alpine.data('tablesUsers', () => ({
         $wire().userName = null;
         $wire().userEmail = null;
         $wire().userPhoneNumber = null;
+        $wire().userPassword = null;
+        $wire().userEngineerAdmin = false
 
-        $wire().userIdEdit = null;
+        $wire().set('userIdEdit', null);
         $wire().modalAdd = false;
     },
     deleteUser(id, type, name, $wire) {
@@ -24,8 +26,9 @@ Alpine.data('tablesUsers', () => ({
         $wire().userName = user.name;
         $wire().userEmail = user.email;
         $wire().userPhoneNumber = user.phone_number;
+        $wire().userEngineerAdmin = user.engineer_admin;
 
-        $wire().userIdEdit = user.id;
+        $wire().set('userIdEdit', user.id);
         $wire().modalAdd = true;
     }
 }));

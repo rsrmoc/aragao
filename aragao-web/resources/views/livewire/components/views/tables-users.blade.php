@@ -34,8 +34,8 @@
                     <td>
                         @if ($user->id !== auth()->user()->id)
                             <x-components.dashboard.dropdown.dropdown-table>
-                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square" text="Editar"
-                                    x-on:click="setFormEdit({{ $user }}, () => $wire)" />
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
+                                    text="Editar" x-on:click="setFormEdit({{ $user }}, () => $wire)" />
 
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-trash" text="Excluir"
                                     x-on:click="deleteUser({{ $user->id }}, '{{ substr(strtolower($this->title), 0, strlen($this->title) - 1) }}', '{{ $user->name }}', () => $wire)"
@@ -50,7 +50,8 @@
 
     <div class="sm:hidden">
         @foreach ($users as $user)
-            <div class="py-2 border-b last:border-0" wire:loading.class="bg-zinc-200" wire:target="delUser({{ $user->id }})">
+            <div class="py-2 border-b last:border-0" wire:loading.class="bg-zinc-200"
+                wire:target="delUser({{ $user->id }})">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
                         <div wire:loading wire:target="delUser({{ $user->id }})">
@@ -58,13 +59,13 @@
                         </div>
                         <h3 class="font-bold text-lg">#{{ $user->id }} - {{ $user->name }}</h3>
                     </div>
-    
+
                     <div>
                         @if ($user->id !== auth()->user()->id)
                             <x-components.dashboard.dropdown.dropdown-table>
-                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square" text="Editar"
-                                    x-on:click="setFormEdit({{ $user }}, () => $wire)" />
-    
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
+                                    text="Editar" x-on:click="setFormEdit({{ $user }}, () => $wire)" />
+
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-trash" text="Excluir"
                                     x-on:click="deleteUser({{ $user->id }}, '{{ substr(strtolower($this->title), 0, strlen($this->title) - 1) }}', '{{ $user->name }}', () => $wire)"
                                     wire:loading.attr="disabled" wire:target="delUser({{ $user->id }})" />
@@ -72,7 +73,7 @@
                         @endif
                     </div>
                 </div>
-    
+
                 <div class="text-sm">
                     <div>
                         <strong>Email:</strong>
@@ -124,14 +125,31 @@
                     </div>
                 </div>
 
-                <div class="mb-5">
+                <div class="mb-2">
                     <x-components.input type="email" label="Email do usuário" placeholder="Email" class="input-sm"
                         required name="userEmail" wire:model="userEmail" />
                 </div>
 
-                <p class="text-xs text-gray-600 mb-6">
-                    <i class="fa-solid fa-circle-info"></i>&ensp;Um email será enviado para a definição de senha
-                </p>
+                <div>
+                    @if ($userIdEdit)    
+                        <x-components.input type="password" label="Senha do usuário" placeholder="Senha" class="input-sm"
+                            name="userPassword" wire:model="userPassword" minlength="8" />
+                    @else
+                        <x-components.input type="password" label="Senha do usuário" placeholder="Senha" class="input-sm"
+                            required name="userPassword" wire:model="userPassword" minlength="8" />
+                    @endif
+                </div>
+
+                @if ($type == 'engineer')    
+                    <div class="mt-3">
+                        <div class="form-control">
+                            <label class="label cursor-pointer w-52">
+                                <input type="checkbox" class="checkbox" wire:model="userEngineerAdmin" />
+                                <span class="label-text">Profissional administrador</span>
+                            </label>
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <div class="modal-action">
@@ -149,4 +167,3 @@
         @vite('resources/js/views/tables-users.js')
     @endpush
 </div>
-

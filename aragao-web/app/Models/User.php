@@ -24,7 +24,9 @@ class User extends Authenticatable
         'email',
         'password',
         'phone_number',
-        'type'
+        'type',
+        'password_user_set',
+        'engineer_admin'
     ];
 
     /**
@@ -45,6 +47,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'password_user_set' => 'boolean',
+        'engineer_admin' => 'boolean'
     ];
 
     protected $appends = [
