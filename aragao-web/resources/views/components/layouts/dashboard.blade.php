@@ -83,7 +83,7 @@
                     <x-components.dashboard.menu.link route="dashboard.home" icon="fa-solid fa-house" text="Início" />
                 </li>
 
-                @if (auth()->user()->type == 'admin')
+                @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
                     <li>
                         <x-components.dashboard.menu.link route="dashboard.usuarios" icon="fa-solid fa-users"
                             text="Usuários" />

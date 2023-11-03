@@ -1,6 +1,6 @@
 <div x-data="obrasPage">
     <x-components.dashboard.navbar.navbar title="Obras">
-        @if (auth()->user()->type == 'admin')
+        @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
             <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar</button>
         @endif
     </x-components.dashboard.navbar.navbar>
@@ -42,7 +42,7 @@
                             <x-components.dashboard.dropdown.dropdown-table>
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-stairs" text="Etapas"
                                     href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" target="_blank" />
-                                @if (auth()->user()->type == 'admin')
+                                @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
                                     <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
                                         text="Editar" x-on:click="setEditModal({{ $item }}, () => $wire)" />
                                     <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-trash" text="Excluir"
@@ -64,7 +64,7 @@
         @endempty
     </div>
 
-    @if (auth()->user()->type == 'admin')
+    @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
         <div class="modal" x-bind:class="{ 'modal-open': $wire.modal }">
             <form wire:submit.prevent="salvarObra" class="modal-box max-w-3xl">
                 <div class="flex justify-between items-center mb-6">

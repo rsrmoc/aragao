@@ -62,7 +62,7 @@
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 2 }" x-on:click="tab = 2">Evolução</button>
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 3 }" x-on:click="tab = 3">Relatórios</button>
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 4 }" x-on:click="tab = 4">Funcionários</button>
-        @if (auth()->user()->type == 'admin')
+        @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
             <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 5 }"
                 x-on:click="tab = 5">Profissionais</button>
             <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 6 }"

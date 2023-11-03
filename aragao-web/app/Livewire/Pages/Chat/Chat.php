@@ -110,7 +110,7 @@ class Chat extends Component
         $authUserId = Auth::user()->id;
         $idsChats = ChatUsuario::where('id_usuario', $authUserId)->get('id_chat');
 
-        $chats = Auth::user()->type !== 'admin'
+        $chats = Auth::user()->type !== 'admin' && !Auth::user()->engineer_admin
             ? ModelsChat::with('lastMessage')->withCount('unviewedMessages')->whereIn('id', $idsChats)->get()
             : ModelsChat::with('lastMessage')->withCount('unviewedMessages')->whereIn('id', $idsChats)->orWhere('tipo', 'group')->get();
 
@@ -141,7 +141,7 @@ class Chat extends Component
     {
         $authUserId = Auth::user()->id;
 
-        if (Auth::user()->type !== 'admin') {
+        if (Auth::user()->type !== 'admin' && !Auth::user()->engineer_admin) {
             $idsObras = ObrasUsuarios::where('id_usuario', $authUserId)->get('id_obra');
             $usuarios = User::whereIn('id', ObrasUsuarios::whereIn('id_obra', $idsObras)->get('id_usuario'))
                 ->orWhere('type', 'admin')

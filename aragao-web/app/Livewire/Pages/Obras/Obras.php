@@ -135,7 +135,7 @@ class Obras extends Component
     #[Layout('components.layouts.dashboard')]
     public function render()
     {
-        if (Auth::user()->type !== 'admin') {
+        if (Auth::user()->type !== 'admin' && !Auth::user()->engineer_admin) {
             $idsObrasUsuario = ObrasUsuarios::where('id_usuario', Auth::user()->id)->get('id_obra');
             $obras = ModelsObras::whereIn('id', $idsObrasUsuario)->paginate(12);
         }
