@@ -16,6 +16,8 @@ class UserSetPasswordMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->route()->getName() === 'dashboard.logout') return $next($request);
+
         if (!Auth::user()->password_user_set && $request->route()->getName() !== 'dashboard.home')
             return redirect()->route('dashboard.home');
 
