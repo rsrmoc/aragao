@@ -1,0 +1,12 @@
+<template>
+  <ion-app>
+    <iframe src="https://aragao.sellsmart.site/"
+      frameborder="0"
+      style="height: 100%; width: 100vw;">
+    </iframe>
+  </ion-app>
+</template>
+
+<script setup lang="ts">
+import { IonApp, IonContent } from '@ionic/vue';
+</script>
