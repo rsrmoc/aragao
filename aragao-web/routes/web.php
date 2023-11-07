@@ -13,6 +13,9 @@ use App\Livewire\Pages\Chat\Chat;
 use App\Livewire\Pages\Obras\EtapasObra;
 use App\Livewire\Pages\Obras\Obras;
 use App\Livewire\Pages\Reunioes\Reunioes;
+use App\Models\Obras as ModelsObras;
+use App\Models\ObrasEtapas;
+use App\Models\ObrasEvolucoes;
 
 Route::get('/', Login::class)->name('login')->middleware('guest');
 
@@ -53,4 +56,11 @@ Route::group([
     
 });
 
-Route::get('/test-pdf-relatorio', fn() => view('pdf.obras-relatorios'));
+// Route::get('/test-pdf-relatorio', function() {
+//     $obra = ModelsObras::find(3);
+//     $etapas = ObrasEtapas::where('id_obra', 3)->orderBy('created_at', 'desc')->get();
+//     $porcGeral = ObrasEtapas::where('id_obra', 3)->sum('porc_geral');
+//     $evolucoes = ObrasEvolucoes::with(['etapa', 'usuario'])->where('id_obra', 3)->orderBy('created_at', 'desc')->get();
+
+//     return view('pdf.obras-relatorios', compact('obra', 'etapas', 'porcGeral', 'evolucoes'));
+// });

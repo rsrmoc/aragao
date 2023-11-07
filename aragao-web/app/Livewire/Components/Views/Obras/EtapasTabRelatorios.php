@@ -5,6 +5,7 @@ namespace App\Livewire\Components\Views\Obras;
 use App\Models\ObraRelatorio;
 use App\Models\Obras;
 use App\Models\ObrasEtapas;
+use App\Models\ObrasEvolucoes;
 use Livewire\Component;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
@@ -29,6 +30,7 @@ class EtapasTabRelatorios extends Component
         $obra = Obras::find($this->obra);
         $etapas = ObrasEtapas::where('id_obra', $this->obra)->orderBy('created_at', 'desc')->get();
         $porcGeral = ObrasEtapas::where('id_obra', $this->obra)->sum('porc_geral');
+        $evolucoes = ObrasEvolucoes::with(['etapa', 'usuario'])->where('id_obra', $this->obra)->orderBy('created_at', 'desc')->get();
 
         try {
             DB::beginTransaction();
@@ -37,8 +39,8 @@ class EtapasTabRelatorios extends Component
                 'id_obra' => $this->obra,
                 'id_usuario' => Auth::user()->id,
                 'filename' => $this->formato == 'pdf'
-                    ? $this->gerarPdf($obra, $etapas, $porcGeral)
-                    : $this->gerarCSV($obra, $etapas, $porcGeral)
+                    ? $this->gerarPdf($obra, $etapas, $porcGeral, $evolucoes)
+                    : $this->gerarCSV($obra, $etapas, $porcGeral, $evolucoes)
             ]);
 
             $this->reset('modal', 'formato');
@@ -54,16 +56,16 @@ class EtapasTabRelatorios extends Component
         }
     }
 
-    public function gerarPdf($obra, $etapas, $porcGeral) {
+    public function gerarPdf($obra, $etapas, $porcGeral, $evolucoes) {
         $filename = $this->filename();
 
-        $pdf = Pdf::loadView('pdf.obras-relatorios', compact('obra', 'etapas', 'porcGeral'));
+        $pdf = Pdf::loadView('pdf.obras-relatorios', compact('obra', 'etapas', 'porcGeral', 'evolucoes'));
         $pdf->save(storage_path($this->path.$filename));
 
         return $filename;
     }
 
-    public function gerarCSV($obra, $etapas, $porcGeral) {
+    public function gerarCSV($obra, $etapas, $porcGeral, $evolucoes) {
         $filename = $this->filename(csv: true);
         file_put_contents(storage_path($this->path.$filename), '');
 
@@ -90,13 +92,44 @@ class EtapasTabRelatorios extends Component
         fputcsv($file, []);
 
         fputcsv($file, ['Etapas da obra']);
-        fputcsv($file, ['Nome', 'Progresso', 'Geral', 'Status']);
+        fputcsv($file, [
+            'Nome',
+            'Execução da etapa',
+            'Execução da obra',
+            'Incidência',
+            'Valor gasto',
+            'Valor da etapa',
+            'Situação',
+            'Status'
+        ]);
         foreach ($etapas as $etapa) {
             fputcsv($file, [
                 $etapa->nome,
-                "$etapa->porc_etapa%",
-                "$etapa->porc_geral%",
+                "{$etapa->porc_etapa}%",
+                "{$etapa->porc_geral}%",
+                "{$etapa->incidencia}%",
+                "R$ ".number_format($etapa->valor_gasto, 2, ',', '.'),
+                "R$ ".number_format($etapa->valor, 2, ',', '.'),
+                $etapa->quitada ? 'Quitado' : 'Em aberto',
                 $etapa->concluida ? 'Concluída': 'Em andamento'
+            ]);
+        }
+
+        fputcsv($file, []);
+
+        fputcsv($file, ['Evoluções da obra']);
+        fputcsv($file, [
+            'Etapa',
+            'Data da evolução',
+            'Responsável',
+            'Descrição'
+        ]);
+        foreach ($evolucoes as $evolucao) {
+            fputcsv($file, [
+                $evolucao->etapa->nome,
+                date_format(date_create($evolucao->dt_evolucao), 'd/m/Y'),
+                $evolucao->usuario?->name,
+                $evolucao->descricao
             ]);
         }
 

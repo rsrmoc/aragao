@@ -76,11 +76,11 @@
                         <td>
                             <div class="space-table-cell-content">
                                 <strong>Valor:</strong>
-                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor) }}</span>
+                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_quitado) }}</span>
                             </div>
                             <div class="space-table-cell-content">
                                 <strong>Saldo:</strong>
-                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_saldo) }}</span>
+                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_aberto) }}</span>
                             </div>
                         </td>
                     </tr>
@@ -93,8 +93,12 @@
                 <thead>
                     <tr>
                         <th style="text-align: left">Nome</th>
-                        <th style="text-align: left">Progresso</th>
-                        <th style="text-align: left">Geral</th>
+                        <th style="text-align: left">Execução da etapa</th>
+                        <th style="text-align: left">Execução da obra</th>
+                        <th style="text-align: left">Incidência</th>
+                        <th style="text-align: left">Valor gasto</th>
+                        <th style="text-align: left">Valor da etapa</th>
+                        <th style="text-align: left">Situação</th>
                         <th style="text-align: left">Status</th>
                     </tr>
                 </thead>
@@ -105,7 +109,35 @@
                             <td>{{ $item->nome }}</td>
                             <td>{{ $item->porc_etapa }}%</td>
                             <td>{{ $item->porc_geral }}%</td>
+                            <td>{{ $item->incidencia }}%</td>
+                            <td>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
+                            <td>R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
+                            <td>{{ $item->quitada ? 'Quitado' : 'Em aberto' }}</td>
                             <td>{{ $item->concluida ? 'Concluída': 'Em andamento' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            <h3>Evoluções da obra</h3>
+
+            <table id="tabela-etapas" class="table-font-small">
+                <thead>
+                    <tr>
+                        <th style="text-align: left">Etapa</th>
+                        <th style="text-align: left">Data da evolução</th>
+                        <th style="text-align: left">Responsável</th>
+                        <th style="text-align: left">Descrição</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($evolucoes as $evolucao)    
+                        <tr wire:loading.class="active" wire:target="excluirEvolucao({{ $evolucao->id }})">
+                            <td>{{ $evolucao->etapa->nome }}</td>
+                            <td>{{ date_format(date_create($evolucao->dt_evolucao), 'd/m/Y') }}</td>
+                            <td>{{ $evolucao->usuario?->name }}</td>
+                            <td>{{ $evolucao->descricao }}</td>
                         </tr>
                     @endforeach
                 </tbody>
