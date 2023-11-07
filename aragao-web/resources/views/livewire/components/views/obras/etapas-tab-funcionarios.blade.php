@@ -1,12 +1,15 @@
 <div x-data="etapasTabFuncionarios">
     <x-components.dashboard.navbar.navbar title="Funcionários">
         @if (auth()->user()->type !== 'client')
-            <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar</button>
+            <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
+                <i class="fa-solid fa-plus sm:hidden"></i>
+                <span class="hidden sm:inline">Adicionar</span>
+            </button>
         @endif
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm">
+        <table class="table table-sm hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>Nome</th>
@@ -46,6 +49,57 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="sm:hidden">
+            @foreach ($obrasFuncionarios as $item)
+                <div class="flex justify-between gap-3 py-3 border-b last:border-0">
+                    <div class="w-full">
+                        <div class="flex gap-2 mb-2">
+                            <div wire:loading wire:target="delFuncionario({{ $item->id }})">
+                                <x-components.loading class="loading-sm" />
+                            </div>
+
+                            <div>
+                                <h3 class="font-bold text-lg">{{ $item->funcionario->nome }}</h3>
+                                <div class="text-sm mb-2 text-zinc-400">
+                                    <span>{{ $item->funcionario->cpf }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="text-sm">
+                                <strong>Telefone:</strong>
+                                <span>{{ $item->funcionario->telefone }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="text-sm">
+                                <strong>Função:</strong>
+                                <span>{{ $item->funcao }}</span>
+                            </div>
+                            
+                            <div class="divider divider-horizontal"></div>
+
+                            <div class="text-sm">
+                                <strong>Conselho:</strong>
+                                <span>{{ $item->conselho }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (auth()->user()->type !== 'client')
+                        <div>
+                            <x-components.dashboard.dropdown.dropdown-table>
+                                <x-components.dashboard.dropdown.dropdown-item text="Excluir" icon="fa-solid fa-trash"
+                                    x-on:click="delFuncionario({{ $item }}, () => $wire)" />
+                            </x-components.dashboard.dropdown.dropdown-table>
+                        </div>
+                    @endif
+                </div>
+            @endforeach
+        </div>
 
         @if (count($obrasFuncionarios) == 0)
             <p class="text-center text-xs text-gray-600 p-8">Nenhum funcionário</p>

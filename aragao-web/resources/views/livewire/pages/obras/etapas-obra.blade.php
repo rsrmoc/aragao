@@ -1,10 +1,21 @@
 <div x-data="etapasObra">
-    <x-components.dashboard.navbar.navbar title="#{{ $obra->id }} {{ $obra->nome }}">
+    <div class="hidden sm:block">
+        <x-components.dashboard.navbar.navbar title="#{{ $obra->id }} {{ $obra->nome }}">
+            <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($obra->status, 'badge') }} text-white font-bold mr-4">{{ $obra->status }}</span>
+            <div class="radial-progress text-info" style="--value: {{ $porcGeral }}; --size: 2.5rem">
+                <span class="text-xs">{{ $porcGeral }}%</span>
+            </div>
+        </x-components.dashboard.navbar.navbar>
+    </div>
+
+    <div class="sm:hidden mb-3">
+        <h3 class="text-xl font-bold mb-3">#{{ $obra->id }} {{ $obra->nome }}</h3>
+
         <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($obra->status, 'badge') }} text-white font-bold mr-4">{{ $obra->status }}</span>
         <div class="radial-progress text-info" style="--value: {{ $porcGeral }}; --size: 2.5rem">
             <span class="text-xs">{{ $porcGeral }}%</span>
         </div>
-    </x-components.dashboard.navbar.navbar>
+    </div>
 
     <div class="mb-8">
         <div class="flex py-2 border-b">
@@ -23,21 +34,21 @@
 
         <div class="flex py-2 border-b">
             <div class="text-xs">
-                <strong>Data de início:</strong>
+                <strong>Dt. de início:</strong>
                 <span>{{ date_format(date_create($obra->dt_inicio), 'd/m/Y') }}</span>
             </div>
 
             <div class="divider divider-horizontal"></div>
     
             <div class="text-xs">
-                <strong>Data de previsão:</strong>
+                <strong>Dt. de previsão:</strong>
                 <span>{{ date_format(date_create($obra->dt_previsao_termino), 'd/m/Y') }}</span>
             </div>
 
             <div class="divider divider-horizontal"></div>
     
             <div class="text-xs">
-                <strong>Data de término:</strong>
+                <strong>Dt. de término:</strong>
                 <span>{{ $obra->dt_termino ? date_format(date_create($obra->dt_termino), 'd/m/Y') : 'Não definido' }}</span>
             </div>
         </div>
@@ -74,12 +85,15 @@
         <div x-show="tab == 1">
             <x-components.dashboard.navbar.navbar title="Etapas da obra">
                 @if (auth()->user()->type !== 'client')
-                    <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar etapa</button>
+                    <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
+                        <span class="hidden sm:inline">Adicionar etapa</span>
+                        <i class="fa-solid fa-plus sm:hidden"></i>
+                    </button>
                 @endif
             </x-components.dashboard.navbar.navbar>
 
             <div>
-                <table class="table table-xs">
+                <table class="table table-xs hidden sm:table">
                     <thead>
                         <tr class="active">
                             <th>Nome</th>
@@ -154,6 +168,87 @@
                     </tbody>
                 </table>
 
+                <div class="sm:hidden">
+                    @foreach ($etapas as $item)
+                        <div class="flex justify-between gap-3 py-3 border-b last:border-0">
+                            <div class="w-full">
+                                <div class="flex gap-2 items-center mb-3">
+                                    <div wire:loading wire:target="delEtapa({{ $item->id }})">
+                                        <x-components.loading class="loading-sm" />
+                                    </div>
+
+                                    <strong class="text-lg">{{ $item->nome }}</strong>
+                                </div>
+
+                                <div class="flex justify-between mb-2">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <strong class="text-sm">Exec. etapa:</strong>
+                                        <div class="radial-progress @if ($item->porc_etapa > 99) text-success @else text-primary @endif" style="--value: {{ $item->porc_etapa }}; --size: 2.6rem">
+                                            <span class="text-xs">{{ $item->porc_etapa }}%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col items-center gap-2">
+                                        <strong class="text-sm">Exec. obra:</strong>
+                                        <div class="radial-progress text-primary" style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
+                                            <span class="text-xs">{{ $item->porc_geral }}%</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col items-center gap-2">
+                                        <strong class="text-sm">Incidência:</strong>
+                                        <div class="radial-progress text-success" style="--value: {{ $item->incidencia }}; --size: 2.6rem">
+                                            <span class="text-xs">{{ $item->incidencia }}%</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex mb-2">
+                                    <div class="text-sm">
+                                        <strong>Val. gasto:</strong>
+                                        <span>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</span>
+                                    </div>
+
+                                    <div class="divider divider-horizontal"></div>
+
+                                    <div class="text-sm">
+                                        <strong>Val. etapa:</strong>
+                                        <span>R$ {{ number_format($item->valor, 2, ',', '.') }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <div>
+                                        @if ($item->quitada)
+                                            <span class="badge badge-sm badge-success font-bold text-white">Quitado</span>
+                                        @else
+                                            <span class="badge badge-sm badge-error font-bold text-white">Em aberto</span>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        @if ($item->concluida)
+                                            <span class="badge badge-sm badge-success font-bold text-white">Concluída</span>
+                                        @else
+                                            <span class="badge badge-sm badge-warning font-bold text-white">Em andamento</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (auth()->user()->type !== 'client')    
+                                <div>
+                                    <x-components.dashboard.dropdown.dropdown-table>
+                                        <x-components.dashboard.dropdown.dropdown-item text="Editar"
+                                            icon="fa-solid fa-pen-to-square" x-on:click="setEdit({{ $item }}, () => $wire)" />
+                                        <x-components.dashboard.dropdown.dropdown-item text="Excluir"
+                                            icon="fa-solid fa-trash" x-on:click="excluirEtapa({{ $item->id }}, () => $wire)" />
+                                    </x-components.dashboard.dropdown.dropdown-table>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+
                 @if (count($etapas) == 0)
                     <div class="p-10">
                         <p class="text-gray-600 text-center text-xs">Nenhuma etapa criada</p>
@@ -197,13 +292,13 @@
                 </div>
 
                 <div>
-                    <div class="flex gap-5 mb-5">
-                        <div class="w-6/12">
+                    <div class="flex gap-3 sm:gap-5 mb-5 flex-wrap sm:flex-nowrap">
+                        <div class="w-full sm:w-6/12">
                             <x-components.input class="input-sm" label="Nome" placeholder="Nome" required
                                 wire:model="inputsEtapa.nome" name="inputsEtapa.nome" />
                         </div>
 
-                        <div class="w-3/12">
+                        <div class="w-6/12 sm:w-3/12">
                             <div class="form-control">
                                 <label class="label">
                                     <span class="label-text">Execução da Etapa <span class="text-red-500">*</span></span>
@@ -217,7 +312,7 @@
                             </div>
                         </div>
         
-                        <div class="w-3/12">
+                        <div class="w-5/12 sm:w-3/12">
                             <div class="form-control">
                                 <label for="" class="label">
                                     <span class="label-text">Execução da Obra <span class="text-red-500">*</span></span>
@@ -232,7 +327,7 @@
                         </div>
                     </div>
 
-                    <div class="flex gap-5 mb-5">
+                    <div class="flex gap-3 sm:gap-5 mb-5 flex-col sm:flex-row">
                         <div>
                             <x-components.input type="date" class="input-sm" label="Data de inicio" placeholder="Data de inicio" required
                                 wire:model="inputsEtapa.dt_inicio" name="inputsEtapa.dt_inicio" />

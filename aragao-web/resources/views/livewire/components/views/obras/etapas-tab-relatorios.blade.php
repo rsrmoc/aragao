@@ -1,10 +1,13 @@
 <div x-data="etapasTabRelatorios">
     <x-components.dashboard.navbar.navbar title="Retatórios">
-        <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Gerar relatório</button>
+        <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
+            <i class="fa-solid fa-plus sm:hidden"></i>
+            <span class="hidden sm:inline">Gerar relatório</span>
+        </button>
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm">
+        <table class="table table-sm hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>#</th>
@@ -37,6 +40,37 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="sm:hidden">
+            @foreach ($relatorios as $relatorio)
+                <div class="flex justify-between gap-3 py-3 border-b last:border-0">
+                    <div class="w-full">
+                        <div class="flex gap-2">
+                            <div wire:loading wire:target="excluirRelatorio({{ $relatorio->id }})">
+                                <x-components.loading class="loading-sm" />
+                            </div>
+    
+                            <div>
+                                <h3 class="font-bold text-base">
+                                    <i class="fa-solid {{ str_contains($relatorio->filename, '.pdf') ? 'fa-file-pdf text-red-700' : 'fa-file-csv text-green-700' }} text-lg"></i>
+                                    #{{ $relatorio->id }} -
+                                    Relário gerado em {{ date_format(date_create($relatorio->created_at), 'd/m/Y \à\s H:i') }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div wire:loading.remove wire:target="excluirRelatorio({{ $relatorio->id }})">
+                            <x-components.dashboard.dropdown.dropdown-table>
+                                <x-components.dashboard.dropdown.dropdown-item text="Download" icon="fa-solid fa-download" wire:click="downloadFile({{ $relatorio->id }})" />
+                                <x-components.dashboard.dropdown.dropdown-item text="Excluir" icon="fa-solid fa-trash" x-on:click="excluir({{ $relatorio->id }}, () => $wire)" />
+                            </x-components.dashboard.dropdown.dropdown-table>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
         @if (count($relatorios) == 0)    
             <div class="p-8">

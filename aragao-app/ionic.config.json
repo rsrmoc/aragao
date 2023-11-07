@@ -1,7 +1,8 @@
 {
-  "name": "aragao-app",
+  "name": "Aragão Construtora",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "vue-vite"
 }

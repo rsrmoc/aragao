@@ -1,10 +1,15 @@
 <div x-data="pageReunioes" x-on:reset-all="infoReuniao = null">
     <x-components.dashboard.navbar.navbar title="Reuniões">
-        <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Agendar reunião</button>
+        <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
+            <span class="sm:hidden">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+            <span class="hidden sm:inline">Agendar reunião</span>
+        </button>
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm">
+        <table class="table table-sm hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>#</th>
@@ -16,7 +21,7 @@
             </thead>
 
             <tbody>
-                @foreach ($reunioes as $item)    
+                @foreach ($reunioes as $item)
                     <tr wire:loading.class="active" wire:target="excluirReuniao({{ $item->id }})">
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->assunto }}</td>
@@ -54,6 +59,52 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="sm:hidden">
+            @foreach ($reunioes as $item)
+                <div class="flex gap-2 py-3 justify-between border-b last:border-0">
+                    <div class="w-full">
+                        <div class="flex gap-2 items-center mb-2">
+                            <div wire:loading wire:target="excluirReuniao({{ $item->id }})">
+                                <x-components.loading class="loadin-sm" />
+                            </div>
+    
+                            <div class="w-full flex justify-between items-center">
+                                <h3 class="font-bold text-lg">#{{ $item->id }} {{ $item->assunto }}</h3>
+    
+                                <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusReuniao($item->situacao, 'badge') }} badge-sm font-bold text-white">
+                                    {{ ucfirst(str_replace('_', ' ', $item->situacao)) }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="text-sm">
+                            <strong>Data da reunião:</strong>
+                            <span>{{ date_format(date_create($item->dt_reuniao), 'd/m/Y \à\s H:i\h') }}</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <x-components.dashboard.dropdown.dropdown-table>
+                            @if ($item->id_usuario_solicitante === auth()->user()->id)
+                                @if (in_array($item->situacao, ['cancelada', 'concluida', 'conteudo_pendente']))
+                                    <x-components.dashboard.dropdown.dropdown-item text="Informações" icon="fa-solid fa-circle-info"
+                                        x-on:click="setInfo({{ $item }})" />
+                                @else
+                                    <x-components.dashboard.dropdown.dropdown-item text="Editar" icon="fa-solid fa-pen-to-square"
+                                        x-on:click="setEdit({{ $item }})" />
+                                @endif
+                                <x-components.dashboard.dropdown.dropdown-item text="Excluir" icon="fa-solid fa-trash"
+                                    x-on:click="excluir({{ $item }})" />
+                            @else
+                                <x-components.dashboard.dropdown.dropdown-item text="Informações" icon="fa-solid fa-circle-info"
+                                    x-on:click="setInfo({{ $item }})" />
+                            @endif
+                        </x-components.dashboard.dropdown.dropdown-table>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
         {{ $reunioes->links() }}
 

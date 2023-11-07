@@ -2,7 +2,7 @@
     <div class="drawer lg:drawer-open">
         <input type="checkbox" class="drawer-toggle" id="drawerCheck" />
         <div class="drawer-content overflow-y-auto pt-16 pb-16 lg:p-0 h-screen">
-            <div class="navbar shadow bg-white fixed top-0 left-0 w-full lg:hidden">
+            <div class="navbar shadow bg-white fixed top-0 left-0 w-full lg:hidden ">
                 <div class="navbar-start">
                     <label for="drawerCheck" class="btn btn-ghost">
                         <i class="fa-solid fa-bars"></i>
@@ -37,8 +37,8 @@
                 </div>
             </div>
 
-            <div class="p-3 h-full">
-                <div id="app-main-content" class="bg-white p-5 shadow-sm h-full">
+            <div class="flex flex-col p-3 min-h-full">
+                <div id="app-main-content" class="bg-white p-5 shadow-sm flex-grow min-h-full">
                     {{ $slot }}
                 </div>
             </div>

@@ -1,10 +1,13 @@
 <div x-data="etapasTabUsuarios">
     <x-components.dashboard.navbar.navbar title="{{ $type == 'engineer' ? 'Profissionais' : 'Clientes' }}">
-        <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar</button>
+        <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
+            <i class="fa-solid fa-plus sm:hidden"></i>
+            <span class="hidden sm:inline">Adicionar</span>
+        </button>
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm">
+        <table class="table table-sm table-zebra hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>Nome</th>
@@ -41,6 +44,43 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="sm:hidden">
+            @foreach ($usuariosAtribuidos as $item)
+                <div class="flex justify-between gap-3 py-3 border-b last:border-0">
+                    <div class="w-full">
+                        <div class="flex gap-2 mb-2">
+                            <div wire:loading wire:target="delUser({{ $item->id }})">
+                                <x-components.loading class="loading-sm" />
+                            </div>
+
+                            <div>
+                                <h3 class="font-bold text-lg">{{ $item->usuario->name }}</h3>
+                                <span class="text-sm text-zinc-400">{{ $item->usuario->email }}</span>
+                            </div>
+                        </div>
+
+                        <div class="text-sm">
+                            <strong>Telefone:</strong>
+                            <span>{{ $item->usuario->phone_number }}</span>
+                        </div>
+
+                        @if ($type == 'engineer')
+                            <div class="text-sm mt-1">
+                                <strong>Função:</strong>
+                                <span>{{ $funcoes[$item->tipo] ?? null }}</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div>
+                        <x-components.dashboard.dropdown.dropdown-table>
+                            <x-components.dashboard.dropdown.dropdown-item text="Excluir" icon="fa-solid fa-trash" x-on:click="delUser({{ $item }}, () => $wire)" />
+                        </x-components.dashboard.dropdown.dropdown-table>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
         @empty(count($usuariosAtribuidos))    
             <div class="p-8">

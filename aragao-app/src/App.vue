@@ -8,5 +8,5 @@
 </template>
 
 <script setup lang="ts">
-import { IonApp, IonContent } from '@ionic/vue';
+import { IonApp } from '@ionic/vue';
 </script>

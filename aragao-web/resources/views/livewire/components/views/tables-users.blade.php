@@ -1,6 +1,11 @@
 <div x-data="tablesUsers">
     <x-components.dashboard.navbar.navbar title="{{ $this->title }}">
-        <button class="btn btn-sm btn-primary" x-on:click="$wire.modalAdd = true">Adicionar</button>
+        <button class="btn btn-sm btn-primary" x-on:click="$wire.modalAdd = true">
+            <span class="sm:hidden">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+            <span class="hidden sm:inline">Adicionar</span>
+        </button>
     </x-components.dashboard.navbar.navbar>
 
     <p class="text-xs text-gray-600 mb-6">

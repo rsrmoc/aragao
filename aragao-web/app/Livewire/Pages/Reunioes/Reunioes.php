@@ -237,7 +237,7 @@ class Reunioes extends Component
     public function render()
     {
         $reunioes = Auth::user()->type == 'admin' || Auth::user()->engineer_admin
-            ? ModelsReunioes::with('historico')->orderBy('created_at', 'desc')->paginate(12)
+            ? ModelsReunioes::with(['historico', 'participantes'])->orderBy('created_at', 'desc')->paginate(12)
             : ModelsReunioes::with(['historico', 'participantes'])
                 ->whereIn('id_obra', ReunioesUsuarios::where('id_usuario', Auth::user()->id)->get('id_obra'))
                 ->orderBy('created_at', 'desc')

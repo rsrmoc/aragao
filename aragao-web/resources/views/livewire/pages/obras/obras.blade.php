@@ -1,12 +1,17 @@
 <div x-data="obrasPage">
     <x-components.dashboard.navbar.navbar title="Obras">
         @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
-            <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar</button>
+            <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
+                <span class="sm:hidden">
+                    <i class="fa-solid fa-plus"></i>
+                </span>
+                <span class="hidden sm:inline">Adicionar</span>
+            </button>
         @endif
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm">
+        <table class="table table-sm hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>#</th>
@@ -41,7 +46,7 @@
                         <td>
                             <x-components.dashboard.dropdown.dropdown-table>
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-stairs" text="Etapas"
-                                    href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" target="_blank" />
+                                    href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" />
                                 @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
                                     <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
                                         text="Editar" x-on:click="setEditModal({{ $item }}, () => $wire)" />
@@ -54,6 +59,61 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="sm:hidden">
+            @foreach ($obras as $item)
+                <div class="flex justify-between py-3 border-b last:border-0">
+                    <div>
+                        <div class="flex gap-2 items-center mb-2">
+                            <div wire:loading wire:target="delObra({{ $item->id }})">
+                                <x-components.loading class="loading-xs" />
+                            </div>
+                            <div class="w-full flex items-center justify-between">
+                                <h3 class="font-bold text-lg">#{{ $item->id }} {{ $item->nome }}</h3>
+                                <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($item->status, 'badge') }} badge-sm text-white font-bold">{{ $item->status }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex mb-2">
+                            <div class="text-sm">
+                                <strong>Inicio:</strong>
+                                <span>{{ date_format(date_create($item->dt_inicio), 'd/m/Y') }}</span>
+                            </div>
+                            <div class="divider divider-horizontal h-4"></div>
+                            <div class="text-sm">
+                                <strong>Previsão:</strong>
+                                <span>{{ date_format(date_create($item->dt_previsao_termino), 'd/m/Y') }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex mb-2">
+                            <div class="text-sm">
+                                <strong>Valor:</strong>
+                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</span>
+                            </div>
+                            <div class="divider divider-horizontal h-4"></div>
+                            <div class="text-sm">
+                                <strong>Saldo:</strong>
+                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <x-components.dashboard.dropdown.dropdown-table>
+                            <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-stairs" text="Etapas"
+                                href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" />
+                            @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
+                                    text="Editar" x-on:click="setEditModal({{ $item }}, () => $wire)" />
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-trash" text="Excluir"
+                                    x-on:click="deleteObra({{ $item }}, () => $wire)" />
+                            @endif
+                        </x-components.dashboard.dropdown.dropdown-table>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
         {{ $obras?->links() }}
 
@@ -79,8 +139,8 @@
 
                 <div class="mb-8">
                     <div>
-                        <div class="flex gap-4 mb-3">
-                            <div class="w-2/4">
+                        <div class="flex gap-4 mb-3 flex-col sm:flex-row">
+                            <div class="w-full sm:w-2/4">
                                 <x-components.input label="Nome" placeholder="Nome" class="input-sm" required
                                     wire:model="inputsAdd.nome" name="inputsAdd.nome" />
                             </div>
@@ -98,7 +158,7 @@
                             </div>
                         </div>
 
-                        <div class="flex gap-4 mb-3">
+                        <div class="flex gap-4 mb-3 flex-col sm:flex-row">
                             <x-components.input type="date" label="Data de início" placeholder="Data de início"
                                 class="input-sm" required wire:model="inputsAdd.dt_inicio" name="inputsAdd.dt_inicio" />
 
@@ -121,30 +181,30 @@
 
                         <h4 class="font-bold border-b pb-1 mb-3">Endereço</h4>
 
-                        <div class="flex gap-4 mb-3">
-                            <div class="w-5/12">
+                        <div class="flex gap-4 mb-3 flex-wrap sm:flex-nowrap">
+                            <div class="w-full sm:w-5/12">
                                 <x-components.input label="Rua" placeholder="Rua" class="input-sm" required
                                     wire:model="inputsAdd.endereco_rua" name="inputsAdd.endereco_rua" />
                             </div>
 
-                            <div class="w-2/12">
+                            <div class="w-3/12 sm:w-2/12">
                                 <x-components.input type="number" label="Número" placeholder="Número" class="input-sm"
                                     required wire:model="inputsAdd.endereco_numero" name="inputsAdd.endereco_numero" />
                             </div>
 
-                            <div class="w-5/12">
+                            <div class="w-8/12 sm:w-5/12">
                                 <x-components.input label="Bairro" placeholder="Bairro" class="input-sm" required
                                     wire:model="inputsAdd.endereco_bairro" name="inputsAdd.endereco_bairro" />
                             </div>
                         </div>
 
-                        <div class="flex gap-4">
-                            <div class="w-5/12">
+                        <div class="flex gap-4 flex-wrap sm:flex-nowrap">
+                            <div class="w-full sm:w-5/12">
                                 <x-components.input label="Cidade" placeholder="Cidade" class="input-sm" required
                                     wire:model="inputsAdd.endereco_cidade" name="inputsAdd.endereco_cidade" />
                             </div>
 
-                            <div class="form-group w-4/12">
+                            <div class="form-group w-6/12 sm:w-4/12">
                                 <label class="label">
                                     <span class="label-text">Estado <span class="text-red-600">*</span></span>
                                 </label>
@@ -162,7 +222,7 @@
                                 @enderror
                             </div>
 
-                            <div class="w-3/12">
+                            <div class="w-5/12 sm:w-3/12">
                                 <x-components.input label="CEP" placeholder="CEP" class="input-sm" required
                                     x-mask="99999-999" wire:model="inputsAdd.endereco_cep"
                                     name="inputsAdd.endereco_cep" />

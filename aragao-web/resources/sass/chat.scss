@@ -1,5 +1,10 @@
 #app-main-content {
+    height: calc(100vh - 1.5rem);
     padding: 0 !important;
+
+    @media screen and (max-width: 640px)  {
+        height: calc(100vh - 1.5rem - 128px);
+    }
 }
 
 #container-messages {

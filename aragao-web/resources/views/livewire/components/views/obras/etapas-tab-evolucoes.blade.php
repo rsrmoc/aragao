@@ -1,12 +1,15 @@
 <div x-data="etapasTabEvolucoes" x-on:clear-file-input="$refs.inputImagens.value = null, infoEvolucao = null">
     <x-components.dashboard.navbar.navbar title="Evoluções da obra">
         @if (auth()->user()->type == 'engineer')
-            <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">Adicionar evolução</button>
+            <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
+                <span class="hidden sm:inline">Adicionar evolução</span>
+                <i class="fa-solid fa-plus sm:hidden"></i>
+            </button>
         @endif
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm table-zebra">
+        <table class="table table-sm table-zebra hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>Etapa</th>
@@ -54,6 +57,60 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="sm:hidden">
+            @foreach ($evolucoes as $evolucao)
+                <div class="flex justify-between gap-3 py-3 border-b last:border-0">
+                    <div>
+                        <div class="flex gap-2 mb-3">
+                            <div wire:loading wire:target="excluirEvolucao({{ $evolucao->id }})">
+                                <x-components.loading class="loading-sm" />
+                            </div>
+    
+                            <div class="w-full">
+                                <strong class="text-lg">{{ "#{$evolucao->etapa->id} - {$evolucao->etapa->nome}" }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="flex mb-2">
+                            <div class="text-sm">
+                                <strong class="mr-1">Dt.:</strong>
+                                <span>{{ date_format(date_create($evolucao->dt_evolucao), 'd/m/Y') }}</span>
+                            </div>
+
+                            <div class="divider divider-horizontal"></div>
+                            
+                            <div class="text-sm">
+                                <strong class="mr-1">Resp.:</strong>
+                                <span>{{ $evolucao->usuario?->name }}</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <strong class="text-sm block">Descrição:</strong>
+                            <div class="tooltip" data-tip="{{ $evolucao->descricao }}">
+                                <span class="block w-72 text-ellipsis overflow-hidden whitespace-nowrap">{{ $evolucao->descricao }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <x-components.dashboard.dropdown.dropdown-table class="dropdown-top">
+                            <x-components.dashboard.dropdown.dropdown-item text="Informações" icon="fa-solid fa-circle-info"
+                                x-on:click="setInfoEvolucao({{$evolucao}})" />
+
+                            @if (auth()->user()->type == 'engineer')
+                                <x-components.dashboard.dropdown.dropdown-item text="Editar" icon="fa-solid fa-pen-to-square"
+                                    x-on:click="setEditModal({{ $evolucao }}, () => $wire)" />
+
+                                <x-components.dashboard.dropdown.dropdown-item text="Excluir" icon="fa-solid fa-trash"
+                                    x-on:click="exclurEvolucao({{ $evolucao }}, () => $wire)" />
+                            @endif
+                        </x-components.dashboard.dropdown.dropdown-table>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
         @if (count($evolucoes) == 0)
             <p class="text-center text-xs p-8 text-gray-600">Nenhuma evolução</p>
