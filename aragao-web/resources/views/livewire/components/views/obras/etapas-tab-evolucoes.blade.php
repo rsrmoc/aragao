@@ -153,7 +153,11 @@
                         rows="5" class="textarea-sm" wire:model="inputs.descricao" name="inputs.descricao" />
                 </div>
 
-                <div>
+                <div class="flex gap-2 items-end">
+                    <div wire:loading wire:target="inputsImages">
+                        <x-components.loading class="loading-xs" />
+                    </div>
+
                     <x-components.input type="file" label="Anexos (apenas imagens)" placeholder="Anexos"
                         class="file-input-sm" accept=".jpg,.png,.webp,.jpeg"
                         multiple wire:model="inputsImages" name="inputsImages" x-ref="inputImagens" />
@@ -181,10 +185,11 @@
             </div>
 
             <div class="modal-action">
-                <button type="submit" class="btn btn-sm btn-primary" wire:loading.attr="disabled" wire:target="saveEvolucao">
+                <button type="submit" class="btn btn-sm btn-primary" wire:loading.attr="disabled">
                     <div wire:loading wire:target="saveEvolucao">
                         <x-components.loading class="loading-xs" />
                     </div>
+
                     <span>Salvar</span>
                 </button>
             </div>
