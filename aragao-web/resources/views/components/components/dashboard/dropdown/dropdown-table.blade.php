@@ -1,5 +1,5 @@
 <div {{ $attributes->merge(['class' => 'dropdown dropdown-left dropdown-top']) }}>
-    <label tabindex="0" class="btn btn-sm btn-ghost">
+    <label tabindex="0" class="btn btn-xs btn-ghost">
         <i class="fa-solid fa-ellipsis-vertical"></i>
     </label>
 

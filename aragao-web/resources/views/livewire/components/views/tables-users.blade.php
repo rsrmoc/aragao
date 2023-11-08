@@ -12,7 +12,7 @@
         <i class="fa-solid fa-circle-info"></i>&ensp;{{ $descriptionPage }}
     </p>
 
-    <table class="table table-sm table-zebra hidden sm:table w-full">
+    <table class="table table-xs table-zebra hidden sm:table w-full">
         <thead>
             <tr class="active">
                 <th>#</th>

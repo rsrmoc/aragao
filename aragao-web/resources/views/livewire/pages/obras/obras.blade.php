@@ -11,7 +11,7 @@
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm hidden sm:table">
+        <table class="table table-xs table-zebra hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>#</th>

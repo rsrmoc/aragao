@@ -1,7 +1,8 @@
 <div x-data="etapasObra">
     <div class="hidden sm:block">
         <x-components.dashboard.navbar.navbar title="#{{ $obra->id }} {{ $obra->nome }}">
-            <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($obra->status, 'badge') }} text-white font-bold mr-4">{{ $obra->status }}</span>
+            <span
+                class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($obra->status, 'badge') }} text-white font-bold mr-4">{{ $obra->status }}</span>
             <div class="radial-progress text-info" style="--value: {{ $porcGeral }}; --size: 2.5rem">
                 <span class="text-xs">{{ $porcGeral }}%</span>
             </div>
@@ -11,59 +12,74 @@
     <div class="sm:hidden mb-3">
         <h3 class="text-xl font-bold mb-3">#{{ $obra->id }} {{ $obra->nome }}</h3>
 
-        <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($obra->status, 'badge') }} text-white font-bold mr-4">{{ $obra->status }}</span>
+        <span
+            class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($obra->status, 'badge') }} text-white font-bold mr-4">{{ $obra->status }}</span>
         <div class="radial-progress text-info" style="--value: {{ $porcGeral }}; --size: 2.5rem">
             <span class="text-xs">{{ $porcGeral }}%</span>
         </div>
     </div>
 
-    <div class="mb-8">
-        <div class="flex py-2 border-b">
-            <div class="text-xs">
-                <strong>Código:</strong>
-                <span>#{{ $obra->id }}</span>
+    <div class="border rounded overflow-hidden mb-8" x-data="{ expanded: false }">
+        <div class="flex justify-between p-3 text-sm text-zinc-500 cursor-pointer" x-on:click="expanded = ! expanded">
+            <div>
+                <i class="fa-solid fa-circle-info"></i>&ensp;
+                <span>Sobre a obra</span>
             </div>
 
-            <div class="divider divider-horizontal"></div>
-
-            <div class="text-xs">
-                <strong>Nome:</strong>
-                <span>{{ $obra->nome }}</span>
+            <div>
+                <i x-show="!expanded" class="fa-solid fa-caret-down"></i>
+                <i x-show="expanded" class="fa-solid fa-caret-up"></i>
             </div>
         </div>
 
-        <div class="flex py-2 border-b">
-            <div class="text-xs">
-                <strong>Dt. de início:</strong>
-                <span>{{ date_format(date_create($obra->dt_inicio), 'd/m/Y') }}</span>
-            </div>
-
-            <div class="divider divider-horizontal"></div>
+        <div class="p-3 bg-zinc-50" x-show="expanded" x-collapse>
+            <div class="flex py-2 border-b">
+                <div class="text-xs">
+                    <strong>Código:</strong>
+                    <span>#{{ $obra->id }}</span>
+                </div>
     
-            <div class="text-xs">
-                <strong>Dt. de previsão:</strong>
-                <span>{{ date_format(date_create($obra->dt_previsao_termino), 'd/m/Y') }}</span>
-            </div>
-
-            <div class="divider divider-horizontal"></div>
+                <div class="divider divider-horizontal"></div>
     
-            <div class="text-xs">
-                <strong>Dt. de término:</strong>
-                <span>{{ $obra->dt_termino ? date_format(date_create($obra->dt_termino), 'd/m/Y') : 'Não definido' }}</span>
+                <div class="text-xs">
+                    <strong>Nome:</strong>
+                    <span>{{ $obra->nome }}</span>
+                </div>
             </div>
-        </div>
-
-        <div class="flex py-2 border-b">
-            <div class="text-xs">
-                <strong>Valor:</strong>
-                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor) }}</span>
-            </div>
-
-            <div class="divider divider-horizontal"></div>
     
-            <div class="text-xs">
-                <strong>Saldo:</strong>
-                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_saldo) }}</span>
+            <div class="flex py-2 border-b">
+                <div class="text-xs">
+                    <strong>Dt. de início:</strong>
+                    <span>{{ date_format(date_create($obra->dt_inicio), 'd/m/Y') }}</span>
+                </div>
+    
+                <div class="divider divider-horizontal"></div>
+    
+                <div class="text-xs">
+                    <strong>Dt. de previsão:</strong>
+                    <span>{{ date_format(date_create($obra->dt_previsao_termino), 'd/m/Y') }}</span>
+                </div>
+    
+                <div class="divider divider-horizontal"></div>
+    
+                <div class="text-xs">
+                    <strong>Dt. de término:</strong>
+                    <span>{{ $obra->dt_termino ? date_format(date_create($obra->dt_termino), 'd/m/Y') : 'Não definido' }}</span>
+                </div>
+            </div>
+    
+            <div class="flex py-2">
+                <div class="text-xs">
+                    <strong>Valor:</strong>
+                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor) }}</span>
+                </div>
+    
+                <div class="divider divider-horizontal"></div>
+    
+                <div class="text-xs">
+                    <strong>Saldo:</strong>
+                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_saldo) }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -71,8 +87,10 @@
     <div class="tabs mb-5">
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 1 }" x-on:click="tab = 1">Etapas</button>
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 2 }" x-on:click="tab = 2">Evolução</button>
-        <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 3 }" x-on:click="tab = 3">Relatórios</button>
-        <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 4 }" x-on:click="tab = 4">Funcionários</button>
+        <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 3 }"
+            x-on:click="tab = 3">Relatórios</button>
+        <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 4 }"
+            x-on:click="tab = 4">Funcionários</button>
         @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
             <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 5 }"
                 x-on:click="tab = 5">Profissionais</button>
@@ -93,7 +111,7 @@
             </x-components.dashboard.navbar.navbar>
 
             <div>
-                <table class="table table-xs hidden sm:table">
+                <table class="table table-xs table-zebra hidden sm:table">
                     <thead>
                         <tr class="active">
                             <th>Nome</th>
@@ -111,23 +129,26 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($etapas as $item)    
+                        @foreach ($etapas as $item)
                             <tr wire:loading.class="active" wire:target="delEtapa({{ $item->id }})">
                                 <td>
                                     <strong>{{ $item->nome }}</strong>
                                 </td>
                                 <td>
-                                    <div class="radial-progress @if ($item->porc_etapa > 99) text-success @else text-primary @endif" style="--value: {{ $item->porc_etapa }}; --size: 2.6rem">
+                                    <div class="radial-progress @if ($item->porc_etapa > 99) text-success @else text-primary @endif"
+                                        style="--value: {{ $item->porc_etapa }}; --size: 2.6rem">
                                         <span class="text-xs">{{ $item->porc_etapa }}%</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="radial-progress text-primary" style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
+                                    <div class="radial-progress text-primary"
+                                        style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
                                         <span class="text-xs">{{ $item->porc_geral }}%</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="radial-progress text-success" style="--value: {{ $item->incidencia }}; --size: 2.6rem">
+                                    <div class="radial-progress text-success"
+                                        style="--value: {{ $item->incidencia }}; --size: 2.6rem">
                                         <span class="text-xs">{{ $item->incidencia }}%</span>
                                     </div>
                                 </td>
@@ -144,7 +165,8 @@
                                     @if ($item->concluida)
                                         <span class="badge badge-sm badge-success font-bold text-white">Concluída</span>
                                     @else
-                                        <span class="badge badge-sm badge-warning font-bold text-white">Em andamento</span>
+                                        <span class="badge badge-sm badge-warning font-bold text-white">Em
+                                            andamento</span>
                                     @endif
                                 </td>
                                 @if (auth()->user()->type !== 'client')
@@ -152,9 +174,11 @@
                                         <div wire:loading.remove wire:target="delEtapa({{ $item->id }})">
                                             <x-components.dashboard.dropdown.dropdown-table>
                                                 <x-components.dashboard.dropdown.dropdown-item text="Editar"
-                                                    icon="fa-solid fa-pen-to-square" x-on:click="setEdit({{ $item }}, () => $wire)" />
+                                                    icon="fa-solid fa-pen-to-square"
+                                                    x-on:click="setEdit({{ $item }}, () => $wire)" />
                                                 <x-components.dashboard.dropdown.dropdown-item text="Excluir"
-                                                    icon="fa-solid fa-trash" x-on:click="excluirEtapa({{ $item->id }}, () => $wire)" />
+                                                    icon="fa-solid fa-trash"
+                                                    x-on:click="excluirEtapa({{ $item->id }}, () => $wire)" />
                                             </x-components.dashboard.dropdown.dropdown-table>
                                         </div>
 
@@ -183,21 +207,24 @@
                                 <div class="flex justify-between mb-2">
                                     <div class="flex flex-col items-center gap-2">
                                         <strong class="text-sm">Exec. etapa:</strong>
-                                        <div class="radial-progress @if ($item->porc_etapa > 99) text-success @else text-primary @endif" style="--value: {{ $item->porc_etapa }}; --size: 2.6rem">
+                                        <div class="radial-progress @if ($item->porc_etapa > 99) text-success @else text-primary @endif"
+                                            style="--value: {{ $item->porc_etapa }}; --size: 2.6rem">
                                             <span class="text-xs">{{ $item->porc_etapa }}%</span>
                                         </div>
                                     </div>
 
                                     <div class="flex flex-col items-center gap-2">
                                         <strong class="text-sm">Exec. obra:</strong>
-                                        <div class="radial-progress text-primary" style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
+                                        <div class="radial-progress text-primary"
+                                            style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
                                             <span class="text-xs">{{ $item->porc_geral }}%</span>
                                         </div>
                                     </div>
 
                                     <div class="flex flex-col items-center gap-2">
                                         <strong class="text-sm">Incidência:</strong>
-                                        <div class="radial-progress text-success" style="--value: {{ $item->incidencia }}; --size: 2.6rem">
+                                        <div class="radial-progress text-success"
+                                            style="--value: {{ $item->incidencia }}; --size: 2.6rem">
                                             <span class="text-xs">{{ $item->incidencia }}%</span>
                                         </div>
                                     </div>
@@ -220,28 +247,34 @@
                                 <div class="flex gap-2">
                                     <div>
                                         @if ($item->quitada)
-                                            <span class="badge badge-sm badge-success font-bold text-white">Quitado</span>
+                                            <span
+                                                class="badge badge-sm badge-success font-bold text-white">Quitado</span>
                                         @else
-                                            <span class="badge badge-sm badge-error font-bold text-white">Em aberto</span>
+                                            <span class="badge badge-sm badge-error font-bold text-white">Em
+                                                aberto</span>
                                         @endif
                                     </div>
                                     <div>
                                         @if ($item->concluida)
-                                            <span class="badge badge-sm badge-success font-bold text-white">Concluída</span>
+                                            <span
+                                                class="badge badge-sm badge-success font-bold text-white">Concluída</span>
                                         @else
-                                            <span class="badge badge-sm badge-warning font-bold text-white">Em andamento</span>
+                                            <span class="badge badge-sm badge-warning font-bold text-white">Em
+                                                andamento</span>
                                         @endif
                                     </div>
                                 </div>
                             </div>
 
-                            @if (auth()->user()->type !== 'client')    
+                            @if (auth()->user()->type !== 'client')
                                 <div>
                                     <x-components.dashboard.dropdown.dropdown-table>
                                         <x-components.dashboard.dropdown.dropdown-item text="Editar"
-                                            icon="fa-solid fa-pen-to-square" x-on:click="setEdit({{ $item }}, () => $wire)" />
+                                            icon="fa-solid fa-pen-to-square"
+                                            x-on:click="setEdit({{ $item }}, () => $wire)" />
                                         <x-components.dashboard.dropdown.dropdown-item text="Excluir"
-                                            icon="fa-solid fa-trash" x-on:click="excluirEtapa({{ $item->id }}, () => $wire)" />
+                                            icon="fa-solid fa-trash"
+                                            x-on:click="excluirEtapa({{ $item->id }}, () => $wire)" />
                                     </x-components.dashboard.dropdown.dropdown-table>
                                 </div>
                             @endif
@@ -301,25 +334,29 @@
                         <div class="w-6/12 sm:w-3/12">
                             <div class="form-control">
                                 <label class="label">
-                                    <span class="label-text">Execução da Etapa <span class="text-red-500">*</span></span>
+                                    <span class="label-text">Execução da Etapa <span
+                                            class="text-red-500">*</span></span>
                                 </label>
 
-                                <select class="select select-sm select-bordered w-24" required wire:model="inputsEtapa.porc_etapa">
-                                    @for ($i = 0; $i <= 100; $i+=5)
+                                <select class="select select-sm select-bordered w-24" required
+                                    wire:model="inputsEtapa.porc_etapa">
+                                    @for ($i = 0; $i <= 100; $i += 5)
                                         <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
                             </div>
                         </div>
-        
+
                         <div class="w-5/12 sm:w-3/12">
                             <div class="form-control">
                                 <label for="" class="label">
-                                    <span class="label-text">Execução da Obra <span class="text-red-500">*</span></span>
+                                    <span class="label-text">Execução da Obra <span
+                                            class="text-red-500">*</span></span>
                                 </label>
 
-                                <select class="select select-sm select-bordered w-24" required wire:model="inputsEtapa.porc_geral">
-                                    @for ($i = 0; $i <= 100; $i+=5)
+                                <select class="select select-sm select-bordered w-24" required
+                                    wire:model="inputsEtapa.porc_geral">
+                                    @for ($i = 0; $i <= 100; $i += 5)
                                         <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
@@ -329,30 +366,35 @@
 
                     <div class="flex gap-3 sm:gap-5 mb-5 flex-col sm:flex-row">
                         <div>
-                            <x-components.input type="date" class="input-sm" label="Data de inicio" placeholder="Data de inicio" required
-                                wire:model="inputsEtapa.dt_inicio" name="inputsEtapa.dt_inicio" />
+                            <x-components.input type="date" class="input-sm" label="Data de inicio"
+                                placeholder="Data de inicio" required wire:model="inputsEtapa.dt_inicio"
+                                name="inputsEtapa.dt_inicio" />
                         </div>
 
                         <div>
-                            <x-components.input type="date" class="input-sm" label="Data de previsão" placeholder="Data de previsão" required
-                                wire:model="inputsEtapa.dt_previsao" name="inputsEtapa.dt_previsao" />
+                            <x-components.input type="date" class="input-sm" label="Data de previsão"
+                                placeholder="Data de previsão" required wire:model="inputsEtapa.dt_previsao"
+                                name="inputsEtapa.dt_previsao" />
                         </div>
 
                         <div>
-                            <x-components.input type="date" class="input-sm" label="Data de termino" placeholder="Data de termino"
-                                wire:model="inputsEtapa.dt_termino" name="inputsEtapa.dt_termino" />
+                            <x-components.input type="date" class="input-sm" label="Data de termino"
+                                placeholder="Data de termino" wire:model="inputsEtapa.dt_termino"
+                                name="inputsEtapa.dt_termino" />
                         </div>
 
                         <div>
-                            <x-components.input type="date" class="input-sm" label="Data de vencimento" placeholder="Data de vencimento" required
-                                wire:model="inputsEtapa.dt_vencimento" name="inputsEtapa.dt_vencimento" />
+                            <x-components.input type="date" class="input-sm" label="Data de vencimento"
+                                placeholder="Data de vencimento" required wire:model="inputsEtapa.dt_vencimento"
+                                name="inputsEtapa.dt_vencimento" />
                         </div>
                     </div>
 
                     <div class="flex mb-5">
                         <div class="w-3/12">
-                            <x-components.input class="input-sm" label="Valor da etapa" placeholder="Valor da etapa" required
-                                wire:model="inputsEtapa.valor" name="inputsEtapa.valor" x-mask:dynamic="$money($input, ',', '.', 2)" />
+                            <x-components.input class="input-sm" label="Valor da etapa" placeholder="Valor da etapa"
+                                required wire:model="inputsEtapa.valor" name="inputsEtapa.valor"
+                                x-mask:dynamic="$money($input, ',', '.', 2)" />
                         </div>
                     </div>
 
@@ -372,8 +414,9 @@
                         </div>
                     </div>
 
-                    <x-components.input type="textarea" class="textarea-sm" label="Descrição completa da etapa" placeholder="Descrição completa da etapa"
-                        wire:model="inputsEtapa.nome" rows="6" wire:model="inputsEtapa.descricao_completa" name="inputsEtapa.descricao_completa" />
+                    <x-components.input type="textarea" class="textarea-sm" label="Descrição completa da etapa"
+                        placeholder="Descrição completa da etapa" wire:model="inputsEtapa.nome" rows="6"
+                        wire:model="inputsEtapa.descricao_completa" name="inputsEtapa.descricao_completa" />
                 </div>
 
                 <div class="modal-action">
@@ -391,7 +434,8 @@
 
 @push('styles')
     <style>
-        input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button {
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             appearance: none;
         }

@@ -9,7 +9,7 @@
     </x-components.dashboard.navbar.navbar>
 
     <div>
-        <table class="table table-sm table-zebra hidden sm:table">
+        <table class="table table-xs table-zebra hidden sm:table">
             <thead>
                 <tr class="active">
                     <th>Etapa</th>
