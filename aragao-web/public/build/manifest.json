@@ -59,12 +59,12 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-7470da35.css",
+    "file": "assets/app-1fb6c9ad.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },
   "resources/sass/chat.scss": {
-    "file": "assets/chat-59a5d5db.css",
+    "file": "assets/chat-867cfabc.css",
     "isEntry": true,
     "src": "resources/sass/chat.scss"
   },
