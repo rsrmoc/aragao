@@ -16,6 +16,7 @@ use App\Livewire\Pages\Reunioes\Reunioes;
 use App\Models\Obras as ModelsObras;
 use App\Models\ObrasEtapas;
 use App\Models\ObrasEvolucoes;
+use Livewire\Livewire;
 
 Route::get('/', Login::class)->name('login')->middleware('guest');
 
@@ -64,3 +65,7 @@ Route::group([
 
 //     return view('pdf.obras-relatorios', compact('obra', 'etapas', 'porcGeral', 'evolucoes'));
 // });
+
+Livewire::setScriptRoute(function ($handle) {
+    return Route::get('/custom/livewire/livewire.js', $handle);
+});
