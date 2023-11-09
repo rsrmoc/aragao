@@ -51,7 +51,7 @@
 
         <p>b. <strong>Aceitação:</strong> Ao continuar utilizando nosso aplicativo após alterações, você concorda com a versão mais recente da política de privacidade.</p>
 
-        <p>Se tiver alguma dúvida ou preocupação sobre nossa política de privacidade, entre em contato conosco em <a href="mailto:contato@aragaoconstrutora.com">contato@aragaoconstrutora.com</a>.</p>
+        <p>Se tiver alguma dúvida ou preocupação sobre nossa política de privacidade, entre em contato conosco em <a href="mailto:rsrmoc@gmail.com">rsrmoc@gmail.com</a>.</p>
 
         <p>Obrigado por confiar na Aragão Construtora!</p>
     </div>
