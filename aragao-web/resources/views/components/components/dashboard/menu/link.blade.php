@@ -1,5 +1,6 @@
 <a href="{{ route($route) }}"
-    class="app-link-menu {{ request()->route()->getName() == $route ? 'active': '' }} hover:bg-zinc-800 hover:text-white">
+    class="app-link-menu {{ request()->route()->getName() == $route ? 'active': '' }} hover:bg-zinc-800 hover:text-white"
+    @isset($blank) target="_blank" @endisset>
     <div>
         <i class="{{ $icon }}"></i>
         <span>{{ $text }}</span>

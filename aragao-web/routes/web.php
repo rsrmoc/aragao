@@ -65,3 +65,5 @@ Route::group([
 
 //     return view('pdf.obras-relatorios', compact('obra', 'etapas', 'porcGeral', 'evolucoes'));
 // });
+
+Route::get('politica-de-privacidade', fn() => view('pages/politica-privacidade'))->name('politica-privacidade');

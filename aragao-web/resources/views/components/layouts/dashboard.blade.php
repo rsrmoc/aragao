@@ -21,6 +21,12 @@
 
                         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                             <li>
+                                <a href="{{ route('politica-privacidade') }}" target="_blank">
+                                    <i class="fa-solid fa-scale-balanced"></i>
+                                    <span>Politica de privacidade</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('dashboard.minha-conta') }}">
                                     <i class="fa-solid fa-circle-user"></i>
                                     <span>Minha conta</span>
@@ -130,13 +136,18 @@
                     </div>
 
                     <li>
+                        <x-components.dashboard.menu.link route="politica-privacidade" icon="fa-solid fa-scale-balanced"
+                            text="Politica de privacidade" blank />
+                    </li>
+
+                    <li>
                         <x-components.dashboard.menu.link route="dashboard.minha-conta" icon="fa-solid fa-circle-user"
                             text="Minha conta" />
                     </li>
 
                     <li>
                         <x-components.dashboard.menu.link route="dashboard.logout"
-                            icon="fa-solid fa-arrow-right-from-bracket" text="Sair" no-navigate />
+                            icon="fa-solid fa-arrow-right-from-bracket" text="Sair" />
                     </li>
                 </div>
             </ul>
