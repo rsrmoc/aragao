@@ -5,6 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Aragão Construtora',
   webDir: 'dist',
   server: {
+    androidScheme: 'https'
   },
   plugins: {
     SplashScreen: {
