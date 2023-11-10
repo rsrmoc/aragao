@@ -1,12 +1,10 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.aragaoconstrutora.app',
+  appId: 'br.app.aragao.app',
   appName: 'Aragão Construtora',
   webDir: 'dist',
   server: {
-    androidScheme: 'http',
-    cleartext: true
   },
   plugins: {
     SplashScreen: {

@@ -1,4 +1,4 @@
-package app.aragaoconstrutora.app;
+package br.app.aragao.app;
 
 import com.getcapacitor.BridgeActivity;
 
