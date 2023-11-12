@@ -1,8 +1,0 @@
-{
-  "name": "Aragão Construtora",
-  "integrations": {
-    "capacitor": {},
-    "cordova": {}
-  },
-  "type": "vue-vite"
-}

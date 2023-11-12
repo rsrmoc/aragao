@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Aragão Construtora</string>
-    <string name="title_activity_main">Aragão Construtora</string>
-    <string name="package_name">br.app.aragao.app</string>
-    <string name="custom_url_scheme">br.app.aragao.app</string>
-</resources>
