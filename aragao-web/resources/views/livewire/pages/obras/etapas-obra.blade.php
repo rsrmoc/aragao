@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="tabs mb-5">
+    <div class="tabs flex-nowrap mb-5 overflow-auto">
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 1 }" x-on:click="tab = 1">Etapas</button>
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 2 }" x-on:click="tab = 2">Evolução</button>
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 3 }"
@@ -194,7 +194,7 @@
 
                 <div class="sm:hidden">
                     @foreach ($etapas as $item)
-                        <div class="flex justify-between gap-3 py-3 border-b last:border-0">
+                        <div class="flex justify-between gap-3 p-3 border border-b-4 border-b-primary rounded-xl mb-2">
                             <div class="w-full">
                                 <div class="flex gap-2 items-center mb-3">
                                     <div wire:loading wire:target="delEtapa({{ $item->id }})">
@@ -231,14 +231,14 @@
                                 </div>
 
                                 <div class="flex mb-2">
-                                    <div class="text-sm">
+                                    <div class="text-xs">
                                         <strong>Val. gasto:</strong>
                                         <span>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</span>
                                     </div>
 
                                     <div class="divider divider-horizontal"></div>
 
-                                    <div class="text-sm">
+                                    <div class="text-xs">
                                         <strong>Val. etapa:</strong>
                                         <span>R$ {{ number_format($item->valor, 2, ',', '.') }}</span>
                                     </div>

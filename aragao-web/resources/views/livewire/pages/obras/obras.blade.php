@@ -60,60 +60,110 @@
             </tbody>
         </table>
 
-        <div class="sm:hidden">
-            @foreach ($obras as $item)
-                <div class="flex justify-between py-3 border-b last:border-0">
-                    <div>
-                        <div class="flex gap-2 items-center mb-2">
-                            <div wire:loading wire:target="delObra({{ $item->id }})">
-                                <x-components.loading class="loading-xs" />
+        @if (auth()->user()->type === 'client')
+            <div class="sm:hidden">
+                @foreach ($obras as $item)
+                    <a href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}"
+                        class="flex justify-between p-4 border border-b-4 border-b-primary rounded-xl mb-2
+                            shadow">
+                        <div>
+                            <div class="flex gap-2 items-center mb-2">
+                                <div wire:loading wire:target="delObra({{ $item->id }})">
+                                    <x-components.loading class="loading-xs" />
+                                </div>
+                                <div class="w-full">
+                                    <h3 class="font-bold text-2xl">{{ $item->nome }}</h3>
+                                    <div>
+                                        <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($item->status, 'badge') }} badge-sm text-white font-bold">{{ $item->status }}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="w-full flex items-center justify-between">
-                                <h3 class="font-bold text-lg">#{{ $item->id }} {{ $item->nome }}</h3>
-                                <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($item->status, 'badge') }} badge-sm text-white font-bold">{{ $item->status }}</span>
+
+                            <div class="flex mb-2">
+                                <div class="text-sm">
+                                    <strong>Inicio:</strong>
+                                    <span>{{ date_format(date_create($item->dt_inicio), 'd/m/Y') }}</span>
+                                </div>
+                                <div class="divider divider-horizontal h-4"></div>
+                                <div class="text-sm">
+                                    <strong>Previsão:</strong>
+                                    <span>{{ date_format(date_create($item->dt_previsao_termino), 'd/m/Y') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex mb-2">
+                                <div class="text-sm">
+                                    <strong>Valor:</strong>
+                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</span>
+                                </div>
+                                <div class="divider divider-horizontal h-4"></div>
+                                <div class="text-sm">
+                                    <strong>Saldo:</strong>
+                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        @else
+            <div class="sm:hidden">
+                @foreach ($obras as $item)
+                    <div class="flex justify-between py-3 border-b last:border-0">
+                        <div>
+                            <div class="flex gap-2 items-center mb-2">
+                                <div wire:loading wire:target="delObra({{ $item->id }})">
+                                    <x-components.loading class="loading-xs" />
+                                </div>
+                                <div class="w-full">
+                                    <h3 class="font-bold text-lg">#{{ $item->id }} {{ $item->nome }}</h3>
+                                    <div>
+                                        <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($item->status, 'badge') }} badge-sm text-white font-bold">{{ $item->status }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex mb-2">
+                                <div class="text-sm">
+                                    <strong>Inicio:</strong>
+                                    <span>{{ date_format(date_create($item->dt_inicio), 'd/m/Y') }}</span>
+                                </div>
+                                <div class="divider divider-horizontal h-4"></div>
+                                <div class="text-sm">
+                                    <strong>Previsão:</strong>
+                                    <span>{{ date_format(date_create($item->dt_previsao_termino), 'd/m/Y') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="flex mb-2">
+                                <div class="text-sm">
+                                    <strong>Valor:</strong>
+                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</span>
+                                </div>
+                                <div class="divider divider-horizontal h-4"></div>
+                                <div class="text-sm">
+                                    <strong>Saldo:</strong>
+                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="flex mb-2">
-                            <div class="text-sm">
-                                <strong>Inicio:</strong>
-                                <span>{{ date_format(date_create($item->dt_inicio), 'd/m/Y') }}</span>
-                            </div>
-                            <div class="divider divider-horizontal h-4"></div>
-                            <div class="text-sm">
-                                <strong>Previsão:</strong>
-                                <span>{{ date_format(date_create($item->dt_previsao_termino), 'd/m/Y') }}</span>
-                            </div>
-                        </div>
-
-                        <div class="flex mb-2">
-                            <div class="text-sm">
-                                <strong>Valor:</strong>
-                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</span>
-                            </div>
-                            <div class="divider divider-horizontal h-4"></div>
-                            <div class="text-sm">
-                                <strong>Saldo:</strong>
-                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</span>
-                            </div>
+                        <div>
+                            <x-components.dashboard.dropdown.dropdown-table>
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-stairs" text="Etapas"
+                                    href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" />
+                                @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
+                                    <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
+                                        text="Editar" x-on:click="setEditModal({{ $item }}, () => $wire)" />
+                                    <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-trash" text="Excluir"
+                                        x-on:click="deleteObra({{ $item }}, () => $wire)" />
+                                @endif
+                            </x-components.dashboard.dropdown.dropdown-table>
                         </div>
                     </div>
-
-                    <div>
-                        <x-components.dashboard.dropdown.dropdown-table>
-                            <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-stairs" text="Etapas"
-                                href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" />
-                            @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
-                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
-                                    text="Editar" x-on:click="setEditModal({{ $item }}, () => $wire)" />
-                                <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-trash" text="Excluir"
-                                    x-on:click="deleteObra({{ $item }}, () => $wire)" />
-                            @endif
-                        </x-components.dashboard.dropdown.dropdown-table>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
+        @endif
 
         {{ $obras?->links() }}
 

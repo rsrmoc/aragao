@@ -2,7 +2,7 @@
     <div class="drawer lg:drawer-open">
         <input type="checkbox" class="drawer-toggle" id="drawerCheck" />
         <div class="drawer-content overflow-y-auto pt-16 pb-16 lg:p-0 h-screen">
-            <div class="navbar shadow bg-white fixed top-0 left-0 w-full lg:hidden ">
+            <div class="navbar shadow bg-white fixed top-0 left-0 w-full lg:hidden z-10">
                 <div class="navbar-start">
                     <label for="drawerCheck" class="btn btn-ghost">
                         <i class="fa-solid fa-bars"></i>
@@ -50,11 +50,13 @@
             </div>
 
             <div class="btm-nav sm:hidden border-t">
-                <a href="{{ route('dashboard.home') }}"
-                    class="{{ request()->route()->getName() == 'dashboard.home'? 'active text-primary': '' }}">
-                    <i class="fa-solid fa-house"></i>
-                    <span class="text-xs">Inicio</span>
-                </a>
+                @if (auth()->user()->type !== 'client')
+                    <a href="{{ route('dashboard.home') }}"
+                        class="{{ request()->route()->getName() == 'dashboard.home'? 'active text-primary': '' }}">
+                        <i class="fa-solid fa-house"></i>
+                        <span class="text-xs">Inicio</span>
+                    </a>
+                @endif
 
                 <a href="{{ route('dashboard.obras') }}"
                     class="{{ request()->route()->getName() == 'dashboard.obras'? 'active text-primary': '' }}">
@@ -76,7 +78,7 @@
             </div>
         </div>
 
-        <div class="drawer-side">
+        <div class="drawer-side z-20">
             <label for="drawerCheck" class="drawer-overlay"></label>
 
             <ul class="menu p-4 w-72 min-h-full bg-zinc-900 text-base-100">
@@ -85,9 +87,11 @@
                         class="w-28 mx-auto" />
                 </div>
 
-                <li>
-                    <x-components.dashboard.menu.link route="dashboard.home" icon="fa-solid fa-house" text="Início" />
-                </li>
+                @if (auth()->user()->type !== 'client')
+                    <li>
+                        <x-components.dashboard.menu.link route="dashboard.home" icon="fa-solid fa-house" text="Início" />
+                    </li>
+                @endif
 
                 @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
                     <li>

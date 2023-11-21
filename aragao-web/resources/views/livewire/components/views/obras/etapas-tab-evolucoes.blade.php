@@ -21,7 +21,7 @@
             </thead>
 
             <tbody>
-                @foreach ($evolucoes as $evolucao)    
+                @foreach ($evolucoes as $evolucao)
                     <tr wire:loading.class="active" wire:target="excluirEvolucao({{ $evolucao->id }})">
                         <td>
                             <strong>{{ "#{$evolucao->etapa->id} - {$evolucao->etapa->nome}" }}</strong>
@@ -60,7 +60,7 @@
 
         <div class="sm:hidden">
             @foreach ($evolucoes as $evolucao)
-                <div class="flex justify-between gap-3 py-3 border-b last:border-0">
+                <div class="flex justify-between gap-3 p-3 border border-b-4 border-b-primary rounded-xl mb-2">
                     <div>
                         <div class="flex gap-2 mb-3">
                             <div wire:loading wire:target="excluirEvolucao({{ $evolucao->id }})">
@@ -68,7 +68,7 @@
                             </div>
     
                             <div class="w-full">
-                                <strong class="text-lg">{{ "#{$evolucao->etapa->id} - {$evolucao->etapa->nome}" }}</strong>
+                                <strong class="text-lg">{{ $evolucao->etapa->nome }}</strong>
                             </div>
                         </div>
 
@@ -87,9 +87,10 @@
                         </div>
 
                         <div>
-                            <strong class="text-sm block">Descrição:</strong>
                             <div class="tooltip" data-tip="{{ $evolucao->descricao }}">
-                                <span class="block w-72 text-ellipsis overflow-hidden whitespace-nowrap">{{ $evolucao->descricao }}</span>
+                                <span class="block w-72 text-ellipsis overflow-hidden whitespace-nowrap text-sm text-left">
+                                    <strong>Descrição:</strong> {{ $evolucao->descricao }}
+                                </span>
                             </div>
                         </div>
                     </div>
