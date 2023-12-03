@@ -26,7 +26,9 @@ class User extends Authenticatable
         'phone_number',
         'type',
         'password_user_set',
-        'engineer_admin'
+        'engineer_admin',
+        'notification_token_android',
+        'notification_token_ios'
     ];
 
     /**

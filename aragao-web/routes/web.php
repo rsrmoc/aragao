@@ -39,6 +39,8 @@ Route::group([
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::get('/logout', [DashboardController::class, 'destroy'])->name('logout');
 
+    Route::post('/notification-token', [UsuariosController::class, 'tokenNotification']);
+
     Route::middleware('admin')->group(function() {
         
         Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios');
