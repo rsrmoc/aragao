@@ -13,4 +13,8 @@ class ChatUsuario extends Model
         'id_chat',
         'id_usuario'
     ];
+
+    public function usuario() {
+        return $this->hasOne(User::class, 'id', 'id_usuario');
+    }
 }

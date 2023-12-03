@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Chat;
 
+use App\Jobs\ProcessFBCloudMessaging;
 use App\Models\Chat as ModelsChat;
 use App\Models\ChatMessage;
 use App\Models\ChatMessageView;
@@ -73,6 +74,8 @@ class Chat extends Component
 
                 DB::commit();
 
+                ProcessFBCloudMessaging::dispatch($messages[0]);
+
                 return $messages;
             }
 
@@ -84,6 +87,8 @@ class Chat extends Component
             $message->load('usuario');
 
             DB::commit();
+
+            ProcessFBCloudMessaging::dispatch($message);
 
             return $message;
         }
@@ -117,12 +122,13 @@ class Chat extends Component
         foreach($chats as $chat) {
             if ($chat->tipo == 'group') continue;
 
-            $chatUsuario = ChatUsuario::firstWhere([
-                'id_chat' => $chat->id,
-                ['id_usuario', '<>', Auth::user()->id]
-            ]);
+            $chatUsuario = ChatUsuario::with('usuario')
+                ->firstWhere([
+                    'id_chat' => $chat->id,
+                    ['id_usuario', '<>', Auth::user()->id]
+                ]);
 
-            $chat->usuario = User::find($chatUsuario->id_usuario);
+            $chat->usuario = $chatUsuario->usuario;
         }
 
         return $chats;
