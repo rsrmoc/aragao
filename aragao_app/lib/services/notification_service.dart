@@ -22,10 +22,12 @@ class NotificationService {
 
   _setupNotifications() async {
     const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/launcher_icon');
+    const DarwinInitializationSettings iosSettings = DarwinInitializationSettings();
 
     await _localNotification.initialize(
       const InitializationSettings(
-        android: androidSettings
+        android: androidSettings,
+        iOS: iosSettings
       ),
       onDidReceiveNotificationResponse: (details) {
         print('Notificação aberta!');
@@ -43,12 +45,19 @@ class NotificationService {
       priority: Priority.max
     );
 
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentSound: true,
+      presentBadge: true
+    );
+
     await _localNotification.show(
       notification.id,
       notification.title,
       notification.description,
       NotificationDetails(
-        android: androidDetails
+        android: androidDetails,
+        iOS: iosDetails
       )
     );
   }
