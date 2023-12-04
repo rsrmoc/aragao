@@ -98,37 +98,39 @@
                 </div>
 
                 <div id="container-messages" style="background-image: url({{ asset('/images/chat_bg.webp') }});"
-                    class="h-full overflow-auto p-2   relative flex flex-col-reverse">
-                    <div wire:loading wire:target="messagesFromChat" class="absolute w-full top-0 left-0">
-                        <div class="flex justify-center p-3">
-                            <x-components.loading />
-                        </div>
-                    </div>
-
-                    <template x-for="message, index in messages">
-                        <div class="chat"
-                            x-bind:class="message.id_usuario == {{ auth()->user()->id }} ? 'chat-end' : 'chat-start'">
-                            <div class="chat-image avatar placeholder">
-                                <div class="w-10 rounded-full bg-primary text-white border">
-                                    <span x-text="initials(message?.usuario?.name)"></span>
-                                </div>
+                    class="h-full overflow-hidden relative">
+                    <div class="h-max max-h-full flex flex-col-reverse overflow-auto p-2">
+                        <div wire:loading wire:target="messagesFromChat" class="absolute w-full top-0 left-0">
+                            <div class="flex justify-center p-3">
+                                <x-components.loading />
                             </div>
-                            <template x-if="message.id_usuario !== {{ auth()->user()->id }}">
-                                <div class="chat-header">
-                                    <span class="badge badge-primary badge-sm font-bold"
-                                        x-text="`${message?.usuario?.name} (${typeUsuarios[message?.usuario?.type]})`"></span>
+                        </div>
+    
+                        <template x-for="message, index in messages">
+                            <div class="chat"
+                                x-bind:class="message.id_usuario == {{ auth()->user()->id }} ? 'chat-end' : 'chat-start'">
+                                <div class="chat-image avatar placeholder">
+                                    <div class="w-10 rounded-full bg-primary text-white border">
+                                        <span x-text="initials(message?.usuario?.name)"></span>
+                                    </div>
                                 </div>
-                            </template>
-                            <div class="chat-bubble flex flex-col gap-1">
-                                <template x-if="message?.imagem">
-                                    <img x-bind:src="message?.imagem?.url" class="rounded-lg max-w-xs cursor-pointer"
-                                        loading="lazy" x-on:click="setModalImage(message?.imagem?.url)" />
+                                <template x-if="message.id_usuario !== {{ auth()->user()->id }}">
+                                    <div class="chat-header">
+                                        <span class="badge badge-primary badge-sm font-bold"
+                                            x-text="`${message?.usuario?.name} (${typeUsuarios[message?.usuario?.type]})`"></span>
+                                    </div>
                                 </template>
-                                <span x-text="message?.mensagem" class="text-sm"></span>
-                                <div class="text-xs text-right opacity-50" x-text="$store.helpers.formatDateFromNow(message?.created_at, 'LLL')"></div>
+                                <div class="chat-bubble flex flex-col gap-1">
+                                    <template x-if="message?.imagem">
+                                        <img x-bind:src="message?.imagem?.url" class="rounded-lg max-w-xs cursor-pointer"
+                                            loading="lazy" x-on:click="setModalImage(message?.imagem?.url)" />
+                                    </template>
+                                    <span x-text="message?.mensagem" class="text-sm"></span>
+                                    <div class="text-xs text-right opacity-50" x-text="$store.helpers.formatDateFromNow(message?.created_at, 'LLL')"></div>
+                                </div>
                             </div>
-                        </div>
-                    </template>
+                        </template>
+                    </div>
                 </div>
 
                 <div>
