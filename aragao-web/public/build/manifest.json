@@ -11,7 +11,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/pages/dashboard/chat.js": {
-    "file": "assets/chat-2db0a89f.js",
+    "file": "assets/chat-f66d3cc2.js",
     "isEntry": true,
     "src": "resources/js/pages/dashboard/chat.js"
   },
@@ -59,7 +59,7 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-24993c5e.css",
+    "file": "assets/app-cfd83c56.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },
