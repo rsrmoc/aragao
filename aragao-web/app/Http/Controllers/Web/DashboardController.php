@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     public function index() {
-        if (Auth::user()->type === 'client') {
+        if (Auth::user()->type === 'client' && Auth::user()->password_user_set) {
             return redirect()->route('dashboard.obras');
         }
 
