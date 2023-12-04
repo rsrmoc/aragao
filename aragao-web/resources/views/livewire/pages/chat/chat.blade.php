@@ -26,7 +26,7 @@
                 <template x-for="(chat,index) in chats" x-bind:key="index">
                     <div class="border-b last:border-0 px-2 cursor-pointer active:bg-zinc-200 hover:bg-zinc-200"
                         x-on:click="initChat(chat)" x-bind:class="{ 'bg-zinc-300': chatSelected?.id == chat.id }">
-                        <div class="flex py-2 gap-3 relative">
+                        <div class="flex pt-4 pb-2 gap-3 relative">
                             <div>
                                 <div class="avatar placeholder">
                                     <div class="w-12 h-12 rounded-full bg-primary border shadow-inner">
@@ -36,12 +36,12 @@
                                 </div>
                             </div>
 
-                            <div class="flex flex-col justify-center">
-                                <h4 class="font-semibold text-base mb-1"
+                            <div class="flex flex-col justify-center overflow-hidden w-full">
+                                <h4 class="font-semibold text-base mb-1 whitespace-nowrap text-ellipsis overflow-hidden"
                                     x-text="chat?.usuario ? `${chat?.usuario?.name} (${typeUsuarios[chat?.usuario?.type]})` : `${chat.nome} (Obra)`"></h4>
 
                                 <template x-if="chat.last_message">
-                                    <span class="text-xs">
+                                    <span class="text-xs whitespace-nowrap text-ellipsis overflow-hidden">
                                         <template x-if="chat.last_message.id_usuario == {{ auth()->user()->id }}">
                                             <strong>Eu:</strong>
                                         </template>
@@ -77,18 +77,18 @@
             <div class="h-full flex flex-col">
                 <div>
                     <div class="navbar border-b px-5">
-                        <div class="navbar-start gap-2">
+                        <div class="navbar-start gap-2 w-full">
                             <button class="btn btn-sm btn-ghost lg:hidden" x-on:click="closeChat">
                                 <i class="fa-solid fa-arrow-left"></i>
                             </button>
 
-                            <h3 class="font-bold text-lg">
+                            <h3 class="font-bold text-lg whitespace-nowrap text-ellipsis overflow-hidden">
                                 <span
                                     x-text="chatSelected?.usuario ? chatSelected?.usuario?.name : chatSelected?.nome"></span>
                             </h3>
                         </div>
 
-                        <div class="navbar-end">
+                        <div class="navbar-end w-max">
                             <x-components.dashboard.dropdown.dropdown-table class="dropdown-end">
                                 <x-components.dashboard.dropdown.dropdown-item text="Fechar conversa"
                                     icon="fa-solid fa-xmark" x-on:click="closeChat" />
@@ -98,7 +98,7 @@
                 </div>
 
                 <div id="container-messages" style="background-image: url({{ asset('/images/chat_bg.webp') }});"
-                    class="h-full overflow-auto p-2 relative">
+                    class="h-full overflow-auto p-2   relative flex flex-col-reverse">
                     <div wire:loading wire:target="messagesFromChat" class="absolute w-full top-0 left-0">
                         <div class="flex justify-center p-3">
                             <x-components.loading />

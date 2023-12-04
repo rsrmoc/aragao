@@ -51,7 +51,7 @@ Alpine.data('pageChat', () => ({
 
         component.messagesFromChat()
             .then(messages => {
-                this.messages = messages;
+                this.messages = messages.reverse();
                 
                 this.scrollChat();
             });
@@ -88,8 +88,8 @@ Alpine.data('pageChat', () => ({
 
                 component.inputMessage = null;
 
-                if (Array.isArray([message])) this.messages = this.messages.concat(message);
-                else this.messages.push(message);
+                if (Array.isArray(message)) message.forEach((msg) => this.messages.unshift(msg));
+                else this.messages.unshift(message);
 
                 this.chatSelected.last_message = this.messages[this.messages.length - 1];
                 this.orderChat();
