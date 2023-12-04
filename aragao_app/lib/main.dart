@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:aragao_app/services/firebase_messaging_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'firebase_options.dart';
 
 import 'package:aragao_app/services/notification_service.dart';

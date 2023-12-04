@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aragao_app/services/firebase_messaging_service.dart';
 import 'package:aragao_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -39,6 +40,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late WebViewController controller;
+  bool isNotification = false;
   
   void fileSelectionHandler() async {
     if (Platform.isAndroid) {
@@ -62,6 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   initializeFirebaseMessaging() async {
     await Provider.of<FirebaseMessagingService>(context, listen: false).initializeSettings();
+
+    Provider.of<NotificationService>(context, listen: false).onSelectNotification = () => controller.loadRequest(Uri.parse('https://app.aragao.app.br/home/chat'));
   }
 
   void injectJavascriptSendTokenFirebaseMessaging() {
@@ -73,16 +77,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (token != null && platform != null) {
       controller.runJavaScript('''
-        fetch('/home/notification-token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-          },
-          body: JSON.stringify({
-            token: '$token',
-            platform: '$platform',
-          })
+        document.addEventListener('DOMContentLoaded', () => {
+          fetch('/home/notification-token', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+              token: '$token',
+              platform: '$platform',
+            })
+          });
         });
       ''');
     }
@@ -105,7 +111,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ..loadRequest(Uri.parse('https://app.aragao.app.br/'));
 
     fileSelectionHandler();
+
     super.initState();
+
     initializeFirebaseMessaging();
   }
 

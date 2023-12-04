@@ -11,17 +11,27 @@ class CustomNotification {
 
 class NotificationService {
   late FlutterLocalNotificationsPlugin _localNotification;
+  late Function onSelectNotification;
 
   NotificationService() {
     _localNotification = FlutterLocalNotificationsPlugin();
+
     _localNotification
       .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
       ?.requestNotificationsPermission();
+
+    _localNotification.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true
+      );
+
     _setupNotifications();
   }
 
   _setupNotifications() async {
-    const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/launcher_icon');
+    const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
     const DarwinInitializationSettings iosSettings = DarwinInitializationSettings();
 
     await _localNotification.initialize(
@@ -29,9 +39,7 @@ class NotificationService {
         android: androidSettings,
         iOS: iosSettings
       ),
-      onDidReceiveNotificationResponse: (details) {
-        print('Notificação aberta!');
-      },
+      onDidReceiveNotificationResponse: (NotificationResponse notification) => onSelectNotification()
     );
   }
 
