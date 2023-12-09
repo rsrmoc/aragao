@@ -77,18 +77,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (token != null && platform != null) {
       controller.runJavaScript('''
-        document.addEventListener('DOMContentLoaded', () => {
-          fetch('/home/notification-token', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-              token: '$token',
-              platform: '$platform',
-            })
-          });
+        fetch('/home/notification-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({
+            token: '$token',
+            platform: '$platform',
+          })
         });
       ''');
     }
@@ -96,13 +94,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    super.initState();
+
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (url) {
-            if (url.endsWith('/home') || url.endsWith('/obras')) {
+          onPageFinished: (url) {
+            if (url.endsWith('/home') || url.endsWith('/obras') || url.endsWith('/chat')) {
               injectJavascriptSendTokenFirebaseMessaging();
             }
           },
@@ -111,8 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ..loadRequest(Uri.parse('https://app.aragao.app.br/'));
 
     fileSelectionHandler();
-
-    super.initState();
 
     initializeFirebaseMessaging();
   }
