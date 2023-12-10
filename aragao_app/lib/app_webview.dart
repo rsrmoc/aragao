@@ -101,6 +101,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
+          onPageStarted: (url) {
+            if (url.endsWith('/home') || url.endsWith('/obras') || url.endsWith('/chat')) {
+              injectJavascriptSendTokenFirebaseMessaging();
+            }
+          },
           onPageFinished: (url) {
             if (url.endsWith('/home') || url.endsWith('/obras') || url.endsWith('/chat')) {
               injectJavascriptSendTokenFirebaseMessaging();
