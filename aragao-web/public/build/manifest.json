@@ -16,12 +16,12 @@
     "src": "resources/js/pages/dashboard/chat.js"
   },
   "resources/js/pages/dashboard/etapas-obras.js": {
-    "file": "assets/etapas-obras-b7c2ddf7.js",
+    "file": "assets/etapas-obras-f9a508a4.js",
     "isEntry": true,
     "src": "resources/js/pages/dashboard/etapas-obras.js"
   },
   "resources/js/pages/dashboard/obras.js": {
-    "file": "assets/obras-95dff3d9.js",
+    "file": "assets/obras-9efeffa1.js",
     "isEntry": true,
     "src": "resources/js/pages/dashboard/obras.js"
   },
@@ -59,7 +59,7 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-cfd83c56.css",
+    "file": "assets/app-c71df75a.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },
