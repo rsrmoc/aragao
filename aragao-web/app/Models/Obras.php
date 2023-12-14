@@ -24,7 +24,8 @@ class Obras extends Model
         'endereco_uf',
         'endereco_cep',
         'tipo_recurso',
-        'descricao_completa'
+        'descricao_completa',
+        'valor'
     ];
 
     protected $appends = [
@@ -54,21 +55,21 @@ class Obras extends Model
 
     public function getValorQuitadoAttribute() {
         return ObrasEtapas::where('id_obra', $this->id)
-            ->where('quitada', true)
-            ->sum('valor');
+            ->where('quitada', true)->get()
+            ->sum('valor_etapa');
     }
 
     public function getValorAbertoAttribute() {
         return ObrasEtapas::where('id_obra', $this->id)
             ->where('quitada', false)
-            ->where('dt_vencimento', '>', date('Y-m-d'))
-            ->sum('valor');
+            ->where('dt_vencimento', '>', date('Y-m-d'))->get()
+            ->sum('valor_etapa');
     }
     
     public function getValorVencidoAttribute() {
         return ObrasEtapas::where('id_obra', $this->id)
             ->where('quitada', false)
-            ->where('dt_vencimento', '<', date('Y-m-d'))
-            ->sum('valor');
+            ->where('dt_vencimento', '<', date('Y-m-d'))->get()
+            ->sum('valor_etapa');
     }
 }

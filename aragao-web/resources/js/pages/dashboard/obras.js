@@ -12,6 +12,7 @@ Alpine.data('obrasPage', () => ({
         $wire().inputsAdd.endereco_cep = null;
         $wire().inputsAdd.tipo_recurso = null;
         $wire().inputsAdd.descricao_completa = null;
+        $wire().inputsAdd.valor = null;
 
         $wire().obraIdEdit = null;
         $wire().modal = false;
@@ -44,6 +45,7 @@ Alpine.data('obrasPage', () => ({
         $wire().inputsAdd.endereco_cep = obra.endereco_cep;
         $wire().inputsAdd.tipo_recurso = obra.tipo_recurso;
         $wire().inputsAdd.descricao_completa = obra.descricao_completa;
+        $wire().inputsAdd.valor = Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(obra.valor);
 
         $wire().obraIdEdit = obra.id;
         $wire().modal = true;

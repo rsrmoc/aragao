@@ -9,7 +9,6 @@ Alpine.data('etapasObra', () => ({
         $wire().inputsEtapa.dt_previsao = 0;
         $wire().inputsEtapa.dt_termino = 0;
         $wire().inputsEtapa.dt_vencimento = false;
-        $wire().inputsEtapa.valor = false;
         $wire().inputsEtapa.quitada = false;
         $wire().inputsEtapa.descricao_completa = false;
 
@@ -26,7 +25,6 @@ Alpine.data('etapasObra', () => ({
         $wire().inputsEtapa.dt_previsao = etapa.dt_previsao;
         $wire().inputsEtapa.dt_termino = etapa.dt_termino;
         $wire().inputsEtapa.dt_vencimento = etapa.dt_vencimento;
-        $wire().inputsEtapa.valor = Intl.NumberFormat('pt-BR').format(etapa.valor);
         $wire().inputsEtapa.quitada = etapa.quitada;
         $wire().inputsEtapa.descricao_completa = etapa.descricao_completa;
 

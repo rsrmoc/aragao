@@ -27,7 +27,8 @@ class Obras extends Component
         'endereco_uf' => null,
         'endereco_cep' => null,
         'tipo_recurso' => null,
-        'descricao_completa' => null
+        'descricao_completa' => null,
+        'valor' => null
     ];
     public $obraIdEdit;
 
@@ -48,6 +49,7 @@ class Obras extends Component
             'inputsAdd.endereco_cep' => 'required|string|formato_cep',
             'inputsAdd.tipo_recurso' => 'nullable|string|in:proprio,financiamento_caixa',
             'inputsAdd.descricao_completa' => 'nullable|string',
+            'inputsAdd.valor' => 'required|currency'
         ];
     }
 
@@ -64,6 +66,7 @@ class Obras extends Component
         'inputsAdd.endereco_cep' => 'cep',
         'inputsAdd.tipo_recurso' => 'tipo de recurso',
         'inputsAdd.descricao_completa' => 'descrição completa da obra',
+        'inputsAdd.valor' => 'valor'
     ];
 
     public function __construct() {
@@ -84,6 +87,7 @@ class Obras extends Component
 
             $data = $this->inputsAdd;
             $data['id_usuario'] = Auth::user()->id;
+            $data['valor'] = MoneyService::formatToDB($data['valor']);
 
             $obra = ModelsObras::create($data);
 
@@ -110,6 +114,7 @@ class Obras extends Component
 
         try {
             $data = $this->inputsAdd;
+            $data['valor'] = MoneyService::formatToDB($data['valor']);
 
             $obra = ModelsObras::find($this->obraIdEdit);
             $obra->update($data);

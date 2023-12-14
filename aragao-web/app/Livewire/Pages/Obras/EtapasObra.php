@@ -25,7 +25,6 @@ class EtapasObra extends Component
         'dt_previsao' => null,
         'dt_termino' => null,
         'dt_vencimento' => null,
-        'valor' => 0,
         'quitada' => false,
         'descricao_completa' => null
     ];
@@ -40,7 +39,6 @@ class EtapasObra extends Component
             'inputsEtapa.dt_previsao' => 'required|date_format:Y-m-d',
             'inputsEtapa.dt_termino' => 'nullable|date_format:Y-m-d',
             'inputsEtapa.dt_vencimento' => 'required|date_format:Y-m-d',
-            'inputsEtapa.valor' => 'required|currency',
             'inputsEtapa.quitada' => 'required|boolean',
             'inputsEtapa.descricao_completa' => 'nullable|string'
         ];
@@ -55,7 +53,6 @@ class EtapasObra extends Component
         'inputsEtapa.dt_previsao' => 'data de previsão',
         'inputsEtapa.dt_termino' => 'data de termino',
         'inputsEtapa.dt_vencimento' => 'data de vencimento',
-        'inputsEtapa.valor' => 'valor da etapa',
         'inputsEtapa.quitada' => 'etapa quitada',
         'inputsEtapa.descricao_completa' => 'descrição completa da obra'
     ];
@@ -71,7 +68,6 @@ class EtapasObra extends Component
 
         try {
             $data = $this->inputsEtapa;
-            $data['valor'] = MoneyService::formatToDB($data['valor']);
 
             if ($data['concluida']) {
                 $data['porc_etapa'] = 100;
@@ -95,7 +91,6 @@ class EtapasObra extends Component
             $data = $this->inputsEtapa;
             $data['id_obra'] = $this->obra->id;
             $data['id_usuario'] = Auth::user()->id;
-            $data['valor'] = MoneyService::formatToDB($data['valor']);
 
             ObrasEtapas::create($data);
 
@@ -122,7 +117,7 @@ class EtapasObra extends Component
     public function render()
     {
         $etapas = ObrasEtapas::where('id_obra', $this->obra->id)->orderBy('created_at', 'desc')->get();
-        $porcGeral = ObrasEtapas::where('id_obra', $this->obra->id)->sum('porc_geral');
+        $porcGeral = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('insidencia_executada');
 
         return view('livewire.pages.obras.etapas-obra', compact('etapas', 'porcGeral'));
     }

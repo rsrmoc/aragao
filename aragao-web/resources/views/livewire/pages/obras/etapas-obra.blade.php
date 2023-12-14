@@ -115,9 +115,9 @@
                     <thead>
                         <tr class="active">
                             <th>Nome</th>
-                            <th>Execução da etapa</th>
-                            <th>Execução da obra</th>
                             <th>Incidência</th>
+                            <th>Execução da etapa</th>
+                            <th>Incidência executada</th>
                             <th>Valor gasto</th>
                             <th>Valor da etapa</th>
                             <th>Situação</th>
@@ -135,6 +135,12 @@
                                     <strong>{{ $item->nome }}</strong>
                                 </td>
                                 <td>
+                                    <div class="radial-progress text-success"
+                                    style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
+                                        <span class="text-xs">{{ $item->porc_geral }}%</span>
+                                    </div>
+                                </td>
+                                <td>
                                     <div class="radial-progress @if ($item->porc_etapa > 99) text-success @else text-primary @endif"
                                         style="--value: {{ $item->porc_etapa }}; --size: 2.6rem">
                                         <span class="text-xs">{{ $item->porc_etapa }}%</span>
@@ -142,31 +148,24 @@
                                 </td>
                                 <td>
                                     <div class="radial-progress text-primary"
-                                        style="--value: {{ $item->porc_geral }}; --size: 2.6rem">
-                                        <span class="text-xs">{{ $item->porc_geral }}%</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="radial-progress text-success"
-                                        style="--value: {{ $item->incidencia }}; --size: 2.6rem">
-                                        <span class="text-xs">{{ $item->incidencia }}%</span>
+                                        style="--value: {{ $item->insidencia_executada }}; --size: 2.6rem">
+                                        <span class="text-xs">{{ $item->insidencia_executada }}%</span>
                                     </div>
                                 </td>
                                 <td>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
-                                <td>R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
+                                <td>R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</td>
                                 <td>
                                     @if ($item->quitada)
                                         <span class="badge badge-sm badge-success font-bold text-white">Quitado</span>
                                     @else
-                                        <span class="badge badge-sm badge-error font-bold text-white">Em aberto</span>
+                                        <span class="badge badge-sm badge-error font-bold text-white">Aberto</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if ($item->concluida)
                                         <span class="badge badge-sm badge-success font-bold text-white">Concluída</span>
                                     @else
-                                        <span class="badge badge-sm badge-warning font-bold text-white">Em
-                                            andamento</span>
+                                        <span class="badge badge-sm badge-warning font-bold text-white">Andamento</span>
                                     @endif
                                 </td>
                                 @if (auth()->user()->type !== 'client')
@@ -341,25 +340,18 @@
                                 <select class="select select-sm select-bordered w-24" required
                                     wire:model="inputsEtapa.porc_etapa">
                                     @for ($i = 0; $i <= 100; $i += 5)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option value="{{ $i }}">{{ $i }}%</option>
                                     @endfor
                                 </select>
                             </div>
                         </div>
 
                         <div class="w-5/12 sm:w-3/12">
-                            <div class="form-control">
-                                <label for="" class="label">
-                                    <span class="label-text">Execução da Obra <span
-                                            class="text-red-500">*</span></span>
-                                </label>
-
-                                <select class="select select-sm select-bordered w-24" required
-                                    wire:model="inputsEtapa.porc_geral">
-                                    @for ($i = 0; $i <= 100; $i += 5)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                    @endfor
-                                </select>
+                            <div class="flex items-end gap-2 w-max">
+                                <x-components.input class="input-sm text-right w-full sm:w-20" label="Incidência" placeholder="Incidência" required
+                                    wire:model="inputsEtapa.porc_geral" name="inputsEtapa.porc_geral"
+                                    type="number" max="100" min="0" step="0.05" />
+                                <span>%</span>
                             </div>
                         </div>
                     </div>
@@ -390,13 +382,13 @@
                         </div>
                     </div>
 
-                    <div class="flex mb-5">
+                    {{-- <div class="flex mb-5">
                         <div class="w-3/12">
                             <x-components.input class="input-sm" label="Valor da etapa" placeholder="Valor da etapa"
                                 required wire:model="inputsEtapa.valor" name="inputsEtapa.valor"
                                 x-mask:dynamic="$money($input, ',', '.', 2)" />
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="flex gap-5 mb-5 items-center">
                         <div class="form-control inline-block">

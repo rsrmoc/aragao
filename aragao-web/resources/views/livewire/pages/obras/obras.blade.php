@@ -38,7 +38,7 @@
                         <td>{{ $item->nome }}</td>
                         <td>{{ date_format(date_create($item->dt_inicio), 'd/m/Y') }}</td>
                         <td>{{ date_format(date_create($item->dt_previsao_termino), 'd/m/Y') }}</td>
-                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</td>
+                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor) }}</td>
                         <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</td>
                         <td>
                             <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($item->status, 'badge') }} badge-sm text-white font-bold">{{ $item->status }}</span>
@@ -94,7 +94,7 @@
                             <div class="flex mb-2">
                                 <div class="text-sm">
                                     <strong>Valor:</strong>
-                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</span>
+                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor) }}</span>
                                 </div>
                                 <div class="divider divider-horizontal h-4"></div>
                                 <div class="text-sm">
@@ -138,7 +138,7 @@
                             <div class="flex mb-2">
                                 <div class="text-sm">
                                     <strong>Valor:</strong>
-                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_quitado) }}</span>
+                                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor) }}</span>
                                 </div>
                                 <div class="divider divider-horizontal h-4"></div>
                                 <div class="text-sm">
@@ -205,6 +205,11 @@
                                     <option value="proprio">Proprio</option>
                                     <option value="financiamento_caixa">Financiamento caixa</option>
                                 </select>
+                            </div>
+
+                            <div>
+                                <x-components.input class="input-sm" label="Valor da obra" placeholder="Valor" required
+                                    x-mask:dynamic="$money($input, ',', '.', 2)" wire:model="inputsAdd.valor" name="inputsAdd.valor" />
                             </div>
                         </div>
 
