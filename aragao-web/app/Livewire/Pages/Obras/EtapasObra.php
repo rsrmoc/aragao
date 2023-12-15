@@ -33,7 +33,7 @@ class EtapasObra extends Component
         return [
             'inputsEtapa.nome' => 'required|string',
             'inputsEtapa.porc_etapa' => 'required|integer|min:0|max:100',
-            'inputsEtapa.porc_geral' => 'required|integer|min:0|max:100',
+            'inputsEtapa.porc_geral' => 'required|currency|min:0|max:100',
             'inputsEtapa.concluida' => 'required|boolean',
             'inputsEtapa.dt_inicio' => 'required|date_format:Y-m-d',
             'inputsEtapa.dt_previsao' => 'required|date_format:Y-m-d',
@@ -119,6 +119,10 @@ class EtapasObra extends Component
         $etapas = ObrasEtapas::where('id_obra', $this->obra->id)->orderBy('created_at', 'desc')->get();
         $porcGeral = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('insidencia_executada');
 
-        return view('livewire.pages.obras.etapas-obra', compact('etapas', 'porcGeral'));
+        $sumIncidencia = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('porc_geral');
+        $sumValorEtap = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('valor_etapa');
+        $sumValorGasto = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('valor_gasto');
+
+        return view('livewire.pages.obras.etapas-obra', compact('etapas', 'porcGeral', 'sumIncidencia', 'sumValorEtap', 'sumValorGasto'));
     }
 }

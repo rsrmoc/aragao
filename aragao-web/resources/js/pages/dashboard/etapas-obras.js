@@ -10,7 +10,7 @@ Alpine.data('etapasObra', () => ({
         $wire().inputsEtapa.dt_termino = 0;
         $wire().inputsEtapa.dt_vencimento = false;
         $wire().inputsEtapa.quitada = false;
-        $wire().inputsEtapa.descricao_completa = false;
+        $wire().inputsEtapa.descricao_completa = null;
 
         $wire().etapaIdEdit = false;
         $wire().modal = false;
