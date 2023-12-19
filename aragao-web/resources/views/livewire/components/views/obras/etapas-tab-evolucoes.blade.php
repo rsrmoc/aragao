@@ -1,6 +1,6 @@
 <div x-data="etapasTabEvolucoes" x-on:clear-file-input="$refs.inputImagens.value = null, infoEvolucao = null">
     <x-components.dashboard.navbar.navbar title="Evoluções da obra">
-        @if (auth()->user()->type == 'engineer')
+        @if (auth()->user()->type !== 'client')
             <button class="btn btn-sm btn-primary" x-on:click="$wire.modal = true">
                 <span class="hidden sm:inline">Adicionar evolução</span>
                 <i class="fa-solid fa-plus sm:hidden"></i>
@@ -39,7 +39,7 @@
                                     <x-components.dashboard.dropdown.dropdown-item text="Informações" icon="fa-solid fa-circle-info"
                                         x-on:click="setInfoEvolucao({{$evolucao}})" />
     
-                                    @if (auth()->user()->type == 'engineer')
+                                    @if (auth()->user()->type !== 'client')
                                         <x-components.dashboard.dropdown.dropdown-item text="Editar" icon="fa-solid fa-pen-to-square"
                                             x-on:click="setEditModal({{ $evolucao }}, () => $wire)" />
     
@@ -100,7 +100,7 @@
                             <x-components.dashboard.dropdown.dropdown-item text="Informações" icon="fa-solid fa-circle-info"
                                 x-on:click="setInfoEvolucao({{$evolucao}})" />
 
-                            @if (auth()->user()->type == 'engineer')
+                            @if (auth()->user()->type !== 'client')
                                 <x-components.dashboard.dropdown.dropdown-item text="Editar" icon="fa-solid fa-pen-to-square"
                                     x-on:click="setEditModal({{ $evolucao }}, () => $wire)" />
 
