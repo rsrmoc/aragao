@@ -82,9 +82,9 @@
             @endforeach
         </div>
 
-        <div class="py-6">
+        {{-- <div class="py-6">
             {{ $usuariosAtribuidos->links() }}
-        </div>
+        </div> --}}
 
         @empty(count($usuariosAtribuidos))    
             <div class="p-8">

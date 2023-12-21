@@ -101,9 +101,9 @@
             @endforeach
         </div>
 
-        <div class="py-6">
+        {{-- <div class="py-6">
             {{ $obrasFuncionarios->links() }}
-        </div>
+        </div> --}}
 
         @if (count($obrasFuncionarios) == 0)
             <p class="text-center text-xs text-gray-600 p-8">Nenhum funcionário</p>
