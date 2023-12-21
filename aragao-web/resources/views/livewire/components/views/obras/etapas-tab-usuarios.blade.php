@@ -82,6 +82,10 @@
             @endforeach
         </div>
 
+        <div class="py-6">
+            {{ $usuariosAtribuidos->links() }}
+        </div>
+
         @empty(count($usuariosAtribuidos))    
             <div class="p-8">
                 <p class="text-xs text-gray-600 text-center">Nenhum {{ $type == 'engineer' ? 'engenheiro' : 'cliente' }}

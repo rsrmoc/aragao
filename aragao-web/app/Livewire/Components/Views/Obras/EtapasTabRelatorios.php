@@ -12,9 +12,12 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Livewire\WithPagination;
 
 class EtapasTabRelatorios extends Component
 {
+    use WithPagination;
+
     public int $obra;
     public string $path = 'app/public/relatorios/';
     public bool $modal = false;

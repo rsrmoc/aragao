@@ -10,9 +10,12 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class EtapasTabUsuarios extends Component
 {
+    use WithPagination;
+
     public string $type;
     public int $obra;
 

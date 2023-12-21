@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class TablesUsers extends Component
 {
+    use WithPagination;
+
     public $type;
     public $title;
     public $descriptionPage;

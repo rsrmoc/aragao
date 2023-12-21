@@ -95,7 +95,9 @@
         @endforeach
     </div>
 
-    {{ $users?->links() }}
+    <div class="py-6">
+        {{ $users->links() }}
+    </div>
 
     @empty(count($users))
         <div class="p-5">

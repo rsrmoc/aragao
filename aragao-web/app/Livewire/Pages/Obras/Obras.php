@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Obras extends Component
 {
+    use WithPagination;
+
     public $inputsAdd = [
         'nome' => null,
         'dt_inicio' => null,

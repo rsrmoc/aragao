@@ -106,7 +106,9 @@
             @endforeach
         </div>
 
-        {{ $reunioes->links() }}
+        <div class="py-6">
+            {{ $reunioes->links() }}
+        </div>
 
         @if (count($reunioes) == 0)    
             <div class="p-8">

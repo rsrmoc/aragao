@@ -7,9 +7,12 @@ use App\Models\ObrasFuncionario;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class EtapasTabFuncionarios extends Component
 {
+    use WithPagination;
+
     public $obra;
     public $funcionarioEncontrado = null;
     public $inputsDisabled = true;

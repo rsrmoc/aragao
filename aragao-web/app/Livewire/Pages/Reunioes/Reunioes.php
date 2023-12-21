@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Reunioes extends Component
 {
+    use WithPagination;
+
     public $inputs = [
         'id_obra' => null,
         'assunto' => null,

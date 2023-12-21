@@ -165,7 +165,9 @@
             </div>
         @endif
 
-        {{ $obras?->links() }}
+        <div class="py-6">
+            {{ $obras->links() }}
+        </div>
 
         @empty(count($obras))
             <div class="p-5">

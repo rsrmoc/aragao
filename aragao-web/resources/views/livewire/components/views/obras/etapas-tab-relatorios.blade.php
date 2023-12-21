@@ -72,6 +72,10 @@
             @endforeach
         </div>
 
+        <div class="py-6">
+            {{ $relatorios->links() }}
+        </div>
+
         @if (count($relatorios) == 0)    
             <div class="p-8">
                 <p class="text-xs text-gray-600 text-center">Nenhum relatório gerado</p>

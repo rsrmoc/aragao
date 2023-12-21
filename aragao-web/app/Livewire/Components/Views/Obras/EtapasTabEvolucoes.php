@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class EtapasTabEvolucoes extends Component
 {
+    use WithPagination;
     use WithFileUploads;
 
     public $obra;

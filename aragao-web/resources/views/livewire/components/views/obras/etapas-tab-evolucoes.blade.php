@@ -113,6 +113,10 @@
             @endforeach
         </div>
 
+        <div class="py-6">
+            {{ $evolucoes->links() }}
+        </div>
+
         @if (count($evolucoes) == 0)
             <p class="text-center text-xs p-8 text-gray-600">Nenhuma evolução</p>
         @endif
