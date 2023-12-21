@@ -162,11 +162,9 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($item->concluida)
-                                        <span class="badge badge-sm badge-success font-bold text-white">Concluída</span>
-                                    @else
-                                        <span class="badge badge-sm badge-warning font-bold text-white">Andamento</span>
-                                    @endif
+                                    <span class="badge badge-sm {{ App\Services\Helpers\StatusService::classStyleStatusObraEtapa($item->status, 'badge') }} font-bold text-white">
+                                        {{ App\Services\Helpers\StatusService::textObraEtapa($item->status) }}
+                                    </span>
                                 </td>
                                 @if (auth()->user()->type !== 'client')
                                     <td>
@@ -268,13 +266,9 @@
                                         @endif
                                     </div>
                                     <div>
-                                        @if ($item->concluida)
-                                            <span
-                                                class="badge badge-sm badge-success font-bold text-white">Concluída</span>
-                                        @else
-                                            <span class="badge badge-sm badge-warning font-bold text-white">Em
-                                                andamento</span>
-                                        @endif
+                                        <span class="badge badge-sm {{ App\Services\Helpers\StatusService::classStyleStatusObraEtapa($item->status, 'badge') }} font-bold text-white">
+                                            {{ App\Services\Helpers\StatusService::textObraEtapa($item->status) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -428,14 +422,24 @@
                         </div>
                     </div> --}}
 
-                    <div class="flex gap-5 mb-5 items-center">
-                        <div class="form-control inline-block">
-                            <label class="label cursor-pointer">
-                                <span class="label-text mr-3">Etapa concluída:</span>
-                                <input type="checkbox" class="checkbox" wire:model="inputsEtapa.concluida" />
+                    <div class="flex mb-5">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Status<span
+                                        class="text-red-500">*</span></span>
                             </label>
-                        </div>
 
+                            <select class="select select-sm select-bordered w-36" required
+                                wire:model="inputsEtapa.status">
+                                <option value="iniciar">A iniciar</option>
+                                <option value="andamento">Em andamento</option>
+                                <option value="paralisada">Paralisada</option>
+                                <option value="concluida">Concluída</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-5 mb-5 items-center">
                         <div class="form-control inline-block">
                             <label class="label cursor-pointer">
                                 <span class="label-text mr-3">Etapa quitada:</span>

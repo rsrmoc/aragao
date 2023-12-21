@@ -20,13 +20,13 @@ class EtapasObra extends Component
         'nome' => null,
         'porc_etapa' => 0,
         'porc_geral' => 0,
-        'concluida' => false,
         'dt_inicio' => null,
         'dt_previsao' => null,
         'dt_termino' => null,
         'dt_vencimento' => null,
         'quitada' => false,
-        'descricao_completa' => null
+        'descricao_completa' => null,
+        'status' => 'iniciar'
     ];
 
     protected function rules() {
@@ -34,13 +34,13 @@ class EtapasObra extends Component
             'inputsEtapa.nome' => 'required|string',
             'inputsEtapa.porc_etapa' => 'required|integer|min:0|max:100',
             'inputsEtapa.porc_geral' => 'required|currency|min:0|max:100',
-            'inputsEtapa.concluida' => 'required|boolean',
             'inputsEtapa.dt_inicio' => 'required|date_format:Y-m-d',
             'inputsEtapa.dt_previsao' => 'required|date_format:Y-m-d',
             'inputsEtapa.dt_termino' => 'nullable|date_format:Y-m-d',
             'inputsEtapa.dt_vencimento' => 'required|date_format:Y-m-d',
             'inputsEtapa.quitada' => 'required|boolean',
-            'inputsEtapa.descricao_completa' => 'nullable|string'
+            'inputsEtapa.descricao_completa' => 'nullable|string',
+            'inputsEtapa.status' => 'required|string'
         ];
     }
 
@@ -48,13 +48,13 @@ class EtapasObra extends Component
         'inputsEtapa.nome' => 'nome',
         'inputsEtapa.porc_etapa' => 'porcentagem da etapa',
         'inputsEtapa.porc_geral' => 'porcentagem geral',
-        'inputsEtapa.concluida' => 'concluida',
         'inputsEtapa.dt_inicio' => 'data de inicio',
         'inputsEtapa.dt_previsao' => 'data de previsão',
         'inputsEtapa.dt_termino' => 'data de termino',
         'inputsEtapa.dt_vencimento' => 'data de vencimento',
         'inputsEtapa.quitada' => 'etapa quitada',
-        'inputsEtapa.descricao_completa' => 'descrição completa da obra'
+        'inputsEtapa.descricao_completa' => 'descrição completa da obra',
+        'inputsEtapa.status' => 'status'
     ];
 
     public function salvarEtapa() {
@@ -69,8 +69,9 @@ class EtapasObra extends Component
         try {
             $data = $this->inputsEtapa;
 
-            if ($data['concluida']) {
+            if ($data['status'] == 'concluida') {
                 $data['porc_etapa'] = 100;
+                $data['concluida'] = true;
             }
 
             $etapa = ObrasEtapas::find($this->etapaIdEdit);

@@ -22,7 +22,8 @@ class ObrasEtapas extends Model
         'dt_termino',
         'dt_vencimento',
         'quitada',
-        'descricao_completa'
+        'descricao_completa',
+        'status'
     ];
     
     protected $casts = [
