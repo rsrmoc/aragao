@@ -46,7 +46,7 @@
                         <td>
                             <x-components.dashboard.dropdown.dropdown-table>
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-stairs" text="Etapas"
-                                    href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" />
+                                    href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" onclick="initLoading()" />
                                 @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
                                     <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
                                         text="Editar" x-on:click="setEditModal({{ $item }}, () => $wire)" />
@@ -63,7 +63,7 @@
         @if (auth()->user()->type === 'client')
             <div class="sm:hidden">
                 @foreach ($obras as $item)
-                    <a href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}"
+                    <a href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" onclick="initLoading()"
                         class="flex justify-between p-4 border border-b-4 border-b-primary rounded-xl mb-2
                             shadow">
                         <div>
@@ -151,7 +151,7 @@
                         <div>
                             <x-components.dashboard.dropdown.dropdown-table>
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-stairs" text="Etapas"
-                                    href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" />
+                                    href="{{ route('dashboard.etapas-obra', ['obra' => $item->id]) }}" onclick="initLoading()" />
                                 @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
                                     <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
                                         text="Editar" x-on:click="setEditModal({{ $item }}, () => $wire)" />
