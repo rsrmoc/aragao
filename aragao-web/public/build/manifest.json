@@ -3,7 +3,7 @@
     "file": "assets/pt-br-06871ea1.js"
   },
   "resources/js/app.js": {
-    "file": "assets/app-b204be42.js",
+    "file": "assets/app-c051e086.js",
     "imports": [
       "_pt-br-06871ea1.js"
     ],
@@ -59,7 +59,7 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-76e29955.css",
+    "file": "assets/app-8ebef6f0.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },

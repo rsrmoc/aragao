@@ -27,13 +27,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('dashboard.minha-conta') }}">
+                                <a href="{{ route('dashboard.minha-conta') }}" onclick="initLoading()">
                                     <i class="fa-solid fa-circle-user"></i>
                                     <span>Minha conta</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('dashboard.logout') }}">
+                                <a href="{{ route('dashboard.logout') }}" onclick="initLoading()">
                                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                                     <span>Sair</span>
                                 </a>
@@ -51,26 +51,26 @@
 
             <div class="btm-nav sm:hidden border-t">
                 @if (auth()->user()->type !== 'client')
-                    <a href="{{ route('dashboard.home') }}"
+                    <a href="{{ route('dashboard.home') }}" onclick="initLoading()"
                         class="{{ request()->route()->getName() == 'dashboard.home'? 'active text-primary': '' }}">
                         <i class="fa-solid fa-house"></i>
                         <span class="text-xs">Inicio</span>
                     </a>
                 @endif
 
-                <a href="{{ route('dashboard.obras') }}"
+                <a href="{{ route('dashboard.obras') }}" onclick="initLoading()"
                     class="{{ request()->route()->getName() == 'dashboard.obras'? 'active text-primary': '' }}">
                     <i class="fa-solid fa-person-digging"></i>
                     <span class="text-xs">Obras</span>
                 </a>
 
-                <a href="{{ route('dashboard.reunioes') }}"
+                <a href="{{ route('dashboard.reunioes') }}" onclick="initLoading()"
                     class="{{ request()->route()->getName() == 'dashboard.reunioes'? 'active text-primary': '' }}">
                     <i class="fa-solid fa-video"></i>
                     <span class="text-xs">Reuniões</span>
                 </a>
 
-                <a href="{{ route('dashboard.chat') }}"
+                <a href="{{ route('dashboard.chat') }}" onclick="initLoading()"
                     class="{{ request()->route()->getName() == 'dashboard.chat'? 'active text-primary': '' }}">
                     <i class="fa-solid fa-message"></i>
                     <span class="text-xs">Chat</span>

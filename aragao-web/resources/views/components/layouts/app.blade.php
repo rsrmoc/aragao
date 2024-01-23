@@ -14,6 +14,13 @@
     @stack('styles')
 </head>
 <body class="bg-zinc-100">
+    <div class="app-loading">
+        <div class="flex flex-col justify-center items-center">
+            <img src="/images/big_logo.webp" alt="Logo Aragão Construtora" class="mb-3" />
+            <progress class="progress w-56"></progress>
+        </div>
+    </div>
+
     {{ $slot }}
 
     @livewireScripts
