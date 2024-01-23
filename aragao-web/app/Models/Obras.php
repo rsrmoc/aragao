@@ -39,7 +39,7 @@ class Obras extends Model
         parent::boot();
 
         static::deleting(function($obra) {
-            ObrasUsuarios::firstWhere('id_obra', $obra->id)->delete();
+            ObrasUsuarios::where('id_obra', $obra->id)->delete();
         });
     }
 
