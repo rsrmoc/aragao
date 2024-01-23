@@ -47,7 +47,7 @@
                 </div>
             </div>
     
-            <div class="flex py-2 border-b">
+            <div class="flex py-2">
                 <div class="text-xs">
                     <strong>Dt. de início:</strong>
                     <span>{{ date_format(date_create($obra->dt_inicio), 'd/m/Y') }}</span>
@@ -68,19 +68,21 @@
                 </div>
             </div>
     
-            <div class="flex py-2">
-                <div class="text-xs">
-                    <strong>Valor:</strong>
-                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor) }}</span>
+            @if (auth()->user()->type !== 'client')
+                <div class="flex py-2 border-t">
+                    <div class="text-xs">
+                        <strong>Valor:</strong>
+                        <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor) }}</span>
+                    </div>
+        
+                    <div class="divider divider-horizontal"></div>
+        
+                    <div class="text-xs">
+                        <strong>Saldo:</strong>
+                        <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_saldo) }}</span>
+                    </div>
                 </div>
-    
-                <div class="divider divider-horizontal"></div>
-    
-                <div class="text-xs">
-                    <strong>Saldo:</strong>
-                    <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_saldo) }}</span>
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 
@@ -118,9 +120,11 @@
                             <th>Incidência etapa</th>
                             <th>Execução da etapa</th>
                             <th>Incidência executada</th>
-                            <th>Valor da etapa</th>
-                            <th>Valor gasto</th>
-                            <th>Situação</th>
+                            @if (auth()->user()->type !== 'client')
+                                <th>Valor da etapa</th>
+                                <th>Valor gasto</th>
+                                <th>Situação</th>
+                            @endif
                             <th>Status</th>
                             @if (auth()->user()->type !== 'client')
                                 <th>Ações</th>
@@ -152,20 +156,25 @@
                                         <span class="text-xs">{{ $item->insidencia_executada }}%</span>
                                     </div>
                                 </td>
-                                <td>R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</td>
-                                <td>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
-                                <td>
-                                    @if ($item->quitada)
-                                        <span class="badge badge-sm badge-success font-bold text-white">Quitado</span>
-                                    @else
-                                        <span class="badge badge-sm badge-error font-bold text-white">Aberto</span>
-                                    @endif
-                                </td>
+
+                                @if (auth()->user()->type !== 'client')
+                                    <td>R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</td>
+                                    <td>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
+                                    <td>
+                                        @if ($item->quitada)
+                                            <span class="badge badge-sm badge-success font-bold text-white">Quitado</span>
+                                        @else
+                                            <span class="badge badge-sm badge-error font-bold text-white">Aberto</span>
+                                        @endif
+                                    </td>
+                                @endif
+
                                 <td>
                                     <span class="badge badge-sm {{ App\Services\Helpers\StatusService::classStyleStatusObraEtapa($item->status, 'badge') }} font-bold text-white">
                                         {{ App\Services\Helpers\StatusService::textObraEtapa($item->status) }}
                                     </span>
                                 </td>
+
                                 @if (auth()->user()->type !== 'client')
                                     <td>
                                         <div wire:loading.remove wire:target="delEtapa({{ $item->id }})">
@@ -194,10 +203,12 @@
                             <th>{{ $sumIncidencia }}%</th>
                             <th></th>
                             <th>{{ $porcGeral }}%</th>
-                            <th>R$ {{ number_format($sumValorEtap, 2, ',', '.') }}</th>
-                            <th>R$ {{ number_format($sumValorGasto, 2, ',', '.') }}</th>
-                            <th></th>
-                            <th></th>
+                            @if (auth()->user()->type !== 'client')
+                                <th>R$ {{ number_format($sumValorEtap, 2, ',', '.') }}</th>
+                                <th>R$ {{ number_format($sumValorGasto, 2, ',', '.') }}</th>
+                                <th></th>
+                                <th></th>
+                            @endif
                             <th></th>
                         </tr>
                     </tfoot>
@@ -241,30 +252,35 @@
                                     </div>
                                 </div>
 
-                                <div class="flex mb-2">
-                                    <div class="text-xs">
-                                        <strong>Val. etapa:</strong>
-                                        <span>R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</span>
+
+                                @if (auth()->user()->type !== 'client')
+                                    <div class="flex mb-2">
+                                        <div class="text-xs">
+                                            <strong>Val. etapa:</strong>
+                                            <span>R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</span>
+                                        </div>
+                                        
+                                        <div class="divider divider-horizontal mx-0"></div>
+                                        
+                                        <div class="text-xs">
+                                            <strong>Val. gasto:</strong>
+                                            <span>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</span>
+                                        </div>
                                     </div>
-                                    
-                                    <div class="divider divider-horizontal mx-0"></div>
-                                    
-                                    <div class="text-xs">
-                                        <strong>Val. gasto:</strong>
-                                        <span>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</span>
-                                    </div>
-                                </div>
+                                @endif
 
                                 <div class="flex gap-2">
-                                    <div>
-                                        @if ($item->quitada)
-                                            <span
-                                                class="badge badge-sm badge-success font-bold text-white">Quitado</span>
-                                        @else
-                                            <span class="badge badge-sm badge-error font-bold text-white">Em
-                                                aberto</span>
-                                        @endif
-                                    </div>
+                                    @if (auth()->user()->type !== 'client')
+                                        <div>
+                                            @if ($item->quitada)
+                                                <span
+                                                    class="badge badge-sm badge-success font-bold text-white">Quitado</span>
+                                            @else
+                                                <span class="badge badge-sm badge-error font-bold text-white">Em
+                                                    aberto</span>
+                                            @endif
+                                        </div>
+                                    @endif
                                     <div>
                                         <span class="badge badge-sm {{ App\Services\Helpers\StatusService::classStyleStatusObraEtapa($item->status, 'badge') }} font-bold text-white">
                                             {{ App\Services\Helpers\StatusService::textObraEtapa($item->status) }}
