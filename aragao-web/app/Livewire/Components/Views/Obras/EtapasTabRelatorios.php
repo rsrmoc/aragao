@@ -32,7 +32,7 @@ class EtapasTabRelatorios extends Component
     public function gerarRelatorio() {
         $obra = Obras::find($this->obra);
         $etapas = ObrasEtapas::where('id_obra', $this->obra)->orderBy('created_at', 'desc')->get();
-        $porcGeral = ObrasEtapas::where('id_obra', $this->obra)->sum('porc_geral');
+        $porcGeral = ObrasEtapas::where('id_obra', $this->obra)->get()->sum('insidencia_executada');
         $evolucoes = ObrasEvolucoes::with(['etapa', 'usuario'])->where('id_obra', $this->obra)->orderBy('created_at', 'desc')->get();
 
         try {
@@ -79,7 +79,7 @@ class EtapasTabRelatorios extends Component
 
         fputcsv($file, [
             'Código', 'Nome', 'Data de início', 'Data de previsão',
-            'Data de término', 'Valor', 'Saldo', 'Progresso'
+            'Data de término', 'Valor', 'Saldo recebido', 'Progresso'
         ]);
         fputcsv($file, [
             "#$obra->id",
@@ -97,24 +97,24 @@ class EtapasTabRelatorios extends Component
         fputcsv($file, ['Etapas da obra']);
         fputcsv($file, [
             'Nome',
+            'Incidência etapa',
             'Execução da etapa',
-            'Execução da obra',
-            'Incidência',
-            'Valor gasto',
+            'Incidência executada',
             'Valor da etapa',
+            'Valor gasto',
             'Situação',
             'Status'
         ]);
         foreach ($etapas as $etapa) {
             fputcsv($file, [
                 $etapa->nome,
-                "{$etapa->porc_etapa}%",
                 "{$etapa->porc_geral}%",
-                "{$etapa->incidencia}%",
+                "{$etapa->porc_etapa}%",
+                "{$etapa->insidencia_executada}%",
+                "R$ ".number_format($etapa->valor_etapa, 2, ',', '.'),
                 "R$ ".number_format($etapa->valor_gasto, 2, ',', '.'),
-                "R$ ".number_format($etapa->valor, 2, ',', '.'),
                 $etapa->quitada ? 'Quitado' : 'Em aberto',
-                $etapa->concluida ? 'Concluída': 'Em andamento'
+                \App\Services\Helpers\StatusService::textObraEtapa($etapa->status)
             ]);
         }
 

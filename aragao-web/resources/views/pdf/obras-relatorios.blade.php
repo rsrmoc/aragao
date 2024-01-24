@@ -11,8 +11,8 @@
             header { position: fixed; top: -180px; width: 100%; }
             footer { position: fixed; bottom: -180px; width: 100%; }
 
-            #tabela-etapas th { background-color: #cfcfcf; padding: 6px 12px; }
-            #tabela-etapas td { padding: 6px 12px; }
+            #tabela-etapas th { background-color: #cfcfcf; padding: 6px 12px; font-size: .7rem }
+            #tabela-etapas td { padding: 6px 12px; font-size: .7rem }
         </style>
     </head>
     <body>
@@ -93,11 +93,11 @@
                 <thead>
                     <tr>
                         <th style="text-align: left">Nome</th>
-                        <th style="text-align: left">Execução da etapa</th>
-                        <th style="text-align: left">Execução da obra</th>
-                        <th style="text-align: left">Incidência</th>
-                        <th style="text-align: left">Valor gasto</th>
-                        <th style="text-align: left">Valor da etapa</th>
+                        <th style="text-align: left">Inc. etapa</th>
+                        <th style="text-align: left">Exec. da etapa</th>
+                        <th style="text-align: left">Inc. executada</th>
+                        <th style="text-align: left">Val. da etapa</th>
+                        <th style="text-align: left">Val. gasto</th>
                         <th style="text-align: left">Situação</th>
                         <th style="text-align: left">Status</th>
                     </tr>
@@ -107,13 +107,13 @@
                     @foreach ($etapas as $item)    
                         <tr>
                             <td>{{ $item->nome }}</td>
-                            <td>{{ $item->porc_etapa }}%</td>
-                            <td>{{ $item->porc_geral }}%</td>
-                            <td>{{ $item->incidencia }}%</td>
-                            <td>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
-                            <td>R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ $item->porc_geral }}%</td>
+                            <td style="text-align: right">{{ $item->porc_etapa }}%</td>
+                            <td style="text-align: right">{{ $item->insidencia_executada }}%</td>
+                            <td style="text-align: right">R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</td>
+                            <td style="text-align: right">R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
                             <td>{{ $item->quitada ? 'Quitado' : 'Em aberto' }}</td>
-                            <td>{{ $item->concluida ? 'Concluída': 'Em andamento' }}</td>
+                            <td>{{ App\Services\Helpers\StatusService::textObraEtapa($item->status) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
