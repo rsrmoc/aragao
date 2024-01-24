@@ -78,8 +78,8 @@
                     <div class="divider divider-horizontal"></div>
         
                     <div class="text-xs">
-                        <strong>Saldo:</strong>
-                        <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_saldo) }}</span>
+                        <strong>Saldo recebido:</strong>
+                        <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_aberto) }}</span>
                     </div>
                 </div>
             @endif

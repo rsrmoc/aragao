@@ -19,7 +19,7 @@
                     <th>Data de início</th>
                     <th>Previsão</th>
                     <th>Valor</th>
-                    <th>Saldo</th>
+                    <th>Saldo recebido</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="divider divider-horizontal h-4"></div>
                                 <div class="text-sm">
-                                    <strong>Saldo:</strong>
+                                    <strong>Saldo recebido:</strong>
                                     <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</span>
                                 </div>
                             </div>

@@ -76,10 +76,10 @@
                         <td>
                             <div class="space-table-cell-content">
                                 <strong>Valor:</strong>
-                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_quitado) }}</span>
+                                <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor) }}</span>
                             </div>
                             <div class="space-table-cell-content">
-                                <strong>Saldo:</strong>
+                                <strong>Saldo recebido:</strong>
                                 <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_aberto) }}</span>
                             </div>
                         </td>
