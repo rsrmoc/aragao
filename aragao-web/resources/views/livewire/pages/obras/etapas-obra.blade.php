@@ -317,15 +317,17 @@
                             <span>{{ $porcGeral }}%</span>
                         </div>
 
-                        <div class="text-sm">
-                            <strong>Val. etapa:</strong>
-                            <span>R$ {{ number_format($sumValorEtap, 2, ',', '.') }}</span>
-                        </div>
+                        @if (auth()->user()->type !== 'client')
+                            <div class="text-sm">
+                                <strong>Val. etapa:</strong>
+                                <span>R$ {{ number_format($sumValorEtap, 2, ',', '.') }}</span>
+                            </div>
 
-                        <div class="text-sm">
-                            <strong>Val. gasto:</strong>
-                            <span>R$ {{ number_format($sumValorGasto, 2, ',', '.') }}</span>
-                        </div>
+                            <div class="text-sm">
+                                <strong>Val. gasto:</strong>
+                                <span>R$ {{ number_format($sumValorGasto, 2, ',', '.') }}</span>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
