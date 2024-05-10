@@ -3,13 +3,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <style>
             * { font-family: Arial, Helvetica, sans-serif; }
+            body { background-color: white; }
             @page { margin: 200px 32px; }
             table { width: 100% }
             .space-table-cell-content { display: inline-block; padding: 4px 10px; font-size: .9rem }
             .table-font-small th, .table-font-small td { font-size: .9rem }
             .pagenum:before { content: counter(page); }
-            header { position: fixed; top: -180px; width: 100%; }
-            footer { position: fixed; bottom: -180px; width: 100%; }
+            header { width: 100%; }
+            footer { width: 100%; }
 
             #tabela-etapas th { background-color: #cfcfcf; padding: 6px 12px; font-size: .7rem }
             #tabela-etapas td { padding: 6px 12px; font-size: .7rem }

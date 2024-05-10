@@ -27,7 +27,8 @@
                         <td>
                             <div wire:loading.remove wire:target="excluirRelatorio({{ $relatorio->id }})">
                                 <x-components.dashboard.dropdown.dropdown-table>
-                                    <x-components.dashboard.dropdown.dropdown-item text="Download" icon="fa-solid fa-download" wire:click="downloadFile({{ $relatorio->id }})" />
+                                    <x-components.dashboard.dropdown.dropdown-item text="Visualizar" icon="fa-solid fa-eye" wire:click="renderFile({{ $relatorio->id }})" />
+                                    <!-- <x-components.dashboard.dropdown.dropdown-item text="Download" icon="fa-solid fa-download" wire:click="downloadFile({{ $relatorio->id }})" /> -->
                                     <x-components.dashboard.dropdown.dropdown-item text="Excluir" icon="fa-solid fa-trash" x-on:click="excluir({{ $relatorio->id }}, () => $wire)" />
                                 </x-components.dashboard.dropdown.dropdown-table>
                             </div>
@@ -63,7 +64,8 @@
                     <div>
                         <div wire:loading.remove wire:target="excluirRelatorio({{ $relatorio->id }})">
                             <x-components.dashboard.dropdown.dropdown-table>
-                                <x-components.dashboard.dropdown.dropdown-item text="Download" icon="fa-solid fa-download" wire:click="downloadFile({{ $relatorio->id }})" />
+                                <x-components.dashboard.dropdown.dropdown-item text="Visualizar" icon="fa-solid fa-eye" wire:click="renderFile({{ $relatorio->id }})" />
+                                <!-- <x-components.dashboard.dropdown.dropdown-item text="Download" icon="fa-solid fa-download" wire:click="downloadFile({{ $relatorio->id }})" /> -->
                                 <x-components.dashboard.dropdown.dropdown-item text="Excluir" icon="fa-solid fa-trash" x-on:click="excluir({{ $relatorio->id }}, () => $wire)" />
                             </x-components.dashboard.dropdown.dropdown-table>
                         </div>

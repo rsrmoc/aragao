@@ -21,7 +21,7 @@
                     <span>Entrar</span>
                 </button>
     
-                <a href="{{ route('password.request') }}" wire:navigate class="link link-primary text-xs">Esqueceu sua senha?</a>
+                <a href="{{ route('password.request') }}" class="link link-primary text-xs">Esqueceu sua senha?</a>
             </form>
         </div>
     

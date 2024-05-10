@@ -248,6 +248,7 @@ class Reunioes extends Component
 
         $usuariosPorObra = ObrasUsuarios::with('usuario')->where('id_obra', $this->inputs['id_obra'])
             ->where('id_usuario', '<>', Auth::user()->id)
+            ->whereHas('usuario')
             ->get();
 
         return view('livewire.pages.reunioes.reunioes', compact('reunioes', 'usuariosPorObra'));
