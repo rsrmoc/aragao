@@ -10,6 +10,8 @@ class Imagens extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['imagem', 'url'];
+
     protected $fillable = [
         'tabela_type',
         'tabela_id',

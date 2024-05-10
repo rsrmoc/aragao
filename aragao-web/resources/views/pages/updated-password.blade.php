@@ -13,7 +13,7 @@
                         <i class="fa-solid fa-circle-check"></i>
                         <span>{{ $message }}</span>
                     </div>
-                    <a href="{{ route('login') }}" wire:navigate class="btn btn-sm btn-wide btn-primary">
+                    <a href="{{ route('login') }}"  class="btn btn-sm btn-wide btn-primary">
                         <i class="fa-solid fa-arrow-left"></i> Entrar em minha conta
                     </a>
                 @else    

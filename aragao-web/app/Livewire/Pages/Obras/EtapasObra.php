@@ -119,7 +119,8 @@ class EtapasObra extends Component
     {
         $etapas = ObrasEtapas::where('id_obra', $this->obra->id)->orderBy('created_at', 'desc')->get();
         $porcGeral = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('insidencia_executada');
-
+        $porcGeral = number_format($porcGeral, 2);
+        
         $sumIncidencia = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('porc_geral');
         $sumValorEtap = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('valor_etapa');
         $sumValorGasto = ObrasEtapas::where('id_obra', $this->obra->id)->get()->sum('valor_gasto');

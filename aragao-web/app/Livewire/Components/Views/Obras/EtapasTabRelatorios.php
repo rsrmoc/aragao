@@ -151,6 +151,13 @@ class EtapasTabRelatorios extends Component
         );
     }
 
+    public function renderFile(int $idRelatorio) {
+        return redirect()->route(
+            'dashboard.visualizar-relatorio',
+            $idRelatorio
+        );
+    }
+
     public function excluirRelatorio(int $idRelatorio) {
         try {
             ObraRelatorio::find($idRelatorio)->delete();
