@@ -340,7 +340,7 @@
         </div>
 
         <div x-show="tab == 2">
-            <livewire:components.views.obras.etapas-tab-evolucoes lazy obra="{{ $obra->id }}" />
+            <livewire:components.views.obras.etapas-tab-evolucoes obra="{{ $obra->id }}" />
         </div>
 
         <div x-show="tab == 3">
