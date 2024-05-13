@@ -41,7 +41,8 @@ class EtapasTabEvolucoes extends Component
         'inputs.id_etapa' => 'etapa',
         'inputs.dt_evolucao' => 'data da evolução',
         'inputs.descricao' => 'descrição',
-        'inputsImages' => 'imagem'
+        'inputsImages' => 'imagem',
+        'inputsImages.*' => 'imagem #:position',
     ];
 
     function saveEvolucao() {
