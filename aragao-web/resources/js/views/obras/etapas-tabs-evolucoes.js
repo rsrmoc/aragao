@@ -66,6 +66,7 @@ Alpine.data('etapasTabEvolucoes', () => ({
 
         wire().editId = evolucao.id;
         wire().modal = true;
+        this.carregarImagens();
     },
 
     exclurEvolucao(evolucao, wire) {
