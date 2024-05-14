@@ -34,14 +34,15 @@ class EtapasTabEvolucoes extends Component
         'inputs.dt_evolucao' => 'required|string|date_format:Y-m-d',
         'inputs.descricao' => 'required|string',
         'inputsImages' => 'nullable|array',
-        'inputsImages.*' => 'image|max:1024'
+        'inputsImages.*' => 'image|max:51200'
     ];
 
     protected $validationAttributes = [
         'inputs.id_etapa' => 'etapa',
         'inputs.dt_evolucao' => 'data da evolução',
         'inputs.descricao' => 'descrição',
-        'inputsImages' => 'imagem'
+        'inputsImages' => 'imagem',
+        'inputsImages.*' => 'imagem #:position',
     ];
 
     function saveEvolucao() {

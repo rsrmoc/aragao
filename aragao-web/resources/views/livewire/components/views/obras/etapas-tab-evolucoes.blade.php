@@ -132,6 +132,12 @@
                 </button>
             </div>
 
+            @if ($errors->get('inputsImages.*'))
+                <label class="label">
+                    <span class="label-text-alt text-red-600">Há erros de validação ao subir a(s) imagem(ns). Confira abaixo.</span>
+                </label>
+            @endif
+
             <div>
                 <div class="flex gap-3 mb-2 flex-wrap sm:flex-nowrap">
                     <div class="form-control w-full">
@@ -152,6 +158,7 @@
                             class="input-sm" wire:model="inputs.dt_evolucao" name="inputs.dt_evolucao" />
                     </div>
                 </div>
+                
 
                 <div class="mb-2">
                     <x-components.input type="textarea" label="Descrição" placeholder="Descrição" required
@@ -166,6 +173,16 @@
                     <x-components.input type="file" label="Anexos (apenas imagens)" placeholder="Anexos"
                         class="file-input-sm" accept=".jpg,.png,.webp,.jpeg"
                         multiple wire:model="inputsImages" name="inputsImages" x-ref="inputImagens" />
+                </div>
+
+                <div>
+                    @foreach ($errors->get('inputsImages.*') as $error_line)
+                        @foreach ($error_line as $error)
+                            <label class="label">
+                                <span class="label-text-alt text-red-600">{{ $error }}</span>
+                            </label>
+                        @endforeach
+                    @endforeach
                 </div>
                 
                 <template x-if="infoEvolucao">
