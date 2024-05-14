@@ -34,7 +34,7 @@ class EtapasTabEvolucoes extends Component
         'inputs.dt_evolucao' => 'required|string|date_format:Y-m-d',
         'inputs.descricao' => 'required|string',
         'inputsImages' => 'nullable|array',
-        'inputsImages.*' => 'image|max:1024'
+        'inputsImages.*' => 'image|max:51200'
     ];
 
     protected $validationAttributes = [
