@@ -152,10 +152,6 @@
                         <td>
                             <span>&copy; Aragão Construtora {{ now()->year }}</span>
                         </td>
-            
-                        <td style="text-align: right">
-                            <span class="pagenum"></span>
-                        </td>
                     </tr>
                 </tbody>
             </table>
