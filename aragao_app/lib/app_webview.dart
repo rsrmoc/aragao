@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:aragao_app/core/repo/app_repository.dart';
 import 'package:aragao_app/services/firebase_messaging_service.dart';
+import 'package:aragao_app/services/localization_services.dart';
 import 'package:aragao_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -40,11 +42,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late WebViewController controller;
+  late LocalizationServices localizationHandler;
   bool isNotification = false;
-  
+
   void fileSelectionHandler() async {
     if (Platform.isAndroid) {
-      final androidController = (controller.platform as AndroidWebViewController);
+      final androidController =
+          (controller.platform as AndroidWebViewController);
 
       await androidController.setOnShowFileSelector(_androidFilePicker);
     }
@@ -63,13 +67,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   initializeFirebaseMessaging() async {
-    await Provider.of<FirebaseMessagingService>(context, listen: false).initializeSettings();
+    await Provider.of<FirebaseMessagingService>(context, listen: false)
+        .initializeSettings();
 
-    Provider.of<NotificationService>(context, listen: false).onSelectNotification = () => controller.loadRequest(Uri.parse('https://app.aragao.app.br/home/chat'));
+    Provider.of<NotificationService>(context, listen: false)
+            .onSelectNotification =
+        () => controller
+            .loadRequest(Uri.parse('https://app.aragao.app.br/home/chat'));
   }
 
   void injectJavascriptSendTokenFirebaseMessaging() {
-    String? token = Provider.of<FirebaseMessagingService>(context, listen: false).token;
+    String? token =
+        Provider.of<FirebaseMessagingService>(context, listen: false).token;
     String? platform;
 
     if (Platform.isAndroid) platform = 'android';
@@ -94,41 +103,47 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    super.initState();
+    localizationHandler = LocalizationServices.instance;
+    localizationHandler.initializeMapWithPermissions();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageStarted: (url) {
-            if (url.endsWith('/home') || url.endsWith('/obras') || url.endsWith('/chat')) {
-              injectJavascriptSendTokenFirebaseMessaging();
-            }
-          },
-          onPageFinished: (url) {
-            if (url.endsWith('/home') || url.endsWith('/obras') || url.endsWith('/chat')) {
-              injectJavascriptSendTokenFirebaseMessaging();
-            }
-          },
-        )
-      )
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageStarted: (url) {
+          if (url.endsWith('/home') ||
+              url.endsWith('/obras') ||
+              url.endsWith('/chat')) {
+            injectJavascriptSendTokenFirebaseMessaging();
+          }
+        },
+        onPageFinished: (url) {
+          if (url.endsWith('/home') ||
+              url.endsWith('/obras') ||
+              url.endsWith('/chat')) {
+            injectJavascriptSendTokenFirebaseMessaging();
+          }
+        },
+      ))
       ..loadRequest(Uri.parse('https://app.aragao.app.br/'));
 
     fileSelectionHandler();
 
     initializeFirebaseMessaging();
+
+    super.initState();
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black,
-        child: SafeArea(
-          child: WebViewWidget(controller: controller)
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => localizationHandler.sendLatLongReceiveTimestamp(
+              lat: '', long: ''),
         ),
-      )
-    );
+        body: Container(
+          color: Colors.black,
+          child: SafeArea(child: WebViewWidget(controller: controller)),
+        ));
   }
 }
