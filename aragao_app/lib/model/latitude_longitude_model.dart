@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 class LatitudeLongitudeModel {
-  int requestTimeStamp;
+  int? requestTimeStamp;
+  int userId;
   String lat;
   String long;
   LatitudeLongitudeModel({
-    required this.requestTimeStamp,
+    this.requestTimeStamp,
+    required this.userId,
     required this.lat,
     required this.long,
   });
@@ -13,17 +15,20 @@ class LatitudeLongitudeModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'requestTimeStamp': requestTimeStamp,
-      'lat': lat,
-      'long': long,
+      'latitude': lat,
+      'longitude': long,
+      'id_usuario': userId
     };
   }
 
   factory LatitudeLongitudeModel.fromMap(Map<String, dynamic> map) {
     return LatitudeLongitudeModel(
-      requestTimeStamp: map['requestTimeStamp'] as int,
-      lat: map['lat'] as String,
-      long: map['long'] as String,
-    );
+        requestTimeStamp: map['requestTimeStamp'] != null
+            ? map['requestTimeStamp'] as int
+            : null,
+        lat: map['latitude'] as String,
+        long: map['longitude'] as String,
+        userId: map['id_usuario']);
   }
 
   String toJson() => json.encode(toMap());

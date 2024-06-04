@@ -1,11 +1,13 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:aragao_app/core/repo/app_repository.dart';
+import 'package:aragao_app/model/latitude_longitude_model.dart';
 import 'package:aragao_app/services/firebase_messaging_service.dart';
 import 'package:aragao_app/services/localization_services.dart';
 import 'package:aragao_app/services/notification_service.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalizationServices.instance.initializeMapWithPermissions();
     return MaterialApp(
       title: 'Aragão Construtora',
       theme: ThemeData(
@@ -104,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     localizationHandler = LocalizationServices.instance;
-    localizationHandler.initializeMapWithPermissions();
+    initBackgroundActivity();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -125,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
       ))
-      ..loadRequest(Uri.parse('https://app.aragao.app.br/'));
+      ..loadRequest(Uri.parse('http://aragao.codetime.com.br/'));
 
     fileSelectionHandler();
 
@@ -134,16 +137,37 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  Future<void> initBackgroundActivity() async {
+    int status = await BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 5,
+            stopOnTerminate: false,
+            enableHeadless: true,
+            requiresBatteryNotLow: false,
+            requiresCharging: false,
+            requiresStorageNotLow: false,
+            requiresDeviceIdle: false,
+            requiredNetworkType: NetworkType.NONE), (String taskId) async {
+      print("[BackgroundFetch] Event received $taskId");
+
+      localizationHandler.sendLatLongReceiveTimestamp(userId: 3);
+      log('has called this method');
+
+      BackgroundFetch.finish(taskId);
+    }, (String taskId) async {
+      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+      BackgroundFetch.finish(taskId);
+    });
+    print('[BackgroundFetch] configure success: $status');
+    if (!mounted) return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => localizationHandler.sendLatLongReceiveTimestamp(
-              lat: '', long: ''),
-        ),
         body: Container(
-          color: Colors.black,
-          child: SafeArea(child: WebViewWidget(controller: controller)),
-        ));
+      color: Colors.black,
+      child: SafeArea(child: WebViewWidget(controller: controller)),
+    ));
   }
 }

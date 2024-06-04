@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'dart:developer';
 
-import 'package:aragao_app/core/network/custom_dio.dart';
 import 'package:aragao_app/core/repo/app_repository.dart';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+
+import '../model/latitude_longitude_model.dart';
 
 class LocalizationServices with ChangeNotifier {
   LocalizationServices._();
@@ -16,8 +18,6 @@ class LocalizationServices with ChangeNotifier {
   }
 
   late Position currentPosition;
-  int _requestTimeStamp = 10;
-  int get requestTimeStamp => _requestTimeStamp;
   final AppRepository _repository = AppRepository();
   AppRepository get repository => _repository;
 
@@ -51,12 +51,11 @@ class LocalizationServices with ChangeNotifier {
     log(currentPosition.toString());
   }
 
-  Future<void> sendLatLongReceiveTimestamp(
-      {required String lat, required String long}) async {
-    repository.getResponseBackend();
-  }
-
-  void setNewTimestamp({required int newTimestamp}) {
-    _requestTimeStamp = newTimestamp;
+  Future<void> sendLatLongReceiveTimestamp({required int userId}) async {
+    await repository.inputLatLongInfoWithUserId(
+        latLongModel: LatitudeLongitudeModel(
+            userId: userId,
+            lat: currentPosition.latitude.toString(),
+            long: currentPosition.longitude.toString()));
   }
 }
