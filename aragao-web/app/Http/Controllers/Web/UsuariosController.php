@@ -13,6 +13,10 @@ class UsuariosController extends Controller
         return view('pages.dashboard.usuarios');
     }
 
+    public function localizacao(User $usuario) {
+        return view('pages.dashboard.usuarios-localizacao', compact('usuario'));
+    }
+
     public function tokenNotification(Request $request) {
         $request->validate([
             'token' => 'required|string',

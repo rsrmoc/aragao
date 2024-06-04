@@ -41,6 +41,8 @@ Route::group([
     Route::middleware('admin')->group(function() {
         
         Route::get('/usuarios', [UsuariosController::class, 'index'])->name('usuarios');
+        Route::get('/usuarios/{usuario}/localizacao', [UsuariosController::class, 'localizacao'])->name('usuarios-localizacao');
+
         Route::get('/engenheiros', [EngenheirosController::class, 'index'])->name('engenheiros');
         Route::get('/clientes', [ClientesController::class, 'index'])->name('clientes');
 
@@ -55,6 +57,7 @@ Route::group([
     Route::get('/reunioes', Reunioes::class)->name('reunioes');
 
     Route::get('/chat', Chat::class)->name('chat');
+
     
 });
 
