@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/pages/dashboard/chat.js',
 
                 'resources/js/views/tables-users.js',
+                'resources/js/views/tables-users-localization.js',
                 'resources/js/views/obras/etapas-tabs-usuarios.js',
                 'resources/js/views/obras/etapas-tabs-funcionarios.js',
                 'resources/js/views/obras/etapas-tabs-relatorios.js',

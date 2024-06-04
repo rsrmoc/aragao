@@ -53,6 +53,11 @@
     "isEntry": true,
     "src": "resources/js/views/obras/etapas-tabs-usuarios.js"
   },
+  "resources/js/views/tables-users-localization.js": {
+    "file": "assets/tables-users-localization-ec17d9a7.js",
+    "isEntry": true,
+    "src": "resources/js/views/tables-users-localization.js"
+  },
   "resources/js/views/tables-users.js": {
     "file": "assets/tables-users-ec17d9a7.js",
     "isEntry": true,
