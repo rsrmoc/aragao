@@ -18,6 +18,7 @@ class LocalizationServices with ChangeNotifier {
   }
 
   late Position currentPosition;
+  int userId = 0;
   final AppRepository _repository = AppRepository();
   AppRepository get repository => _repository;
 
@@ -51,7 +52,15 @@ class LocalizationServices with ChangeNotifier {
     log(currentPosition.toString());
   }
 
-  Future<void> sendLatLongReceiveTimestamp({required int userId}) async {
+  void fetchUserId({required String url}) {
+    Uri uri = Uri.parse(url);
+
+    userId = int.parse(uri.queryParameters['userId']!);
+
+    log('this user id -> $userId');
+  }
+
+  Future<void> sendLatLongReceiveTimestamp() async {
     await repository.inputLatLongInfoWithUserId(
         latLongModel: LatitudeLongitudeModel(
             userId: userId,

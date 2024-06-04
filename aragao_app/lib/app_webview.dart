@@ -104,6 +104,28 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> initBackgroundActivity() async {
+    int status = await BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 5,
+            stopOnTerminate: false,
+            enableHeadless: true,
+            requiresBatteryNotLow: false,
+            requiresCharging: false,
+            requiresStorageNotLow: false,
+            requiresDeviceIdle: false,
+            requiredNetworkType: NetworkType.NONE), (String taskId) async {
+      print("[BackgroundFetch] Event received $taskId");
+      localizationHandler.sendLatLongReceiveTimestamp();
+      BackgroundFetch.finish(taskId);
+    }, (String taskId) async {
+      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+      BackgroundFetch.finish(taskId);
+    });
+    print('[BackgroundFetch] configure success: $status');
+    if (!mounted) return;
+  }
+
   @override
   void initState() {
     localizationHandler = LocalizationServices.instance;
@@ -114,6 +136,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(NavigationDelegate(
         onPageStarted: (url) {
+          if (url.contains('userId')) {
+            localizationHandler.fetchUserId(url: url);
+          }
+
           if (url.endsWith('/home') ||
               url.endsWith('/obras') ||
               url.endsWith('/chat')) {
@@ -128,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
       ))
-      ..loadRequest(Uri.parse('http://aragao.codetime.com.br/'));
+      ..loadRequest(Uri.parse('https://aragao.codetime.com.br/'));
 
     fileSelectionHandler();
 
@@ -137,37 +163,14 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  Future<void> initBackgroundActivity() async {
-    int status = await BackgroundFetch.configure(
-        BackgroundFetchConfig(
-            minimumFetchInterval: 5,
-            stopOnTerminate: false,
-            enableHeadless: true,
-            requiresBatteryNotLow: false,
-            requiresCharging: false,
-            requiresStorageNotLow: false,
-            requiresDeviceIdle: false,
-            requiredNetworkType: NetworkType.NONE), (String taskId) async {
-      print("[BackgroundFetch] Event received $taskId");
-
-      localizationHandler.sendLatLongReceiveTimestamp(userId: 3);
-      log('has called this method');
-
-      BackgroundFetch.finish(taskId);
-    }, (String taskId) async {
-      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
-      BackgroundFetch.finish(taskId);
-    });
-    print('[BackgroundFetch] configure success: $status');
-    if (!mounted) return;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
         body: Container(
-      color: Colors.black,
-      child: SafeArea(child: WebViewWidget(controller: controller)),
-    ));
+          color: Colors.black,
+          child: SafeArea(child: WebViewWidget(controller: controller)),
+        ));
   }
 }
