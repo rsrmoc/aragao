@@ -39,6 +39,9 @@
                     <td>
                         @if ($user->id !== auth()->user()->id)
                             <x-components.dashboard.dropdown.dropdown-table>
+                                <x-components.dashboard.dropdown.dropdown-item icon="fa-regular fa-map" text="Localização"
+                                    href="{{ route('dashboard.usuarios-localizacao', ['usuario' => $user->id]) }}" onclick="initLoading()" />
+
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
                                     text="Editar" x-on:click="setFormEdit({{ $user }}, () => $wire)" />
 
@@ -68,6 +71,9 @@
                     <div>
                         @if ($user->id !== auth()->user()->id)
                             <x-components.dashboard.dropdown.dropdown-table>
+                            <x-components.dashboard.dropdown.dropdown-item icon="fa-regular fa-map" text="Localização"
+                                    href="{{ route('dashboard.usuarios-localizacao', ['usuario' => $user->id]) }}" onclick="initLoading()" />
+                                    
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
                                     text="Editar" x-on:click="setFormEdit({{ $user }}, () => $wire)" />
 

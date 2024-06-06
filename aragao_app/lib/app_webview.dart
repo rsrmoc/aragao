@@ -18,6 +18,8 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -153,8 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
             injectJavascriptSendTokenFirebaseMessaging();
           }
         },
+        onNavigationRequest: (NavigationRequest request){
+            final urlString = request.url.toUpperCase();
+            final uriUL = Uri.parse(request.url);
+            if(urlString.contains('STORAGE')){
+              launchUrl(uriUL);
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+        },
       ))
-      ..loadRequest(Uri.parse('https://aragao.codetime.com.br/'));
+      ..loadRequest(Uri.parse('https://app.aragao.app.br/'));
 
     fileSelectionHandler();
 
