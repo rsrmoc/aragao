@@ -3,11 +3,10 @@ import 'package:crypto/crypto.dart' as crypto;
 
 class AuthInterceptor extends Interceptor {
   String generateHashedToken() {
-    final currentTime = DateTime.now().millisecondsSinceEpoch;
-    const interval = 60;
+    final currentTime = Duration(milliseconds: DateTime.now().millisecondsSinceEpoch).inSeconds;
+    final interval = 5*60;
     final timeInterval = (currentTime / interval).floor();
-    const apiToken =
-        'ArAjkIWctM5IVToSovd9pmbEpqbACiLQ6saom6FF5ICITJh1dwaWMlO1hryHgBe2';
+    final apiToken = 'ArAjkIWctM5IVToSovd9pmbEpqbACiLQ6saom6FF5ICITJh1dwaWMlO1hryHgBe2';
     final message = '$timeInterval$apiToken';
     final hash = crypto.sha256.convert(message.codeUnits);
     return hash.toString();

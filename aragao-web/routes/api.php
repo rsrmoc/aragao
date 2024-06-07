@@ -22,9 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('clientApp')->post('/rastreamento/gravar', [RastreamentoController::class, 'gravarLocalizacao'])->name('rastreamento-gravar');
 
 // NUNCA UTILIZAR ESSA ROTA EM PRODUÇÃO
-Route::get('gerar-token', function() {
-    $token = \App\Services\Helpers\AppService::generateToken();
-    return response()->json([
-        'token' => $token
-    ]);
-})->name('gerar-token');
+// Route::get('gerar-token', function() {
+//     $token = \App\Services\Helpers\AppService::generateToken();
+//     return response()->json([
+//         'token' => $token
+//     ]);
+// })->name('gerar-token');
