@@ -11,6 +11,7 @@ class TablesUsersLocalization extends Component
 {
     use WithPagination;
 
+    public int $user;
     public $title;
     public $descriptionPage;
 
@@ -22,7 +23,7 @@ class TablesUsersLocalization extends Component
     public function render()
     {
         return view('livewire.components.views.tables-users-localization', [
-            'locais' => Rastreamentos::orderBy('id', 'desc')->paginate(12)
+            'locais' => Rastreamentos::where('id_usuario', $this->user)->orderBy('id', 'desc')->paginate(12)
         ]);
     }
 }
