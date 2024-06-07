@@ -14,6 +14,8 @@ use App\Livewire\Pages\Chat\Chat;
 use App\Livewire\Pages\Obras\EtapasObra;
 use App\Livewire\Pages\Obras\Obras;
 use App\Livewire\Pages\Reunioes\Reunioes;
+use App\Models\Imagens;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', Login::class)->name('login')->middleware('guest');
 
@@ -57,6 +59,20 @@ Route::group([
     Route::get('/reunioes', Reunioes::class)->name('reunioes');
 
     Route::get('/chat', Chat::class)->name('chat');
+
+    Route::get('/converterImagens', function() {
+        $imagens = Imagens::all();
+
+        foreach ($imagens as $imagem) {
+            $nomeArquivo = uniqid().'.'.$imagem->tipo;
+            $arquivo = base64_decode($imagem->imagem);
+            $path = 'public/imagens/'.$nomeArquivo;
+
+            Storage::put($path, $arquivo);
+            $imagem->url = Storage::url($path);
+            $imagem->save();
+        }
+    });
 
     
 });

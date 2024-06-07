@@ -5,9 +5,11 @@ namespace App\Livewire\Components\Views\Obras;
 use App\Models\Imagens;
 use App\Models\ObrasEtapas;
 use App\Models\ObrasEvolucoes;
+use App\Services\Helpers\ImagensService;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -65,13 +67,14 @@ class EtapasTabEvolucoes extends Component
 
             if (count($this->inputsImages) >= 1) {
                 foreach ($this->inputsImages as $image) {
-                    Imagens::create([
+                    $dados = [
                         'tabela_id' => $evolucao->id,
                         'tabela_type' => 'App\Models\ObrasEvolucoes',
                         'tipo' => $image->extension(),
                         'tamanho' => $image->getSize(),
                         'imagem' => base64_encode(file_get_contents($image->getRealPath()))
-                    ]);
+                    ];
+                    ImagensService::upload($dados);
                 }
             }
 
@@ -101,13 +104,15 @@ class EtapasTabEvolucoes extends Component
 
             if (count($this->inputsImages) >= 1) {
                 foreach ($this->inputsImages as $image) {
-                    Imagens::create([
+                    $dados = [
                         'tabela_id' => $evolucao->id,
                         'tabela_type' => 'App\Models\ObrasEvolucoes',
                         'tipo' => $image->extension(),
                         'tamanho' => $image->getSize(),
                         'imagem' => base64_encode(file_get_contents($image->getRealPath()))
-                    ]);
+                    ];
+
+                    ImagensService::upload($dados);
                 }
             }
 
@@ -137,7 +142,10 @@ class EtapasTabEvolucoes extends Component
 
     public function excluirImagem(int $idImagem) {
         try {
-            Imagens::find($idImagem)->delete();
+            $imagem = Imagens::find($idImagem);
+            $caminhoImagem = str_replace('storage', 'public', $imagem->url);
+            Storage::delete($caminhoImagem);
+            $imagem->delete();
             $this->resetExcept('obra');
 
             $this->dispatch('toast-event', 'Imagem excluida!', 'success');

@@ -10,25 +10,14 @@ class Imagens extends Model
 {
     use HasFactory;
 
-    protected $hidden = ['imagem', 'url'];
-
     protected $fillable = [
         'tabela_type',
         'tabela_id',
         'tipo',
         'tamanho',
-        'imagem'
-    ];
-
-    protected $appends = [
         'url'
     ];
     
-    public function getUrlAttribute()
-    {
-        return "data:image/{$this->tipo};base64,{$this->imagem}";
-    }
-
     public function tabela(): MorphTo
     {
         return $this->morphTo();
