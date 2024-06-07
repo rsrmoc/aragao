@@ -1,0 +1,2 @@
+Alpine.data('tablesUsersLocalization', () => ({
+}));
