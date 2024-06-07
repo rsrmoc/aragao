@@ -23,8 +23,8 @@ class ClientApp
             ], 401);
         }
 
-        $tokenBackend = \App\Services\Helpers\AppService::generateToken();
-        if ($tokenRequest !== $tokenBackend) {
+        $tokensBackend = \App\Services\Helpers\AppService::generateToken();
+        if (!in_array($tokenRequest, $tokensBackend)) {
             return response()->json([
                 'message' => 'Token inválido'
             ], 401);
