@@ -145,9 +145,8 @@ class EtapasTabRelatorios extends Component
         $relatorio = ObraRelatorio::find($idRelatorio);
         $extension = str_contains($relatorio->filename, '.pdf') ? '.pdf' : '.csv';
         
-        return response()->download(
-            Storage::path('public/relatorios/'.$relatorio->filename),
-            'relatorio_'.now().'_'.$relatorio->id.$extension
+        return redirect(
+            Storage::url('public/relatorios/'.$relatorio->filename)
         );
     }
 
