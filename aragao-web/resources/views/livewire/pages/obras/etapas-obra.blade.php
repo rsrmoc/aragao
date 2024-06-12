@@ -97,6 +97,7 @@
             <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 6 }"
                 x-on:click="tab = 6">Clientes</button>
         @endif
+        <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 7 }" x-on:click="tab = 7">Projetos</button>
     </div>
 
     <div>
@@ -355,6 +356,10 @@
 
         <div x-show="tab == 6">
             <livewire:components.views.obras.etapas-tab-usuarios type="client" obra="{{ $obra->id }}" />
+        </div>
+
+        <div x-show="tab == 7">
+            <livewire:components.views.obras.etapas-tab-projetos obra="{{ $obra->id }}" />
         </div>
     </div>
 

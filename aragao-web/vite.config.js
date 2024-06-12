@@ -21,7 +21,8 @@ export default defineConfig({
                 'resources/js/views/obras/etapas-tabs-usuarios.js',
                 'resources/js/views/obras/etapas-tabs-funcionarios.js',
                 'resources/js/views/obras/etapas-tabs-relatorios.js',
-                'resources/js/views/obras/etapas-tabs-evolucoes.js'
+                'resources/js/views/obras/etapas-tabs-evolucoes.js',
+                'resources/js/views/obras/etapas-tabs-projetos.js',
             ],
             refresh: true,
         }),
