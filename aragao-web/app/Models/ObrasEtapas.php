@@ -10,6 +10,10 @@ class ObrasEtapas extends Model
 {
     use HasFactory, SoftDeletes;
     
+    protected $hidden = [
+        'obra'
+    ];
+
     protected $fillable = [
         'id_obra',
         'id_usuario',
