@@ -237,10 +237,16 @@
 
                 <strong class="text-sm">Imagens:</strong>
                 <div class="flex overflow-x-auto p-2 gap-3">
-                    <template x-for="imagem, i in infoProjeto?.imagens" x-key="i">
+                    <template x-for="(imagem, i) in (infoProjeto?.imagens).filter(imagem => imagem.tipo != 'pdf')" :key="i">
                         <div class="w-28 h-28 relative">
                             <img x-bind:src="imagem.url" class="w-full h-full object-cover rounded-md cursor-pointer"
                                 x-on:click="setModalImage(imagem.url)" />
+                        </div>
+                    </template>
+                    <template x-for="(imagem, i) in (infoProjeto?.imagens).filter(imagem => imagem.tipo == 'pdf')" :key="i">
+                        <div class="w-28 h-28 relative">
+                            <img src="{{ asset('/images/pdf.webp') }}" class="w-full h-full object-cover rounded-md cursor-pointer"
+                                x-on:click="abrirArquivo(imagem.url)" />
                         </div>
                     </template>
                 </div>
