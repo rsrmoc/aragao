@@ -38,45 +38,45 @@
                     <strong>Código:</strong>
                     <span>#{{ $obra->id }}</span>
                 </div>
-    
+
                 <div class="divider divider-horizontal"></div>
-    
+
                 <div class="text-xs">
                     <strong>Nome:</strong>
                     <span>{{ $obra->nome }}</span>
                 </div>
             </div>
-    
+
             <div class="flex py-2">
                 <div class="text-xs">
                     <strong>Dt. de início:</strong>
                     <span>{{ date_format(date_create($obra->dt_inicio), 'd/m/Y') }}</span>
                 </div>
-    
+
                 <div class="divider divider-horizontal"></div>
-    
+
                 <div class="text-xs">
                     <strong>Dt. de previsão:</strong>
                     <span>{{ date_format(date_create($obra->dt_previsao_termino), 'd/m/Y') }}</span>
                 </div>
-    
+
                 <div class="divider divider-horizontal"></div>
-    
+
                 <div class="text-xs">
                     <strong>Dt. de término:</strong>
                     <span>{{ $obra->dt_termino ? date_format(date_create($obra->dt_termino), 'd/m/Y') : 'Não definido' }}</span>
                 </div>
             </div>
-    
+
             @if (auth()->user()->type !== 'client')
                 <div class="flex py-2 border-t">
                     <div class="text-xs">
                         <strong>Valor:</strong>
                         <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor) }}</span>
                     </div>
-        
+
                     <div class="divider divider-horizontal"></div>
-        
+
                     <div class="text-xs">
                         <strong>Saldo recebido:</strong>
                         <span>{{ App\Services\Helpers\MoneyService::formatToUICurrency($obra->valor_aberto) }}</span>
@@ -98,6 +98,7 @@
                 x-on:click="tab = 6">Clientes</button>
         @endif
         <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 7 }" x-on:click="tab = 7">Projetos</button>
+        <button class="tab tab-lifted" x-bind:class="{ 'tab-active': tab == 8 }" x-on:click="tab = 8">Aditivos</button>
     </div>
 
     <div>
@@ -258,9 +259,9 @@
                                             <strong>Val. etapa:</strong>
                                             <span>R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</span>
                                         </div>
-                                        
+
                                         <div class="divider divider-horizontal mx-0"></div>
-                                        
+
                                         <div class="text-xs">
                                             <strong>Val. gasto:</strong>
                                             <span>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</span>
@@ -360,6 +361,10 @@
 
         <div x-show="tab == 7">
             <livewire:components.views.obras.etapas-tab-projetos obra="{{ $obra->id }}" />
+        </div>
+
+        <div x-show="tab == 8">
+            <livewire:components.views.obras.etapas-tab-aditivos obra="{{ $obra->id }}" />
         </div>
     </div>
 
