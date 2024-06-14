@@ -1,11 +1,11 @@
 {
-  "_pt-br-06871ea1.js": {
-    "file": "assets/pt-br-06871ea1.js"
+  "_pt-br-102d2c99.js": {
+    "file": "assets/pt-br-102d2c99.js"
   },
   "resources/js/app.js": {
-    "file": "assets/app-c051e086.js",
+    "file": "assets/app-1c4ac8e4.js",
     "imports": [
-      "_pt-br-06871ea1.js"
+      "_pt-br-102d2c99.js"
     ],
     "isEntry": true,
     "src": "resources/js/app.js"
@@ -26,12 +26,17 @@
     "src": "resources/js/pages/dashboard/obras.js"
   },
   "resources/js/pages/dashboard/reunioes.js": {
-    "file": "assets/reunioes-1e8baa0f.js",
+    "file": "assets/reunioes-f3d50155.js",
     "imports": [
-      "_pt-br-06871ea1.js"
+      "_pt-br-102d2c99.js"
     ],
     "isEntry": true,
     "src": "resources/js/pages/dashboard/reunioes.js"
+  },
+  "resources/js/views/obras/etapas-tabs-aditivos.js": {
+    "file": "assets/etapas-tabs-aditivos-d0466fb7.js",
+    "isEntry": true,
+    "src": "resources/js/views/obras/etapas-tabs-aditivos.js"
   },
   "resources/js/views/obras/etapas-tabs-evolucoes.js": {
     "file": "assets/etapas-tabs-evolucoes-c01a7f96.js",
@@ -42,6 +47,11 @@
     "file": "assets/etapas-tabs-funcionarios-3d7304da.js",
     "isEntry": true,
     "src": "resources/js/views/obras/etapas-tabs-funcionarios.js"
+  },
+  "resources/js/views/obras/etapas-tabs-projetos.js": {
+    "file": "assets/etapas-tabs-projetos-56ffcf2e.js",
+    "isEntry": true,
+    "src": "resources/js/views/obras/etapas-tabs-projetos.js"
   },
   "resources/js/views/obras/etapas-tabs-relatorios.js": {
     "file": "assets/etapas-tabs-relatorios-3f3743b7.js",
@@ -54,7 +64,7 @@
     "src": "resources/js/views/obras/etapas-tabs-usuarios.js"
   },
   "resources/js/views/tables-users-localization.js": {
-    "file": "assets/tables-users-localization-ec17d9a7.js",
+    "file": "assets/tables-users-localization-9798271b.js",
     "isEntry": true,
     "src": "resources/js/views/tables-users-localization.js"
   },
@@ -64,7 +74,7 @@
     "src": "resources/js/views/tables-users.js"
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-8ebef6f0.css",
+    "file": "assets/app-dfd4dc1c.css",
     "isEntry": true,
     "src": "resources/sass/app.scss"
   },
