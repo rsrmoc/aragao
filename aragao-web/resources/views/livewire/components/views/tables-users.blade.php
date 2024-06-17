@@ -73,7 +73,7 @@
                             <x-components.dashboard.dropdown.dropdown-table>
                             <x-components.dashboard.dropdown.dropdown-item icon="fa-regular fa-map" text="Localização"
                                     href="{{ route('dashboard.usuarios-localizacao', ['usuario' => $user->id]) }}" onclick="initLoading()" />
-                                    
+
                                 <x-components.dashboard.dropdown.dropdown-item icon="fa-solid fa-pen-to-square"
                                     text="Editar" x-on:click="setFormEdit({{ $user }}, () => $wire)" />
 
@@ -144,7 +144,7 @@
                 </div>
 
                 <div>
-                    @if ($userIdEdit)    
+                    @if ($userIdEdit)
                         <x-components.input type="password" label="Senha do usuário" placeholder="Senha" class="input-sm"
                             name="userPassword" wire:model="userPassword" minlength="8" />
                     @else
@@ -153,8 +153,15 @@
                     @endif
                 </div>
 
-                @if ($type == 'engineer')    
+                @if ($type == 'engineer')
                     <div class="mt-3">
+                        <div class="form-control">
+                            <label class="label cursor-pointer" style="justify-content: flex-start !important;">
+                                <input type="checkbox" class="checkbox" wire:model="userEngineerLocation">
+                                <span class="label-text" style="margin-left: 16px;">Armazenar Localização</span>
+                            </label>
+                        </div>
+
                         <div class="form-control">
                             <label class="label cursor-pointer w-52">
                                 <input type="checkbox" class="checkbox" wire:model="userEngineerAdmin" />
