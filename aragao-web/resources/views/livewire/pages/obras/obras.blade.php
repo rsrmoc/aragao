@@ -38,8 +38,13 @@
                         <td>{{ $item->nome }}</td>
                         <td>{{ date_format(date_create($item->dt_inicio), 'd/m/Y') }}</td>
                         <td>{{ date_format(date_create($item->dt_previsao_termino), 'd/m/Y') }}</td>
-                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor) }}</td>
-                        <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</td>
+                        @if(auth()->user()->id == $item->id_usuario || auth()->user()->engineer_admin || auth()->user()->type == 'admin')
+                            <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor) }}</td>
+                            <td>{{ App\Services\Helpers\MoneyService::formatToUICurrency($item->valor_aberto) }}</td>
+                        @else
+                            <td>---</td>
+                            <td>---</td>
+                        @endif
                         <td>
                             <span class="badge {{ App\Services\Helpers\StatusService::classStyleStatusObra($item->status, 'badge') }} badge-sm text-white font-bold">{{ $item->status }}</span>
                         </td>
@@ -201,7 +206,7 @@
                                 <label class="label">
                                     <span class="label-text">Tipo de recurso</span>
                                 </label>
-    
+
                                 <select class="select select-sm select-bordered" wire:model="inputsAdd.tipo_recurso">
                                     <option value="">NENHUM</option>
                                     <option value="proprio">Proprio</option>
