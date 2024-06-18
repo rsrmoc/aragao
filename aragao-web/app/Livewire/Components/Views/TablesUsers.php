@@ -25,6 +25,7 @@ class TablesUsers extends Component
     public $userEmail = null;
     public $userPhoneNumber = null;
     public $userPassword = null;
+    public $userEngineerLocation = false;
     public $userEngineerAdmin = false;
 
     public function mount() {
@@ -69,6 +70,7 @@ class TablesUsers extends Component
                     'phone_number' => $this->userPhoneNumber,
                     'password' => Hash::make($this->userPassword),
                     'type' => $this->type,
+                    'engineer_location' => $this->userEngineerLocation,
                     'engineer_admin' => $this->userEngineerAdmin
                 ]);
 
@@ -81,6 +83,7 @@ class TablesUsers extends Component
                     'phone_number' => $this->userPhoneNumber,
                     'password' => Hash::make($this->userPassword),
                     'type' => $this->type,
+                    'engineer_location' => $this->userEngineerLocation,
                     'engineer_admin' => $this->userEngineerAdmin
                 ]);
             }
@@ -146,9 +149,10 @@ class TablesUsers extends Component
                 'name' => $this->userName,
                 'email' => $this->userEmail,
                 'phone_number' => $this->userPhoneNumber,
+                'engineer_location' => $this->userEngineerLocation,
                 'engineer_admin' => $this->userEngineerAdmin
             ];
-            
+
             if ($this->userPassword) $data['password'] = Hash::make($this->userPassword);
 
             $user = User::find($this->userIdEdit);

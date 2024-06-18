@@ -26,6 +26,7 @@ class User extends Authenticatable
         'phone_number',
         'type',
         'password_user_set',
+        'engineer_location',
         'engineer_admin',
         'notification_token_android',
         'notification_token_ios'
@@ -50,6 +51,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'password_user_set' => 'boolean',
+        'engineer_location' => 'boolean',
         'engineer_admin' => 'boolean'
     ];
 
@@ -70,7 +72,7 @@ class User extends Authenticatable
         $chats = Auth::user()->type !== 'admin'
             ? Chat::withCount('unviewedMessages')->whereIn('id', $idsChats)->get()
             : Chat::withCount('unviewedMessages')->whereIn('id', $idsChats)->orWhere('tipo', 'group')->get();
-        
+
         return $chats->sum('unviewed_messages_count');
     }
 }

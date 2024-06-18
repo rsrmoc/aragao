@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            @if (auth()->user()->type !== 'client')
+            @if (auth()->user()->type === 'admin' || auth()->user()->engineer_admin || auth()->user()->id == $obra->id_usuario)
                 <div class="flex py-2 border-t">
                     <div class="text-xs">
                         <strong>Valor:</strong>
@@ -120,13 +120,13 @@
                             <th>Incidência etapa</th>
                             <th>Execução da etapa</th>
                             <th>Incidência executada</th>
-                            @if (auth()->user()->type !== 'client')
+                            @if (auth()->user()->type === 'admin' || auth()->user()->engineer_admin || auth()->user()->id == $obra->id_usuario)
                                 <th>Valor da etapa</th>
                                 <th>Valor gasto</th>
                                 <th>Situação</th>
                             @endif
                             <th>Status</th>
-                            @if (auth()->user()->type !== 'client')
+                            @if (auth()->user()->type === 'admin' || auth()->user()->engineer_admin || auth()->user()->id == $obra->id_usuario)
                                 <th>Ações</th>
                             @endif
                         </tr>
@@ -157,7 +157,7 @@
                                     </div>
                                 </td>
 
-                                @if (auth()->user()->type !== 'client')
+                                @if (auth()->user()->type === 'admin' || auth()->user()->engineer_admin || auth()->user()->id == $obra->id_usuario)
                                     <td>R$ {{ number_format($item->valor_etapa, 2, ',', '.') }}</td>
                                     <td>R$ {{ number_format($item->valor_gasto, 2, ',', '.') }}</td>
                                     <td>
