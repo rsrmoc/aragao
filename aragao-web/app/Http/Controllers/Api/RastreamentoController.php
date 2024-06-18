@@ -20,7 +20,7 @@ class RastreamentoController extends Controller {
         try {
             $user_info = User::where('id', $data['id_usuario'])->first();
 
-            if ($user_info && $user_info->engineer_location == 0) {
+            if (!$user_info || $user_info->engineer_location == 0) {
                 return response()->json([
                     'message' => 'Usuário não armazena localização',
                     'interval' => Rastreamentos::INTERVALO_CAPTURA
