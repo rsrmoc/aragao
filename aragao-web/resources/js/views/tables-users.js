@@ -4,6 +4,7 @@ Alpine.data('tablesUsers', () => ({
         $wire().userEmail = null;
         $wire().userPhoneNumber = null;
         $wire().userPassword = null;
+        $wire().userEngineerLocation = false;
         $wire().userEngineerAdmin = false
 
         $wire().set('userIdEdit', null);
@@ -26,6 +27,7 @@ Alpine.data('tablesUsers', () => ({
         $wire().userName = user.name;
         $wire().userEmail = user.email;
         $wire().userPhoneNumber = user.phone_number;
+        $wire().userEngineerLocation = user.engineer_location;
         $wire().userEngineerAdmin = user.engineer_admin;
 
         $wire().set('userIdEdit', user.id);
