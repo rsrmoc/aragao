@@ -177,8 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-            onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
+        // floatingActionButton: FloatingActionButton(
+        //     onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
         body: Container(
           color: Colors.black,
           child: SafeArea(child: WebViewWidget(controller: controller)),
