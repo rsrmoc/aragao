@@ -156,14 +156,14 @@
                 @if ($type == 'engineer')
                     <div class="mt-3">
                         <div class="form-control">
-                            <label class="label cursor-pointer" style="justify-content: flex-start !important;">
-                                <input type="checkbox" class="checkbox" wire:model="userEngineerLocation">
-                                <span class="label-text" style="margin-left: 16px;">Armazenar Localização</span>
+                            <label class="label cursor-pointer" style="justify-content: left; column-gap: 10px;">
+                                <input type="checkbox" class="checkbox" wire:model="userEngineerLocation" />
+                                <span class="label-text">Armazenar Localização</span>
                             </label>
                         </div>
 
                         <div class="form-control">
-                            <label class="label cursor-pointer w-52">
+                            <label class="label cursor-pointer" style="justify-content: left; column-gap: 10px;">
                                 <input type="checkbox" class="checkbox" wire:model="userEngineerAdmin" />
                                 <span class="label-text">Profissional administrador</span>
                             </label>

@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 abstract class BaseService {
   BaseService() {
     dio = Dio(BaseOptions(
-      baseUrl: 'https://aragao.codetime.com.br/api',
+      baseUrl: 'https://app.aragao.app.br/api',
       connectTimeout: const Duration(seconds: 5000),
       sendTimeout: const Duration(seconds: 3000),
       receiveTimeout: const Duration(seconds: 3000),
