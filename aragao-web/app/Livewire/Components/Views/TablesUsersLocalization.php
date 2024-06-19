@@ -15,6 +15,8 @@ class TablesUsersLocalization extends Component
     public $title;
     public $descriptionPage;
 
+    public $modalAdd = false;
+
     public function mount() {
         $this->title = 'Localização de Usuários';
         $this->descriptionPage = 'Aqui você pode visualizar o histórico de localização do usuário.';
