@@ -5,6 +5,7 @@ import 'package:aragao_app/core/repo/app_repository.dart';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/latitude_longitude_model.dart';
 
@@ -18,13 +19,16 @@ class LocalizationServices with ChangeNotifier {
   }
 
   late Position currentPosition;
-  int userId = 0;
+  late SharedPreferences localShared;
+
   final AppRepository _repository = AppRepository();
   AppRepository get repository => _repository;
 
   Future<void> initializeMapWithPermissions() async {
     bool serviceEnabled;
     LocationPermission permission;
+
+    localShared = await SharedPreferences.getInstance();
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -52,18 +56,19 @@ class LocalizationServices with ChangeNotifier {
     log(currentPosition.toString());
   }
 
-  void fetchUserId({required String url}) {
+  Future<void> fetchUserId({required String url}) async {
     Uri uri = Uri.parse(url);
 
-    userId = int.parse(uri.queryParameters['userId']!);
-
-    log('this user id -> $userId');
+    await localShared.setInt(
+        'user_id', int.parse(uri.queryParameters['userId']!));
   }
 
   Future<void> sendLatLongReceiveTimestamp() async {
+    final localId = localShared.getInt('user_id');
+
     await repository.inputLatLongInfoWithUserId(
         latLongModel: LatitudeLongitudeModel(
-            userId: userId,
+            userId: localId ?? 0,
             lat: currentPosition.latitude.toString(),
             long: currentPosition.longitude.toString()));
   }
