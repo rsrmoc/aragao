@@ -33,7 +33,7 @@ Route::group([
     'middleware' => ['auth', UserSetPasswordMiddleware::class]
 ], function() {
 
-    Route::get('/{userId?}', [DashboardController::class, 'index'])->name('home');
+    Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::get('/logout', [DashboardController::class, 'destroy'])->name('logout');
 
     Route::post('/notification-token', [UsuariosController::class, 'tokenNotification']);

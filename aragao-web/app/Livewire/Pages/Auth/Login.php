@@ -17,8 +17,9 @@ class Login extends Component
         $this->validate();
 
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password], true)) {
-            if (Auth::user()->engineer_admin) {
-                return redirect()->route('dashboard.home', ['userId' => Auth::id()]);
+            if (Auth::user()->engineer_location) {
+                $url = route('dashboard.home').'?userId='.Auth::id();
+                return redirect($url);
             }
             return redirect()->route('dashboard.home');
         }
