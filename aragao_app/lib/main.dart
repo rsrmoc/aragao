@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'app_webview.dart';
 
+@pragma('vm:entry-point')
 void backgroundFetchHeadlessTask(HeadlessTask task) async {
   String taskId = task.taskId;
   bool isTimeout = task.timeout;

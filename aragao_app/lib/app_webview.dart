@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> initBackgroundActivity() async {
     int status = await BackgroundFetch.configure(
         BackgroundFetchConfig(
-            minimumFetchInterval: 5,
+            minimumFetchInterval: 10,
             stopOnTerminate: false,
             enableHeadless: true,
             requiresBatteryNotLow: false,
@@ -117,14 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
             requiresStorageNotLow: false,
             requiresDeviceIdle: false,
             requiredNetworkType: NetworkType.NONE), (String taskId) async {
-      print("[BackgroundFetch] Event received $taskId");
+      log("[BackgroundFetch] Event received $taskId");
       localizationHandler.sendLatLongReceiveTimestamp();
       BackgroundFetch.finish(taskId);
     }, (String taskId) async {
-      print("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+      log("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
       BackgroundFetch.finish(taskId);
     });
-    print('[BackgroundFetch] configure success: $status');
+    log('[BackgroundFetch] configure success: $status');
     if (!mounted) return;
   }
 
@@ -137,9 +137,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(NavigationDelegate(
-        onPageStarted: (url) {
+        onPageStarted: (url) async {
           if (url.contains('userId')) {
-            localizationHandler.fetchUserId(url: url);
+            await localizationHandler.fetchUserId(url: url);
           }
 
           if (url.endsWith('/home') ||
@@ -155,14 +155,14 @@ class _MyHomePageState extends State<MyHomePage> {
             injectJavascriptSendTokenFirebaseMessaging();
           }
         },
-        onNavigationRequest: (NavigationRequest request){
-            final urlString = request.url.toUpperCase();
-            final uriUL = Uri.parse(request.url);
-            if(urlString.contains('STORAGE')){
-              launchUrl(uriUL);
-              return NavigationDecision.prevent;
-            }
-            return NavigationDecision.navigate;
+        onNavigationRequest: (NavigationRequest request) {
+          final urlString = request.url.toUpperCase();
+          final uriUL = Uri.parse(request.url);
+          if (urlString.contains('STORAGE')) {
+            launchUrl(uriUL);
+            return NavigationDecision.prevent;
+          }
+          return NavigationDecision.navigate;
         },
       ))
       ..loadRequest(Uri.parse('https://app.aragao.app.br/'));
@@ -177,8 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //     onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
         body: Container(
           color: Colors.black,
           child: SafeArea(child: WebViewWidget(controller: controller)),
