@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Rastreamentos;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,15 @@ class RastreamentoController extends Controller {
             'longitude' => 'required|string',
             'id_usuario' => 'required|exists:users,id',
         ]);
+
+        $hora_atual = Carbon::now()->format('H');
+
+        if ($hora_atual < 7 || $hora_atual > 17) {
+            return response()->json([
+                'message' => 'A gravação da localização só é permitida entre 07h e 17h',
+                'interval' => Rastreamentos::INTERVALO_CAPTURA
+            ]);
+        }
 
         try {
             $user_info = User::where('id', $data['id_usuario'])->first();
