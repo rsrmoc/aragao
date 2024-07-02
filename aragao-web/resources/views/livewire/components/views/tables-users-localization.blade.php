@@ -12,6 +12,7 @@
                 <th>#</th>
                 <th>Data</th>
                 <th>Endereço</th>
+                <th>Localização</th>
             </tr>
         </thead>
 
@@ -21,6 +22,11 @@
                     <td>{{ $local->id }}</td>
                     <td>{{ date_format(date_create($local->created_at), 'd/m/Y \à\s H:i') }}</td>
                     <td>{{ $local->endereco }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" x-on:click="showMap('{{ $local->latitude }}', '{{ $local->longitude }}', () => $wire)">
+                            <i class="fa-solid fa-map"></i>
+                        </button>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -47,6 +53,9 @@
                         <strong>Endereço:</strong>
                         <span>{{ $local->endereco }}</span>
                     </div>
+                    <div>
+                        <strong class="text-primary" x-on:click="showMap('{{ $local->latitude }}', '{{ $local->longitude }}', () => $wire)" style="cursor: pointer">Ver localização no mapa</strong>
+                    </div>
                 </div>
             </div>
         @endforeach
@@ -62,7 +71,37 @@
         </div>
     @endempty
 
+    <div class="modal" x-bind:class="{ 'modal-open': $wire.modalAdd }">
+        <form wire:submit.prevent="modalSubmit" class="modal-box">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-lg">
+                    <span>Visualizar Localização</span>
+                </h3>
+
+                <button type="button" class="btn btn-sm btn-circle" x-on:click="closeModal(() => $wire)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="mb-5">
+                <iframe iframe scrolling="no" height="350" frameborder="0" id="map"
+                    marginheight="0" marginwidth="0" style="width: 100%;" src="">
+                </iframe>
+            </div>
+
+            <div class="modal-action">
+                <button type="button" class="btn btn-sm btn-primary" x-on:click="closeModal(() => $wire)">
+                    Fechar
+                </button>
+            </div>
+        </form>
+    </div>
+
     @push('scripts')
         @vite('resources/js/views/tables-users-localization.js')
     @endpush
+    <script>
+        var latitude = null;
+        var longitude = null;
+    </script>
 </div>

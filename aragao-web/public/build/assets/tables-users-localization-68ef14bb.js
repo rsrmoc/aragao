@@ -1,0 +1,1 @@
+Alpine.data("tablesUsersLocalization",()=>({closeModal(l){latitude=null,longitude=null,l().modalAdd=!1},showMap(l,a,d){l=l,a=a;let e=`https://maps.google.com/maps?f=d&output=embed&daddr=${l},${a}`;document.querySelector("#map").src=e,d().modalAdd=!0}}));
