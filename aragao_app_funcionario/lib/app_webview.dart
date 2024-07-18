@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -110,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
     int status = await BackgroundFetch.configure(
         BackgroundFetchConfig(
             minimumFetchInterval: 10,
+            startOnBoot: true,
             stopOnTerminate: false,
             enableHeadless: true,
             requiresBatteryNotLow: false,
@@ -128,9 +130,17 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!mounted) return;
   }
 
+  void executeFunctionPeriodically() {
+    const Duration interval = Duration(minutes: 1);
+    Timer.periodic(interval, (Timer timer) {
+      localizationHandler.sendLatLongReceiveTimestamp();
+    });
+  }
+
   @override
   void initState() {
     localizationHandler = LocalizationServices.instance;
+    executeFunctionPeriodically();
     initBackgroundActivity();
 
     controller = WebViewController()
@@ -180,8 +190,8 @@ class _MyHomePageState extends State<MyHomePage> {
         //floatingActionButton: FloatingActionButton(
         //    onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
         body: Container(
-          color: Colors.black,
-          child: SafeArea(child: WebViewWidget(controller: controller)),
-        ));
+      color: Colors.black,
+      child: SafeArea(child: WebViewWidget(controller: controller)),
+    ));
   }
 }
