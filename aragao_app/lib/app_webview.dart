@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -106,32 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> initBackgroundActivity() async {
-    int status = await BackgroundFetch.configure(
-        BackgroundFetchConfig(
-            minimumFetchInterval: 10,
-            stopOnTerminate: false,
-            enableHeadless: true,
-            requiresBatteryNotLow: false,
-            requiresCharging: false,
-            requiresStorageNotLow: false,
-            requiresDeviceIdle: false,
-            requiredNetworkType: NetworkType.NONE), (String taskId) async {
-      log("[BackgroundFetch] Event received $taskId");
-      localizationHandler.sendLatLongReceiveTimestamp();
-      BackgroundFetch.finish(taskId);
-    }, (String taskId) async {
-      log("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
-      BackgroundFetch.finish(taskId);
-    });
-    log('[BackgroundFetch] configure success: $status');
-    if (!mounted) return;
-  }
-
   @override
   void initState() {
     localizationHandler = LocalizationServices.instance;
-    initBackgroundActivity();
 
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -177,8 +155,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        //floatingActionButton: FloatingActionButton(
-        //    onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
         body: Container(
           color: Colors.black,
           child: SafeArea(child: WebViewWidget(controller: controller)),
