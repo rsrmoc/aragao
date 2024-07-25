@@ -6,6 +6,23 @@
         <i class="fa-solid fa-circle-info"></i>&ensp;{{ $descriptionPage }}
     </p>
 
+    <form wire:submit.prevent="filterLocalization" class="w-full">
+        <div class="flex gap-3 sm:gap-5 mb-5 flex-wrap sm:flex-nowrap items-end">
+            <div class="w-full sm:w-3/12">
+                <x-components.input type="datetime-local" label="Data/Hora inicio" placeholder="Data/Hora inicio" class="input-sm" wire:model="filterDataHoraInicio" />
+            </div>
+            <div class="w-full sm:w-3/12">
+                <x-components.input type="datetime-local" label="Data/Hora fim" placeholder="Data/Hora fim" class="input-sm" wire:model="filterDataHoraFim" />
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary">
+                <div wire:loading wire:target="filterLocalization">
+                    <x-components.loading class="loading-xs" />
+                </div>
+                Buscar
+            </button>
+        </div>
+    </form>
+
     <table class="table table-xs table-zebra hidden sm:table w-full">
         <thead>
             <tr class="active">

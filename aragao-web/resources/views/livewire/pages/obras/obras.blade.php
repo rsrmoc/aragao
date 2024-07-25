@@ -10,6 +10,20 @@
         @endif
     </x-components.dashboard.navbar.navbar>
 
+    <form wire:submit.prevent="filterObras" class="w-full">
+        <div class="flex gap-3 sm:gap-5 mb-5 flex-wrap sm:flex-nowrap items-end">
+                <div class="w-full sm:w-3/12">
+                    <x-components.input label="Nome da obra" placeholder="Nome da obra" class="input-sm" wire:model="filterNome" />
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary">
+                    <div wire:loading wire:target="filterObras">
+                        <x-components.loading class="loading-xs" />
+                    </div>
+                    Buscar
+                </button>
+        </div>
+    </form>
+
     <div>
         <table class="table table-xs table-zebra hidden sm:table">
             <thead>
