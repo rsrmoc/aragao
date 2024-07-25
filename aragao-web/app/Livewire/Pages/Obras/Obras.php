@@ -38,6 +38,9 @@ class Obras extends Component
     public $states;
     public $modal = false;
 
+    public $filter;
+    public $filterNome;
+
     public function rules() {
         return [
             'inputsAdd.nome' => 'required|string',
@@ -140,16 +143,26 @@ class Obras extends Component
         }
     }
 
+    public function filterObras() {
+        $this->resetPage();
+    }
+
     #[Layout('components.layouts.dashboard')]
     public function render()
     {
         if (Auth::user()->type !== 'admin' && !Auth::user()->engineer_admin) {
             $idsObrasUsuario = ObrasUsuarios::where('id_usuario', Auth::user()->id)->get('id_obra');
-            $obras = ModelsObras::whereIn('id', $idsObrasUsuario)->paginate(12);
+            $obras = ModelsObras::whereIn('id', $idsObrasUsuario);
         }
         else {
-            $obras = ModelsObras::orderBy('created_at', 'desc')->paginate(12);
+            $obras = ModelsObras::orderBy('created_at', 'desc');
         }
+
+        if($this->filterNome){
+            $obras = $obras->where('nome', 'like', '%'.$this->filterNome.'%');
+        }
+
+        $obras = $obras->paginate(12);
 
         return view('livewire.pages.obras.obras', compact('obras'));
     }
