@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 // Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
@@ -50,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late WebViewController controller;
   late LocalizationServices localizationHandler;
   bool isNotification = false;
+  final ImagePicker _picker = ImagePicker();
 
   void fileSelectionHandler() async {
     if (Platform.isAndroid) {
@@ -61,15 +63,42 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<List<String>> _androidFilePicker(params) async {
-    final result = await FilePicker.platform.pickFiles();
-
-    if (result != null && result.files.single.path != null) {
-      final file = File(result.files.single.path!);
-
-      return [file.uri.toString()];
-    }
-
-    return [];
+    // Show a bottom sheet to select either camera or gallery
+    return showModalBottomSheet<List<String>>(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Câmera'),
+                onTap: () async {
+                  final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    Navigator.pop(context, [image.path]);
+                  } else {
+                    Navigator.pop(context, []);
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Galeria'),
+                onTap: () async {
+                  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    Navigator.pop(context, [image.path]);
+                  } else {
+                    Navigator.pop(context, []);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    ).then((value) => value ?? []);
   }
 
   initializeFirebaseMessaging() async {
