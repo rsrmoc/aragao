@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:aragao_app/core/repo/app_repository.dart';
 import 'package:aragao_app/model/latitude_longitude_model.dart';
 import 'package:aragao_app/services/firebase_messaging_service.dart';
-import 'package:aragao_app/services/localization_services.dart';
 import 'package:aragao_app/services/notification_service.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocalizationServices.instance.initializeMapWithPermissions();
     return MaterialApp(
       title: 'Aragão Construtora',
       theme: ThemeData(
@@ -49,7 +47,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late WebViewController controller;
-  late LocalizationServices localizationHandler;
   bool isNotification = false;
   final ImagePicker _picker = ImagePicker();
 
@@ -138,17 +135,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    localizationHandler = LocalizationServices.instance;
-
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(NavigationDelegate(
         onPageStarted: (url) async {
-          if (url.contains('userId')) {
-            await localizationHandler.fetchUserId(url: url);
-          }
-
           if (url.endsWith('/home') ||
               url.endsWith('/obras') ||
               url.endsWith('/chat')) {
