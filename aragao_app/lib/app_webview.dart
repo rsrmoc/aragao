@@ -64,34 +64,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<List<String>> _androidFilePicker(params) async {
     return await showDialog<List<String>>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Selecionar origem do arquivo'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Galeria'),
-                onTap: () async {
-                  final result = await FilePicker.platform.pickFiles();
-                  Navigator.pop(context, _handleFilePickerResult(result));
-                },
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Selecionar origem do arquivo'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Galeria'),
+                    onTap: () async {
+                      final result = await FilePicker.platform.pickFiles();
+                      Navigator.pop(context, _handleFilePickerResult(result));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: const Text('Câmera'),
+                    onTap: () async {
+                      final XFile? photo =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      Navigator.pop(context, _handleImagePickerResult(photo));
+                    },
+                  ),
+                ],
               ),
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Câmera'),
-                onTap: () async {
-                  final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-                  Navigator.pop(context, _handleImagePickerResult(photo));
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    ) ?? [];
+            );
+          },
+        ) ??
+        [];
   }
 
   List<String> _handleFilePickerResult(FilePickerResult? result) {

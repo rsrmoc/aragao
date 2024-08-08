@@ -129,6 +129,13 @@
                     @endif
                 </li>
 
+                @if (auth()->user()->type == 'admin' || auth()->user()->engineer_admin)
+                    <li>
+                        <x-components.dashboard.menu.linkDownload route="dashboard.baixar-apk-funcionario" icon="fa-solid fa-download"
+                            text="App Funcionário" />
+                    </li>
+                @endif
+
                 <div class="mt-auto">
                     <div class="flex items-center gap-3 p-3">
                         <div class="avatar placeholder">
