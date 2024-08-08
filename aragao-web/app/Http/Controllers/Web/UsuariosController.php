@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UsuariosController extends Controller
 {
@@ -41,6 +42,8 @@ class UsuariosController extends Controller
     }
 
     public function baixarApkFuncionario() {
-        return response()->download(storage_path('app/public/com.aragao.funcionario.apk'));
+        return redirect(
+            Storage::url('public/com.aragao.funcionario.apk')
+        );
     }
 }
