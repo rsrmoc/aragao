@@ -41,6 +41,8 @@
 	<string>This app needs access to location when in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when in the background and open.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Conceda acesso à sua biblioteca de fotos para aproveitar todos os recursos da aplicação</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -48,6 +50,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>location</string>
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>

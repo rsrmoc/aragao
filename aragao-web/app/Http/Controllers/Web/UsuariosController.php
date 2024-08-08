@@ -39,4 +39,8 @@ class UsuariosController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+    public function baixarApkFuncionario() {
+        return response()->download(storage_path('app/public/com.aragao.funcionario.apk'));
+    }
 }

@@ -58,6 +58,8 @@ Route::group([
 
     Route::get('/chat', Chat::class)->name('chat');
     
+    Route::get('/baixar-apk-funcionario', [UsuariosController::class, 'baixarApkFuncionario'])->name('baixar-apk-funcionario');
+
 });
 
 // Route::get('/test-pdf-relatorio', function() {
