@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:aragao_app/core/repo/app_repository.dart';
 import 'package:aragao_app/model/latitude_longitude_model.dart';
 import 'package:aragao_app/services/firebase_messaging_service.dart';
+import 'package:aragao_app/services/localization_services.dart';
 import 'package:aragao_app/services/notification_service.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalizationServices.instance.initializeMapWithPermissions();
     return MaterialApp(
       title: 'Aragão Construtora',
       theme: ThemeData(
@@ -47,6 +49,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late WebViewController controller;
+  late LocalizationServices localizationHandler;
   bool isNotification = false;
   final ImagePicker _picker = ImagePicker();
 
@@ -60,42 +63,53 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<List<String>> _androidFilePicker(params) async {
-    // Show a bottom sheet to select either camera or gallery
-    return showModalBottomSheet<List<String>>(
-      context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Câmera'),
-                onTap: () async {
-                  final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-                  if (image != null) {
-                    Navigator.pop(context, [image.path]);
-                  } else {
-                    Navigator.pop(context, []);
-                  }
-                },
+    return await showDialog<List<String>>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Selecionar origem do arquivo'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Galeria'),
+                    onTap: () async {
+                      final result = await FilePicker.platform.pickFiles();
+                      Navigator.pop(context, _handleFilePickerResult(result));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: const Text('Câmera'),
+                    onTap: () async {
+                      final XFile? photo =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      Navigator.pop(context, _handleImagePickerResult(photo));
+                    },
+                  ),
+                ],
               ),
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Galeria'),
-                onTap: () async {
-                  final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-                  if (image != null) {
-                    Navigator.pop(context, [image.path]);
-                  } else {
-                    Navigator.pop(context, []);
-                  }
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    ).then((value) => value ?? []);
+            );
+          },
+        ) ??
+        [];
+  }
+
+  List<String> _handleFilePickerResult(FilePickerResult? result) {
+    if (result != null && result.files.single.path != null) {
+      final file = File(result.files.single.path!);
+      return [file.uri.toString()];
+    }
+    return [];
+  }
+
+  List<String> _handleImagePickerResult(XFile? photo) {
+    if (photo != null) {
+      final file = File(photo.path);
+      return [file.uri.toString()];
+    }
+    return [];
   }
 
   initializeFirebaseMessaging() async {
@@ -133,13 +147,51 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> initBackgroundActivity() async {
+    int status = await BackgroundFetch.configure(
+        BackgroundFetchConfig(
+            minimumFetchInterval: 10,
+            startOnBoot: true,
+            stopOnTerminate: false,
+            enableHeadless: true,
+            requiresBatteryNotLow: false,
+            requiresCharging: false,
+            requiresStorageNotLow: false,
+            requiresDeviceIdle: false,
+            requiredNetworkType: NetworkType.NONE), (String taskId) async {
+      log("[BackgroundFetch] Event received $taskId");
+      localizationHandler.sendLatLongReceiveTimestamp();
+      BackgroundFetch.finish(taskId);
+    }, (String taskId) async {
+      log("[BackgroundFetch] TASK TIMEOUT taskId: $taskId");
+      BackgroundFetch.finish(taskId);
+    });
+    log('[BackgroundFetch] configure success: $status');
+    if (!mounted) return;
+  }
+
+  void executeFunctionPeriodically() {
+    const Duration interval = Duration(minutes: 1);
+    Timer.periodic(interval, (Timer timer) {
+      localizationHandler.sendLatLongReceiveTimestamp();
+    });
+  }
+
   @override
   void initState() {
+    localizationHandler = LocalizationServices.instance;
+    executeFunctionPeriodically();
+    initBackgroundActivity();
+
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(NavigationDelegate(
         onPageStarted: (url) async {
+          if (url.contains('userId')) {
+            await localizationHandler.fetchUserId(url: url);
+          }
+
           if (url.endsWith('/home') ||
               url.endsWith('/obras') ||
               url.endsWith('/chat')) {
@@ -175,9 +227,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        //floatingActionButton: FloatingActionButton(
+        //    onPressed: () => localizationHandler.sendLatLongReceiveTimestamp()),
         body: Container(
-          color: Colors.black,
-          child: SafeArea(child: WebViewWidget(controller: controller)),
-        ));
+      color: Colors.black,
+      child: SafeArea(child: WebViewWidget(controller: controller)),
+    ));
   }
 }
