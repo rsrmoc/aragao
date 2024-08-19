@@ -5,8 +5,12 @@ Alpine.data('etapasTabEvolucoes', () => ({
     modalImage: null,
 
     carregarImagens() {
+        document.querySelector('div.app-loading').classList.remove('hidden');
+        let imagens = this.infoEvolucao.imagens;
+        this.infoEvolucao.imagens = [];
+
         // Mapear todas as imagens para uma lista de promessas de chamadas axios
-        const promises = this.infoEvolucao.imagens.map(imagem => {
+        const promises = imagens.map(imagem => {
             return axios.get('/home/imagens/arquivo/'+imagem.id)
                 .then((response) => {
                     // Assegura que a propriedade 'url' existe no 'data' antes de acessar
@@ -20,16 +24,22 @@ Alpine.data('etapasTabEvolucoes', () => ({
                     return imagem;
                 });
         });
-    
+        
         // Atualizar as imagens à medida que cada promessa é resolvida
         promises.forEach(promise => {
             promise.then(imagemAtualizada => {
-                // Atualizar a imagem no array this.infoEvolucao.imagens
-                const index = this.infoEvolucao.imagens.findIndex(img => img.id === imagemAtualizada.id);
+                // Atualizar a imagem no array imagens
+                const index = imagens.findIndex(img => img.id === imagemAtualizada.id);
                 if (index !== -1) {
-                    this.infoEvolucao.imagens[index] = imagemAtualizada;
+                    imagens[index] = imagemAtualizada;
                 }
             });
+        });
+
+        // Aguardar todas as promessas serem resolvidas
+        this.infoEvolucao.imagens = imagens;
+        Promise.all(promises).then(() => {
+            document.querySelector('div.app-loading').classList.add('hidden');
         });
     },
     
