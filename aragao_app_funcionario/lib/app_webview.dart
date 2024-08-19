@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 // Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
@@ -50,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late WebViewController controller;
   late LocalizationServices localizationHandler;
   bool isNotification = false;
+  final ImagePicker _picker = ImagePicker();
 
   void fileSelectionHandler() async {
     if (Platform.isAndroid) {
@@ -61,17 +63,55 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<List<String>> _androidFilePicker(params) async {
-    final result = await FilePicker.platform.pickFiles();
+    return await showDialog<List<String>>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Selecionar origem do arquivo'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Galeria'),
+                    onTap: () async {
+                      final result = await FilePicker.platform.pickFiles();
+                      Navigator.pop(context, _handleFilePickerResult(result));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: const Text('Câmera'),
+                    onTap: () async {
+                      final XFile? photo =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      Navigator.pop(context, _handleImagePickerResult(photo));
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ) ??
+        [];
+  }
 
+  List<String> _handleFilePickerResult(FilePickerResult? result) {
     if (result != null && result.files.single.path != null) {
       final file = File(result.files.single.path!);
-
       return [file.uri.toString()];
     }
-
     return [];
   }
 
+  List<String> _handleImagePickerResult(XFile? photo) {
+    if (photo != null) {
+      final file = File(photo.path);
+      return [file.uri.toString()];
+    }
+    return [];
+  }
+  
   initializeFirebaseMessaging() async {
     await Provider.of<FirebaseMessagingService>(context, listen: false)
         .initializeSettings();
